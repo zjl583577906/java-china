@@ -7,6 +7,11 @@ import com.blade.view.template.ModelAndView;
 
 public class BaseController {
 	
+	final String ERROR = "error";
+	final String SUCCESS = "success";
+	final String FAILURE = "failure";
+	final int count = 20;
+	
 	public ModelAndView getView(String view){
 		return getView(new HashMap<String, Object>(), view);
 	}
