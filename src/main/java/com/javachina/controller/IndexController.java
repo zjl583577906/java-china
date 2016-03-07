@@ -1,5 +1,7 @@
 package com.javachina.controller;
 
+import com.blade.ioc.annotation.Inject;
+import com.blade.jdbc.QueryParam;
 import com.blade.patchca.PatchcaService;
 import com.blade.route.annotation.Path;
 import com.blade.route.annotation.Route;
@@ -7,6 +9,9 @@ import com.blade.view.template.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.model.User;
+import com.javachina.service.ActivecodeService;
+import com.javachina.service.UserService;
 
 import blade.kit.PatternKit;
 import blade.kit.StringKit;
@@ -14,6 +19,12 @@ import blade.kit.StringKit;
 @Path("/")
 public class IndexController extends BaseController {
 
+	@Inject
+	private ActivecodeService activecodeService;
+	
+	@Inject
+	private UserService userService;
+	
 	/**
 	 * 首页
 	 */
@@ -49,6 +60,7 @@ public class IndexController extends BaseController {
 			request.attribute(this.ERROR, "用户名和密码不能为空");
 			return this.getView("signin");
 		}
+		User user = userService.signin(login_name, pass_word);
 		
 		return this.getView("signin");
 	}
@@ -106,6 +118,13 @@ public class IndexController extends BaseController {
 			return this.getView("forgot");
 		}
 		
+		User user = userService.getUser(QueryParam.me().eq("email", email).eq("status", 1));
+		if(null == user){
+			request.attribute(this.ERROR, "该邮箱没有注册");
+			return this.getView("forgot");
+		}
+		userService.resetPwd(email);
+		request.attribute(this.STATUS, 200);
 		return this.getView("forgot");
 	}
 	
