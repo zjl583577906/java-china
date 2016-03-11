@@ -16,7 +16,7 @@ public interface UserService {
 	
 	Page<User> getPageList(QueryParam queryParam);
 	
-	boolean signup(String loginName, String passWord, String avatar, String email);
+	boolean signup(String loginName, String passWord, String email);
 	
 	User signin(String loginName, String passWord);
 	

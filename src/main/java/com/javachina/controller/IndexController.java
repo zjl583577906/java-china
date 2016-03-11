@@ -9,6 +9,7 @@ import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.kit.SessionKit;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
 import com.javachina.service.UserService;
@@ -61,8 +62,13 @@ public class IndexController extends BaseController {
 			return this.getView("signin");
 		}
 		User user = userService.signin(login_name, pass_word);
-		
-		return this.getView("signin");
+		if(null == user){
+			request.attribute(this.ERROR, "用户名或密码错误");
+			return this.getView("signin");
+		}
+		SessionKit.setUser(request.session(), user);
+		response.go("/");
+		return null;
 	}
 	
 	/**
@@ -74,13 +80,24 @@ public class IndexController extends BaseController {
 	}
 	
 	/**
+	 * 注销
+	 */
+	@Route(value = "/logout")
+	public void logout(Request request, Response response){
+		SessionKit.removeUser(request.session());
+		response.go("/");
+	}
+	
+	/**
 	 * 注册操作
 	 */
 	@Route(value = "/signup", method = HttpMethod.POST)
 	public ModelAndView signup(Request request, Response response){
+		
 		String login_name = request.query("login_name");
 		String email = request.query("email");
 		String pass_word = request.query("pass_word");
+		
 		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word) || StringKit.isBlank(email)){
 			request.attribute(this.ERROR, "参数不能为空");
 			return this.getView("signup");
@@ -91,6 +108,30 @@ public class IndexController extends BaseController {
 			return this.getView("signup");
 		}
 		
+		QueryParam queryParam = QueryParam.me();
+		queryParam.eq("login_name", login_name);
+		queryParam.in("status", 0, 1);
+		User user = userService.getUser(queryParam);
+		if(null != user){
+			request.attribute(this.ERROR, "该用户名已经被占用，请更换用户名");
+			return this.getView("signup");
+		}
+		
+		queryParam = QueryParam.me();
+		queryParam.eq("email", email);
+		queryParam.in("status", 0, 1);
+		user = userService.getUser(queryParam);
+		if(null != user){
+			request.attribute(this.ERROR, "该邮箱已经被注册，请直接登录");
+			return this.getView("signup");
+		}
+		
+		boolean flag = userService.signup(login_name, pass_word, email);
+		if(flag){
+			request.attribute(this.INFO, "注册成功，已经向您的邮箱 " + email + " 发送了一封激活申请，请注意查收！");
+		} else {
+			request.attribute(this.ERROR, "注册发生异常");
+		}
 		return this.getView("signup");
 	}
 	

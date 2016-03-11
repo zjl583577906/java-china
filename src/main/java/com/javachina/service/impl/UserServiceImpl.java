@@ -7,6 +7,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.Constant;
 import com.javachina.kit.TaskKit;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
@@ -14,6 +15,7 @@ import com.javachina.service.UserService;
 
 import blade.kit.DateKit;
 import blade.kit.EncrypKit;
+import blade.kit.MailKit;
 import blade.kit.StringKit;
 
 @Service
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean signup(String loginName, String passWord, String avatar, String email) {
+	public boolean signup(String loginName, String passWord, String email) {
 		if(StringKit.isBlank(loginName) || StringKit.isBlank(passWord) || StringKit.isBlank(email)){
 			return false;
 		}
@@ -78,6 +80,8 @@ public class UserServiceImpl implements UserService {
 		Runnable t = new Runnable() {
 			@Override
 			public void run() {
+				String href = Constant.SITE_URL + "/active?code=" + code;
+				MailKit.asynSend(email, Constant.MAIL_ACTIVE_TITLE, String.format(Constant.MAIL_ACTIVE_CONTENT, Constant.SITE_NAME, href, href));
 			}
 		};
 		TaskKit.run(t);
