@@ -2,7 +2,7 @@ package com.javachina.controller.admin;
 
 import com.blade.route.annotation.Path;
 import com.blade.route.annotation.Route;
-import com.blade.view.template.ModelAndView;
+import com.blade.view.ModelAndView;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.controller.BaseController;

@@ -5,7 +5,7 @@ import com.blade.jdbc.QueryParam;
 import com.blade.patchca.PatchcaService;
 import com.blade.route.annotation.Path;
 import com.blade.route.annotation.Route;
-import com.blade.view.template.ModelAndView;
+import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;

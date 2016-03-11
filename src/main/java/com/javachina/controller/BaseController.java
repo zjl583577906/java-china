@@ -3,7 +3,7 @@ package com.javachina.controller;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.blade.view.template.ModelAndView;
+import com.blade.view.ModelAndView;
 
 public class BaseController {
 	
