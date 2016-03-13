@@ -27,6 +27,10 @@ body, figure {
 	margin: 0
 }
 
+a:hover{
+color: #4d5256;	
+}
+
 .btn-group>.btn-group, .btn-toolbar .btn-group, .btn-toolbar .input-group,
 	.col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3,
 	.col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9,
@@ -15390,13 +15394,13 @@ transform
 }
 
 ::-moz-selection {
-	background: #09c;
+	background: #0080ff;
 	color: #fff;
 	text-shadow: none
 }
 
 ::selection {
-	background: #09c;
+	background: #0080ff;
 	color: #fff
 }
 
@@ -29065,6 +29069,10 @@ transform
 .comment a{
 	color: #778087;
 	font-size: 16px;
+}
+
+.comment a:hover{
+	color: #4d5256;
 }
 
 .comment-bt{

@@ -24,7 +24,7 @@
                             </div>
                         </div>
                         #else
-                        	<p>如果你想寻找 Ruby 的三方库，请上 rubygems.org 或在 github.com 上面寻找。</p>
+                        	<p>如果你想寻找 Java 的示例项目，请上 <a href="https://github.com/JavaExamples">https://github.com/JavaExamples</a> 上面寻找。</p>
                         #end
                     </div>
                     <div class="panel-footer">
@@ -107,19 +107,5 @@
                         <p>回帖数：333</p>
                     </div>
                 </div>
-                #if(null != following)
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">我关注的人</h3>
-                    </div>
-                    <div class="panel-body">
-                    	#for(item : following)
-		              	<li class="list-group-item text-muted">
-		               	<img alt="${item.username}" src="/" width="24" height="24">
-		                   <a href="、">${item.username}</a>
-		               </li>
-		              	#end
-                    </div>
-                </div>
-                #end
+                
             </div><!-- /.col-md-4 -->
