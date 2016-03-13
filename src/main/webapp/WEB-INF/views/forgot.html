@@ -1,35 +1,27 @@
-<!DOCTYPE html>
-<html class=no-js>
-<head>
-<meta charset=utf-8>
-<title>Java China - 忘记密码</title>
-<meta name="description" content="">
-<link rel="shortcut icon" href="assets/favicon.ico"/>
-<meta name="viewport" content="width=device-width">
-<link rel="stylesheet" href="${base}/assets/styles/main.css">
-<body>
-<div class="app layout-fixed-header usersession bg-white">
-	<div class=full-height>
-		<div class=center-wrapper>
-			<div class=center-content>
-				<div class="row no-margin">
-					<div class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-						<form role="form" action="${base_url('/forgot')}" class="form-layout" method="post" />
-							<div class="text-center mb15">
-								<img src="${base}/assets/images/logo.png">
+#include("./common/header.html", {active:"home"})
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+			<div class="app layout-fixed-header bg-white usersession">
+				<div class="full-height">
+					<div class=center-wrapper>
+						<div class=center-content>
+							<div class="row no-margin col-md-8">
+								<form role="form" action="${base_url('/forgot')}" class="form-layout" method="post" />
+									<p class="text-center mb25">忘记了您的密码? 请输入您的电子邮件地址, 您将收到一个链接来创建一个新的密码。</p>
+									<div class=form-inputs>
+										<input type="email" class="form-control input-lg"
+										 placeholder="请输入您的电子邮件地址" autofocus  required="required"/>
+									</div>
+									<button class="btn btn-success btn-lg btn-block" type=submit>找回密码</button>
+								</form>
 							</div>
-							<p class="text-center mb25">忘记了您的密码? 请输入您的电子邮件地址, 您将收到一个链接来创建一个新的密码。</p>
-							<div class=form-inputs>
-								<input type="email" class="form-control input-lg"
-								 placeholder="请输入您的电子邮件地址" autofocus  required="required"/>
-							</div>
-							<button class="btn btn-success btn-lg btn-block" type=submit>找回密码</button>
-						</form>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+			</div>			        	
+        </div>
+        #include("./common/sidebar.html")
+    </div>
 </div>
-</body>
-</html>
+#include("./common/footer.html")

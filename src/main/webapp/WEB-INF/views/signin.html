@@ -1,48 +1,39 @@
-<!DOCTYPE html>
-<html class=no-js>
-<head>
-<meta charset=utf-8>
-<title>Java China - 登录</title>
-<meta name="description" content="">
-<meta name="viewport" content="width=device-width">
-<link rel="shortcut icon" href="${base}/assets/favicon.ico"/>
-<link rel="stylesheet" href="${base}/assets/styles/main.css">
-<body>
-<div class="app layout-fixed-header bg-white usersession">
-	<div class=full-height>
-		<div class=center-wrapper>
-			<div class=center-content>
-				<div class="row no-margin">
-					<div
-						class="col-xs-10 col-xs-offset-1 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4">
-						<form role="form" action="${base_url('/signin')}" class="form-layout" method="post"/>
-							<div class="text-center mb15">
-								<img src="${base}/assets/images/logo.png">
+#include("./common/header.html", {active:"signin"})
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+			<div class="col-md-6 app layout-fixed-header bg-white usersession">
+				<div class="full-height">
+					<div class=center-wrapper>
+						<div class=center-content>
+							<div class="row no-margin col-md-8">
+								<form role="form" action="${base_url('/signin')}" class="form-layout" method="post"/>
+									<p class="text-center mb30">欢迎来到JavaChina, 请输入账号登录。</p>
+									<div class=form-inputs>
+										<input type="text" class="form-control input-lg" placeholder="请输入账号或者邮箱" required="required"/> 
+										<input type="password" class="form-control input-lg" placeholder="请输入登录密码" required="required"/>
+										<label class="cb-checkbox cb-md">
+											<span class="cb-inner"><i><input type="checkbox" name="checked-checkbox-name" value=""></i></span>记住我
+										</label>
+									</div>
+									#if(null!=error)
+									<div class="alert alert-danger">${error}</div>
+									#end
+									<button class="btn btn-success btn-block btn-lg mb15"
+										type=submit>
+										<span>登&nbsp;录</span>
+									</button>
+									<p>
+										<a href="${base_url('/signup')}">注册账号</a> · <a href="${base_url('/forgot')}">忘记密码?</a>
+									</p>
+								</form>
 							</div>
-							<p class="text-center mb30">欢迎来到JavaChina, 请输入账号登录。</p>
-							<div class=form-inputs>
-								<input type="text" class="form-control input-lg" placeholder="请输入账号或者邮箱" required="required"/> 
-								<input type="password" class="form-control input-lg" placeholder="请输入登录密码" required="required"/>
-								<label class="cb-checkbox cb-md">
-									<span class="cb-inner"><i><input type="checkbox" name="checked-checkbox-name" value=""></i></span>记住我
-								</label>
-							</div>
-							#if(null!=error)
-							<div class="alert alert-danger">${error}</div>
-							#end
-							<button class="btn btn-success btn-block btn-lg mb15"
-								type=submit>
-								<span>登&nbsp;录</span>
-							</button>
-							<p>
-								<a href="${base_url('/signup')}">注册账号</a> · <a href="${base_url('/forgot')}">忘记密码?</a>
-							</p>
-						</form>
+						</div>
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
+			</div>			        	
+        </div>
+        #include("./common/sidebar.html")
+    </div>
 </div>
-</body>
-</html>
+#include("./common/footer.html")

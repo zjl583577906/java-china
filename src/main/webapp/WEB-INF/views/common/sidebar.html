@@ -25,15 +25,14 @@
                         </div>
                         #else
                         	<p>如果你想寻找 Java 的示例项目，请上 <a href="https://github.com/JavaExamples">https://github.com/JavaExamples</a> 上面寻找。</p>
+                        	<p><a href="javascript:;" class="btn btn-danger btn-sm mr5">立即登录</a></p>
                         #end
                     </div>
+                    #if(null != login_user)
                     <div class="panel-footer">
-                    	#if(null != login_user)
                         <a href="${base_url('/notice')}">${login_user.notice} 条未读提醒</a>
-						#else
-                        <a href="${base_url('/signup')}">注册</a>　<a href="${base_url('/signin')}">登录</a>
-						#end
                     </div>
+                    #end
                 </div>
 						
                 <div class="panel panel-default">
