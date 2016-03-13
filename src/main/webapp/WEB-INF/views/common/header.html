@@ -5,8 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Java中国</title>
-    <link rel="stylesheet" href="/assets/styles/main.css">
-    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" href="${base}/assets/styles/main.css">
+    <link rel="shortcut icon" href="${base}/assets/favicon.ico">
 	<meta name="description" content="" />
     <meta name="keywords" content="" />
     <!--[if lt IE 9]>
@@ -25,26 +25,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/">Java中国</a>
+                <a class="navbar-brand" href="${base_url('/')}">Java中国</a>
             </div>
 			
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="/">首页</a></li>
-                    <li><a href="/markdown">Markdown</a></li>
+                    <li class="active"><a href="${base_url('/')}">首页</a></li>
+                    <li><a href="${base_url('/markdown')}">Markdown</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                 	<!-- <li><a href="/member/aaa">AAA</a></li>
                 	<li><a href="/admin">后台</a></li>
                     <li><a href="/settings">设置</a></li>
                     <li><a href="/signout">登出</a></li> -->
-                    <li><a href="/signup">注册</a></li>
-                    <li><a href="/signin">登录</a></li>
+                    <li><a href="${base_url('/signup')}">注册</a></li>
+                    <li><a href="${base_url('/signin')}">登录</a></li>
                 </ul>
                 <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get" target="_blank">
                 	<div class="form-group input-sm">
-                		<i class="fa fa-search"></i>
                         <input type="text" class="form-control input-sm" placeholder="搜索..." name="q">
                 	</div>
                 </form>
