@@ -8,14 +8,13 @@
 body {
 	overflow: visible;
 	transition: transform 300ms cubic-bezier(.7, 0, .3, 1);
-	background: #E7EAEC;
+	background-color: #e2e2e2;
 	color: #616161;
 	font-size: 14px;
 	line-height: 1.53846154;
 	direction: ltr;
 	-webkit-font-smoothing: antialiased;
-	font-family: "微软雅黑","Helvetica Neue", Helvetica, Arial, Roboto, sans-serif,
-		sans-serif;
+	font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
 	-ms-overflow-style: -ms-autohiding-scrollbar
 }
 
@@ -252,10 +251,6 @@ td, th {
 	.table-bordered td, .table-bordered th {
 		border: 1px solid #ddd !important
 	}
-}
-
-.img-thumbnail, body {
-	background-color: #fff
 }
 
 .btn, .btn-danger.active, .btn-danger:active, .btn-default.active,
@@ -4676,7 +4671,7 @@ to {
 }
 
 .media {
-	margin-top: 15px
+	margin-top: 15px;
 }
 
 .jumbotron .jumbotron-heading, .media-heading, .media:first-child,
@@ -19483,7 +19478,7 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus,
 	border-color: transparent;
 	border-top-right-radius: 0;
 	border-top-left-radius: 0;
-	padding: 15px
+	padding: 10px
 }
 
 .panel-footer, .panel-group .panel-heading+.panel-collapse>.panel-body {
@@ -19520,7 +19515,7 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus,
 
 .panel-default>.panel-heading {
 	color: #616161;
-	background-color: #e2e2e2;
+	background-color: #f8f8f8;
 	border-color: #e2e2e2
 }
 
@@ -29052,13 +29047,45 @@ transform
 }
 
 
+.home-panel{
+	padding: 2px;
+}
 
+.home-panel .widget{
+	padding: 0;
+}
 
+.home-panel .box-tab{
+	margin-bottom: 0;
+}
 
-.hot-topics{
-	
+.home-panel .comment-meta{
+	padding-top: 10px;
+}
+.comment a{
+	color: #778087;
+	font-size: 16px;
+}
+
+.comment-bt{
+	padding-top: 10px;
+	color: #ccc;
+}
+
+.comment-bt a{
+	font-size: 11px;
 }
 
 .hot-topics li{
 	padding: 5px 0;
+	border-bottom: 1px solid #ddd;
+}
+
+.hot-nodes{
+	padding: 0;
+	margin: 0;
+}
+
+.hot-nodes span{
+	line-height: 25px;
 }
