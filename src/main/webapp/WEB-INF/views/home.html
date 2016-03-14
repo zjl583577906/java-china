@@ -5,217 +5,46 @@
 			<div class="panel panel-default">
 				<div class="panel-heading home-panel">
 					<div class="box-tab">
-							<ul class="nav nav-tabs">
-								<li><a href="javascript:void(0);" data-toggle="tab" aria-expanded="true">技术</a></li>
-								<li><a href="javascript:void(0);" data-toggle="tab" aria-expanded="false">创意</a></li>
-								<li class="active"><a href="javascript:void(0);" data-toggle="tab" aria-expanded="false">Blade</a></li>
-								<li ><a href="javascript:void(0);" data-toggle="tab" aria-expanded="false">Spring</a></li>
-							</ul>
-							<div class="tab-content">
-								<div class="tab-pane active" id="home">
-									<section class="widget bg-white post-comments">
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
+						<ul class="nav nav-tabs">
+							<li class="active"><a href="javascript:void(0);" data-toggle="tab">全部</a></li>
+							#for(node : hot_nodes)
+							<li><a href="javascript:void(0);" data-toggle="tab">${node.title}</a></li>
+							#end
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane active" id="home">
+								<section class="widget bg-white post-comments">
+									#for(topic : topicPage.results)
+									<div class="media">
+										<a class="pull-left" href="${base_url('/member/') + topic.user_name}"> 
+											<img class="media-object avatar avatar-sm" src="${topic.avatar}" alt="${topic.user_name}">
+										</a>
+										<div class="comment">
+											<div class="comment-author h6 no-margin">
+												#if(topic.comments > 0)
+												<div class="comment-meta small">
+													<span class="badge bg-default">${topic.comments}</span>
 												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
+												#end
+												<a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
+											</div>
+											<div class="comment-bt">
+												<span class="label label-default"><a href="${base_url('/go/') + topic.node_slug}">${topic.node_name}</a></span> &nbsp;•&nbsp; 
+												<strong><a href="${base_url('/member/') + topic.user_name}">${topic.user_name}</a></strong>
+												 &nbsp;•&nbsp; <span>${timespan(topic.update_time)}</span>
+												 #if(topic.comments > 0)
+												 &nbsp;•&nbsp; 最后回复来自
+												 <strong><a href="${base_url('/member/') + topic.reply_name}">${topic.reply_name}</a></strong>
+												 #end
 											</div>
 										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										<hr/>
-										<div class="media">
-											<a class="pull-left" href="javascript:;"> 
-												<img class="media-object avatar avatar-sm" src="${base}/assets/images/avatar.21d1cc35.jpg" alt="">
-											</a>
-											<div class="comment">
-												<div class="comment-author h6 no-margin">
-													<div class="comment-meta small"><span class="badge bg-default">4</span></div>
-													<a href="javascript:;">最近梯子总被干扰、有什么好的建议</a>
-												</div>
-												<div class="comment-bt">
-													<span class="label label-default">程序员</span> &nbsp;•&nbsp; 
-													<strong><a href="/member/questionier">questionier</a></strong>
-													 &nbsp;•&nbsp; 11 分钟前 &nbsp;•&nbsp; 最后回复来自 
-													 <strong><a href="/member/questionier">questionier</a></strong>
-												</div>
-											</div>
-										</div>
-										
-									</section>
-								</div>
+									</div>
+									<hr/>
+									#end
+								</section>
 							</div>
 						</div>
+					</div>
 				</div>
 			</div>
             

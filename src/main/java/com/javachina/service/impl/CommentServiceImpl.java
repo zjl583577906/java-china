@@ -45,5 +45,11 @@ public class CommentServiceImpl implements CommentService {
 		}
 		return false;
 	}
+
+	@Override
+	public Comment getTopicLastComment(Integer cid) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 		
 }

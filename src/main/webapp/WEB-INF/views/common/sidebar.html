@@ -34,37 +34,24 @@
                     </div>
                     #end
                 </div>
-						
-                <div class="panel panel-default">
+                
+				#if(null != hot_topics && hot_topics.size() > 0)
+				<div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">今日热议主题</h3>
                     </div>
                     <div class="panel-body">
-                    
                     	<ul class="list-unstyled hot-topics">
-							<li class="">
-								<a href=""><img src="http://cdn.v2ex.co/avatar/0e28/94f9/99470_normal.png?m=1444030292" width="25" height="25" /></a>
-								<a href="">为什么总有些人喜欢睁着眼睛说瞎话</a>
+                    		#for(topic : hot_topics)
+                    		<li>
+								<a href="${base_url('/member/') + topic.user_name}"><img src="${topic.avatar}" width="25" height="25" /></a>
+								<a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
 							</li>
-							<li>
-								<a href=""><img src="http://cdn.v2ex.co/avatar/0e28/94f9/99470_normal.png?m=1444030292" width="25" height="25" /></a>
-								<a href="">为什么总有些人喜欢睁着眼睛说瞎话</a>
-							</li>
-							<li>
-								<a href=""><img src="http://cdn.v2ex.co/avatar/0e28/94f9/99470_normal.png?m=1444030292" width="25" height="25" /></a>
-								<a href="">为什么总有些人喜欢睁着眼睛说瞎话</a>
-							</li>
-							<li>
-								<a href=""><img src="http://cdn.v2ex.co/avatar/0e28/94f9/99470_normal.png?m=1444030292" width="25" height="25" /></a>
-								<a href="">为什么总有些人喜欢睁着眼睛说瞎话</a>
-							</li>
-							<li>
-								<a href=""><img src="http://cdn.v2ex.co/avatar/0e28/94f9/99470_normal.png?m=1444030292" width="25" height="25" /></a>
-								<a href="">为什么总有些人喜欢睁着眼睛说瞎话</a>
-							</li>
+                    		#end
 						</ul>
                     </div>
                 </div>
+				#end
                 
                 <div class="panel panel-default">
                     <div class="panel-heading">

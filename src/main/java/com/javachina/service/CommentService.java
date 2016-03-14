@@ -10,6 +10,8 @@ import com.javachina.model.Comment;
 public interface CommentService {
 	
 	public Comment getComment(Integer cid);
+		
+	public Comment getTopicLastComment(Integer tid);
 	
 	public List<Comment> getCommentList(QueryParam queryParam);
 	

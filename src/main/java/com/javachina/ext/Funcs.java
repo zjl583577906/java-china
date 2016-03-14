@@ -1,7 +1,5 @@
 package com.javachina.ext;
 
-import java.util.Date;
-
 import javax.servlet.ServletContext;
 
 import com.blade.context.BladeWebContext;
@@ -33,9 +31,9 @@ public class Funcs {
 	 * @param date
 	 * @return
 	 */
-	public static String fmtdate(Date date) {
-		if(null != date){
-			return DateKit.dateFormat(date);
+	public static String fmtdate(Integer unixTime) {
+		if(null != unixTime){
+			return DateKit.formatDateByUnixTime(unixTime, "yyyy-MM-dd");
 		}
 		return "";
 	}
@@ -46,16 +44,17 @@ public class Funcs {
 	 * @param patten
 	 * @return
 	 */
-	public static String fmtdate(Date date, String patten) {
-		if(null != date){
-			return DateKit.dateFormat(date, patten);
+	public static String fmtdate(Integer unixTime, String patten) {
+		if(null != unixTime && StringKit.isNotBlank(patten)){
+			return DateKit.formatDateByUnixTime(unixTime, patten);
 		}
 		return "";
 	}
 	
 	public static String today(String patten){
-		return fmtdate(new Date(), patten);
+		return fmtdate(DateKit.getCurrentUnixTime(), patten);
 	}
+	
 	/**
 	 * 截取字符串个数
 	 * @param str
@@ -78,13 +77,13 @@ public class Funcs {
 	  * @param ctime时间
 	  * @return
 	  */
-	public static String timespan(Date ctime) {
+	public static String timespan(Integer ctime) {
 		String r = "";
 		if (ctime == null)
 			return r;
 
 		long nowtimelong = System.currentTimeMillis();
-		long ctimelong = ctime.getTime();
+		long ctimelong = DateKit.getDateByUnixTime(ctime).getTime();
 		long result = Math.abs(nowtimelong - ctimelong);
 		
 		// 20秒内

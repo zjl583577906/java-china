@@ -81,7 +81,7 @@ public class UserServiceImpl implements UserService {
 			@Override
 			public void run() {
 				String href = Constant.SITE_URL + "/active?code=" + code;
-				MailKit.asynSend(email, Constant.MAIL_ACTIVE_TITLE, String.format(Constant.MAIL_ACTIVE_CONTENT, Constant.SITE_NAME, href, href));
+				MailKit.asynSend(email, "", String.format("", Constant.SITE_NAME, href, href));
 			}
 		};
 		TaskKit.run(t);

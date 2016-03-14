@@ -8,9 +8,6 @@ public class Constant {
 	public static String SITE_URL = "";
 	public static String SITE_NAME = "";
 	
-	public static final String MAIL_ACTIVE_TITLE = "";
-	public static final String MAIL_ACTIVE_CONTENT = "";
-	
 	static {
 		
 	}

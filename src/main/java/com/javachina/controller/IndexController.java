@@ -1,6 +1,10 @@
 package com.javachina.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import com.blade.ioc.annotation.Inject;
+import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.blade.patchca.PatchcaService;
 import com.blade.route.annotation.Path;
@@ -10,8 +14,12 @@ import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.kit.SessionKit;
+import com.javachina.kit.TimeKit;
+import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
+import com.javachina.service.NodeService;
+import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
 import blade.kit.PatternKit;
@@ -26,11 +34,38 @@ public class IndexController extends BaseController {
 	@Inject
 	private UserService userService;
 	
+	@Inject
+	private TopicService topicService;
+	
+	@Inject
+	private NodeService nodeService;
+	
 	/**
 	 * 首页
 	 */
 	@Route(value = "/")
 	public ModelAndView show_home(Request request, Response response){
+		
+		// 帖子
+		QueryParam tp = QueryParam.me();
+		tp.eq("status", 1).orderby("update_time, comments, views desc").page(1, 15);
+		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
+		request.attribute("topicPage", topicPage);
+		
+		// 最热帖子
+		QueryParam hp = QueryParam.me();
+		Integer start_time = TimeKit.getTodayTime();
+		Integer end_time = TimeKit.getTomorrowTime();
+		hp.eq("status", 1).between("update_time", start_time, end_time).orderby("comments, views desc").add("limit 10");
+		List<Map<String, Object>> hot_topics = topicService.getTopicList(hp);
+		request.attribute("hot_topics", hot_topics);
+		
+		// 最热门的10个节点
+		QueryParam np = QueryParam.me();
+		np.eq("is_del", 0).orderby("topics desc").add("limit 10");
+		List<Node> hot_nodes = nodeService.getNodeList(np);
+		request.attribute("hot_nodes", hot_nodes);
+		
 		return this.getView("home");
 	}
 	
