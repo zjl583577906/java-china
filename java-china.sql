@@ -83,13 +83,16 @@ CREATE TABLE `t_node` (
   `title` varchar(30) DEFAULT NULL COMMENT '节点名称',
   `description` varchar(255) DEFAULT NULL COMMENT '节点描述',
   `slug` varchar(50) NOT NULL COMMENT '节点英文简写',
+  `pic` varchar(100) DEFAULT NULL COMMENT '节点图片',
   `topics` int(10) NOT NULL DEFAULT '0' COMMENT '帖子数',
   `create_time` int(10) NOT NULL COMMENT '创建时间',
   `is_del` tinyint(2) NOT NULL DEFAULT '0' COMMENT '是否删除',
   PRIMARY KEY (`nid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_node` */
+
+insert  into `t_node`(`nid`,`pid`,`title`,`description`,`slug`,`pic`,`topics`,`create_time`,`is_del`) values (1,0,'站务管理','站务管理','affair',NULL,1,1457933734,0),(2,1,'程序发布','','release',NULL,1,1457933734,0);
 
 /*Table structure for table `t_settings` */
 
@@ -122,9 +125,11 @@ CREATE TABLE `t_topic` (
   `update_time` int(10) NOT NULL COMMENT '最后更新时间',
   `status` tinyint(2) NOT NULL DEFAULT '1' COMMENT '1:正常 2:删除',
   PRIMARY KEY (`tid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_topic` */
+
+insert  into `t_topic`(`tid`,`uid`,`nid`,`title`,`content`,`views`,`favorites`,`stars`,`comments`,`is_top`,`create_time`,`update_time`,`status`) values (1,1,2,'Hello Java China!','Java China的第一个帖子！',10,0,0,0,0,1457933734,1457933734,1);
 
 /*Table structure for table `t_user` */
 
@@ -143,9 +148,11 @@ CREATE TABLE `t_user` (
   `role_id` tinyint(2) DEFAULT '5' COMMENT '5:普通用户 2:管理员 1:系统管理员',
   `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '0:待激活 1:正常 2：删除',
   PRIMARY KEY (`uid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_user` */
+
+insert  into `t_user`(`uid`,`login_name`,`pass_word`,`following`,`notices`,`avatar`,`email`,`create_time`,`update_time`,`role_id`,`status`) values (1,'biezhi',NULL,0,0,'default/4.png','',1410944818,1410944818,1,1);
 
 /*Table structure for table `t_userinfo` */
 
@@ -163,6 +170,8 @@ CREATE TABLE `t_userinfo` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `t_userinfo` */
+
+insert  into `t_userinfo`(`uid`,`nick_name`,`web_site`,`github`,`email`,`signature`,`instructions`) values (1,'王爵','https://biezhi.me',NULL,NULL,'这个人有点懒,还没写签名','...');
 
 /*Table structure for table `t_userlog` */
 
