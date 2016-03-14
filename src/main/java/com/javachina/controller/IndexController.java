@@ -46,6 +46,11 @@ public class IndexController extends BaseController {
 	@Route(value = "/")
 	public ModelAndView show_home(Request request, Response response){
 		
+		String tab = request.query("tab");
+		if(StringKit.isNotBlank(tab)){
+			request.attribute("tab", tab);
+		}
+		
 		// 帖子
 		QueryParam tp = QueryParam.me();
 		tp.eq("status", 1).orderby("update_time, comments, views desc").page(1, 15);
@@ -62,7 +67,7 @@ public class IndexController extends BaseController {
 		
 		// 最热门的10个节点
 		QueryParam np = QueryParam.me();
-		np.eq("is_del", 0).orderby("topics desc").add("limit 10");
+		np.eq("is_del", 0).notEq("pid", 0).orderby("topics desc").add("limit 10");
 		List<Node> hot_nodes = nodeService.getNodeList(np);
 		request.attribute("hot_nodes", hot_nodes);
 		

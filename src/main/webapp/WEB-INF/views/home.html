@@ -6,9 +6,9 @@
 				<div class="panel-heading home-panel">
 					<div class="box-tab">
 						<ul class="nav nav-tabs">
-							<li class="active"><a href="javascript:void(0);" data-toggle="tab">全部</a></li>
+							<li #if(null==tab)class="active"#end><a href="${base_url('/')}" data-toggle="tab">全部</a></li>
 							#for(node : hot_nodes)
-							<li><a href="javascript:void(0);" data-toggle="tab">${node.title}</a></li>
+							<li #if(tab==node.slug)class="active"#end><a href="${base_url('/?tab=') + node.slug}" data-toggle="tab">${node.title}</a></li>
 							#end
 						</ul>
 						<div class="tab-content">

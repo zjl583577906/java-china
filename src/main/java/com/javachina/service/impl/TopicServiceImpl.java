@@ -10,7 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
-import com.javachina.Constant;
+import com.javachina.kit.ImageKit;
 import com.javachina.model.Comment;
 import com.javachina.model.Node;
 import com.javachina.model.Topic;
@@ -83,7 +83,7 @@ public class TopicServiceImpl implements TopicService {
 				map.put("update_time", topic.getUpdate_time());
 				map.put("user_name", user.getLogin_name());
 				
-				String avatar = Constant.SITE_URL + "/assets/avatar/" + user.getAvatar();
+				String avatar = ImageKit.getAvatar(user.getAvatar());
 				
 				map.put("avatar", avatar);
 				map.put("node_name", node.getTitle());

@@ -5,32 +5,29 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-2">
-                        <img width="73" height="73" class="img-rounded img-responsive" src="${cdn}/${profile.avatar}" alt="${profile.username}">
+                        <img width="73" height="73" class="img-rounded img-responsive" src="${profile.avatar}" alt="${profile.username}">
                     </div>
                     <div class="col-md-10">
                     	#if(!isfollow)
 	                    	#if(null == login_user || (null != login_user && login_user.uid != profile.uid) )
-	                    	<a href="${base_url('/user/follow/') + profile.uid}" class="btn btn-default btn-xs pull-right" role="button">关注Ta</a>
+	                    	<a href="${base_url('/user/follow/') + profile.uid}" class="btn btn-default pull-right" role="button">关注Ta</a>
 		                   	#end
 	                   	#else
 	                   		#if(null == login_user || (null != login_user && login_user.uid != profile.uid) )
-	                   		<a href="javascript:void(0)" class="btn btn-default btn-xs pull-right" role="button">取消关注</a>
+	                   		<a href="javascript:void(0)" class="btn btn-default pull-right" role="button">取消关注</a>
 	                   		#end
                     	#end
                         <h4>${profile.username}</h4>
-                        <p class="text-muted"><small>${profile.username}是第${profile.uid}号会员，加入于${fmtdate(profile.regtime)}</small></p>
+                        <p class="text-muted"><small>${profile.username}是第${profile.uid}号会员，加入于${fmtdate(profile.create_time)}</small></p>
                         #if(null != profile.signature && profile.signature != "")
                         <p>签名：${profile.signature}</p>
                         #end
-                        #if(null != profile.homepage && profile.homepage != "")
-                        <p>个人主页：<a href="${profile.homepage}">${profile.homepage}</a></p>
-                        #end
-                        #if(null != profile.location && profile.location != "")
-                        <p>所在地：${profile.location}</p>
+                        #if(null != profile.website && profile.website != "")
+                        <p>个人主页：<a href="${profile.website}">${profile.website}</a></p>
                         #end
                     </div>
                     <div class="col-md-12">
-                        <p>$!{profile.introduction}</p>
+                        <p>$!{profile.instructions}</p>
                     </div>
                 </div>
             </div><!-- /.info -->

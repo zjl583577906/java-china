@@ -1,6 +1,8 @@
 package com.javachina.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.blade.ioc.annotation.Inject;
 import com.blade.ioc.annotation.Service;
@@ -8,10 +10,13 @@ import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.javachina.Constant;
+import com.javachina.kit.ImageKit;
 import com.javachina.kit.TaskKit;
 import com.javachina.model.User;
+import com.javachina.model.Userinfo;
 import com.javachina.service.ActivecodeService;
 import com.javachina.service.UserService;
+import com.javachina.service.UserinfoService;
 
 import blade.kit.DateKit;
 import blade.kit.EncrypKit;
@@ -23,6 +28,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Inject
 	private ActivecodeService activecodeService;
+	
+	@Inject
+	private UserinfoService userinfoService;
 	
 	@Override
 	public User getUser(Integer uid) {
@@ -111,6 +119,27 @@ public class UserServiceImpl implements UserService {
 	    User user = AR.find("select * from t_user where login_name = ? and pass_word = ? and status = ?",
 				loginName, pwd, 1).first(User.class);
 		return user;
+	}
+
+	@Override
+	public Map<String, Object> getUserDetail(Integer uid) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(null != uid){
+			User user = this.getUser(uid);
+			map.put("username", user.getLogin_name());
+			map.put("uid", uid);
+			String avatar = ImageKit.getAvatar(user.getAvatar());
+			map.put("avatar", avatar);
+			map.put("create_time", user.getCreate_time());
+			
+			Userinfo userinfo = userinfoService.getUserinfo(uid);
+			if(null != userinfo){
+				map.put("signature", userinfo.getSignature());
+				map.put("website", userinfo.getWeb_site());
+				map.put("instructions", userinfo.getInstructions());
+			}
+		}
+		return map;
 	}
 		
 }

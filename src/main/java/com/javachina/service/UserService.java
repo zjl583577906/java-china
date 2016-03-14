@@ -1,6 +1,7 @@
 package com.javachina.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
@@ -11,6 +12,8 @@ public interface UserService {
 	User getUser(Integer uid);
 	
 	User getUser(QueryParam queryParam);
+	
+	Map<String, Object> getUserDetail(Integer uid);
 	
 	List<User> getUserList(QueryParam queryParam);
 	
