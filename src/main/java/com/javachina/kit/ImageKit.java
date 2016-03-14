@@ -8,4 +8,8 @@ public class ImageKit {
 		return Constant.SITE_URL + "/assets/avatar/" + avatar;
 	}
 	
+	public static String getImgURL(String path){
+		return Constant.SITE_URL + "/assets/images/" + path;
+	}
+	
 }

@@ -1,0 +1,70 @@
+#include("./common/header.html")
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+        	
+        	<div class="panel panel-default">
+        		<div class="panel-heading" style="height: 100px;">
+                	<div class="pull-left">
+                	#if(null != node.pic)
+                	<img width="73" height="73" src="${node.pic}" class="img-rounded"/>
+                	#end
+                	<p>Java China  ›  ${node.node_name}</p>
+                	<p>${node.content}</p>
+                	<p><a class="btn btn-primary btn-xs">创建新主题</a></p>
+                	</div>
+                	<div class="pull-right">
+                	主题总数 ${node.topic_count}&nbsp;&nbsp;•  
+                	#if(isfollow)
+                	<a href="${base_url('/node/unfollow/') + node.nkey}">取消收藏</a>
+                	#else
+                	<a href="${base_url('/node/follow/') + node.nkey}">加入收藏</a>
+                	#end
+                	</div>
+                </div>
+                <div class="panel-body home-panel">
+					<div class="box-tab">
+						<div class="tab-content">
+							<div class="tab-pane active" id="home">
+								<section class="widget bg-white post-comments">
+									#for(topic : topicPage.results)
+									<div class="media">
+										<a class="pull-left" href="${base_url('/member/') + topic.user_name}"> 
+											<img class="media-object avatar avatar-sm" src="${topic.avatar}" alt="${topic.user_name}">
+										</a>
+										<div class="comment">
+											<div class="comment-author h6 no-margin">
+												#if(topic.comments > 0)
+												<div class="comment-meta small">
+													<span class="badge bg-default">${topic.comments}</span>
+												</div>
+												#end
+												<a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
+											</div>
+											<div class="comment-bt">
+												<span class="label label-default"><a href="${base_url('/go/') + topic.node_slug}">${topic.node_name}</a></span> &nbsp;•&nbsp; 
+												<strong><a href="${base_url('/member/') + topic.user_name}">${topic.user_name}</a></strong>
+												 &nbsp;•&nbsp; <span>${timespan(topic.update_time)}</span>
+												 #if(topic.comments > 0)
+												 &nbsp;•&nbsp; 最后回复来自
+												 <strong><a href="${base_url('/member/') + topic.reply_name}">${topic.reply_name}</a></strong>
+												 #end
+											</div>
+										</div>
+									</div>
+									<hr/>
+									#end
+								</section>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+        	
+        </div><!-- /.col-md-8 -->
+		#include("./common/sidebar.html")
+    </div>
+</div>
+#include("./common/footer.html")
+</body>
+</html>

@@ -26,6 +26,9 @@ public class Node implements Serializable {
 	//节点英文简写
 	private String slug;
 	
+	// 节点图片
+	private String pic;
+	
 	//帖子数
 	private Integer topics;
 	
@@ -99,6 +102,14 @@ public class Node implements Serializable {
 
 	public void setIs_del(Integer is_del) {
 		this.is_del = is_del;
+	}
+
+	public String getPic() {
+		return pic;
+	}
+
+	public void setPic(String pic) {
+		this.pic = pic;
 	}
 	
 }

@@ -8,6 +8,7 @@ import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.blade.patchca.PatchcaService;
 import com.blade.route.annotation.Path;
+import com.blade.route.annotation.PathVariable;
 import com.blade.route.annotation.Route;
 import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
@@ -46,16 +47,7 @@ public class IndexController extends BaseController {
 	@Route(value = "/")
 	public ModelAndView show_home(Request request, Response response){
 		
-		String tab = request.query("tab");
-		if(StringKit.isNotBlank(tab)){
-			request.attribute("tab", tab);
-		}
-		
-		// 帖子
-		QueryParam tp = QueryParam.me();
-		tp.eq("status", 1).orderby("update_time, comments, views desc").page(1, 15);
-		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
-		request.attribute("topicPage", topicPage);
+		this.putData(request, null);
 		
 		// 最热帖子
 		QueryParam hp = QueryParam.me();
@@ -72,6 +64,62 @@ public class IndexController extends BaseController {
 		request.attribute("hot_nodes", hot_nodes);
 		
 		return this.getView("home");
+	}
+	
+	private void putData(Request request, Integer nid){
+		
+		// 帖子
+		QueryParam tp = QueryParam.me();
+		
+		String tab = request.query("tab");
+		Integer page = request.queryAsInt("p");
+		
+		if(StringKit.isNotBlank(tab)){
+			QueryParam np = QueryParam.me();
+			np.eq("is_del", 0).eq("slug", tab);
+			Node node = nodeService.getNode(np);
+			if(null != node){
+				tp.eq("nid", node.getNid());
+				request.attribute("tab", tab);
+			}
+		} else {
+			if(null != nid){
+				tp.eq("nid", nid);
+			}
+		}
+		
+		if(null == page || page < 1){
+			page = 1;
+		}
+		
+		tp.eq("status", 1).orderby("update_time, comments, views desc").page(page, 15);
+		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
+		request.attribute("topicPage", topicPage);
+	}
+	
+	/**
+	 * 节点主题页
+	 */
+	@Route(value = "/go/:slug", method = HttpMethod.GET)
+	public ModelAndView go(@PathVariable("slug") String slug,
+			Request request, Response response){
+		
+		QueryParam np = QueryParam.me();
+		np.eq("is_del", 0).eq("slug", slug);
+		
+		Node node = nodeService.getNode(np);
+		if(null == node){
+			// 不存在的节点
+			response.text("not found node.");
+			return null;
+		}
+		
+		this.putData(request, node.getNid());
+		
+		Map<String, Object> nodeMap = nodeService.getNodeDetail(node.getNid());
+		request.attribute("node", nodeMap);
+		
+		return this.getView("node_detail");
 	}
 	
 	/**
