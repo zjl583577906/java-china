@@ -40,7 +40,7 @@ public class LinkServiceImpl implements LinkService {
 	@Override
 	public boolean delete(Integer id) {
 		if(null != id){
-			AR.update("delete from t_link where id = ?", id).commit();
+			AR.update("delete from t_link where id = ?", id).executeUpdate();
 			return true;
 		}
 		return false;

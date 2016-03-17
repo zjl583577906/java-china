@@ -42,7 +42,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 			String code = StringKit.getRandomChar(32);
 			try {
 				AR.update("insert into t_activecode(uid, code, type, expires_time, create_time) values(?, ?, ?, ?, ?)",
-						uid, code, type, expires_time, time).commit();
+						uid, code, type, expires_time, time).executeUpdate();
 				return code;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -62,7 +62,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 			return false;
 		}
 		try {
-			AR.update("update t_activecode set is_use = ? where id = ?", 1, activecode.getId()).commit();
+			AR.update("update t_activecode set is_use = ? where id = ?", 1, activecode.getId()).executeUpdate();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

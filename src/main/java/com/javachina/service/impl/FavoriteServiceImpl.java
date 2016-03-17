@@ -40,7 +40,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	@Override
 	public boolean delete(Integer id) {
 		if(null != id){
-			AR.update("delete from t_favorite where id = ?", id).commit();
+			AR.update("delete from t_favorite where id = ?", id).executeUpdate();
 			return true;
 		}
 		return false;

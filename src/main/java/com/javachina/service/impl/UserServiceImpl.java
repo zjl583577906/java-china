@@ -98,7 +98,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public boolean delete(Integer uid) {
 		if(null != uid){
-			AR.update("delete from t_user where uid = ?", uid).commit();
+			AR.update("delete from t_user where uid = ?", uid).executeUpdate();
 			return true;
 		}
 		return false;

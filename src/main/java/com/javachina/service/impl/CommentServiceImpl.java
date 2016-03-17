@@ -40,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public boolean delete(Integer cid) {
 		if(null != cid){
-			AR.update("delete from t_comment where cid = ?", cid).commit();
+			AR.update("delete from t_comment where cid = ?", cid).executeUpdate();
 			return true;
 		}
 		return false;

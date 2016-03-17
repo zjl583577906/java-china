@@ -55,7 +55,7 @@ public class NodeServiceImpl implements NodeService {
 	@Override
 	public boolean delete(Integer nid) {
 		if(null != nid){
-			AR.update("delete from t_node where nid = ?", nid).commit();
+			AR.update("delete from t_node where nid = ?", nid).executeUpdate();
 			return true;
 		}
 		return false;

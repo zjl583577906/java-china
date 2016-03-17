@@ -38,7 +38,7 @@ public class UserinfoServiceImpl implements UserinfoService {
 			return false;
 		}
 		try {
-			AR.update("insert into t_userinfo(uid) values(?)", uid).commit();
+			AR.update("insert into t_userinfo(uid) values(?)", uid).executeUpdate();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -54,7 +54,7 @@ public class UserinfoServiceImpl implements UserinfoService {
 	@Override
 	public boolean delete(Integer uid) {
 		if(null != uid){
-			AR.update("delete from t_userinfo where uid = ?", uid).commit();
+			AR.update("delete from t_userinfo where uid = ?", uid).executeUpdate();
 			return true;
 		}
 		return false;

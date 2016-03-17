@@ -40,7 +40,7 @@ public class SettingsServiceImpl implements SettingsService {
 	@Override
 	public boolean delete(String skey) {
 		if(null != skey){
-			AR.update("delete from t_settings where skey = ?", skey).commit();
+			AR.update("delete from t_settings where skey = ?", skey).executeUpdate();
 			return true;
 		}
 		return false;

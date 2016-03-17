@@ -125,7 +125,7 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public boolean delete(Integer tid) {
 		if(null != tid){
-			AR.update("delete from t_topic where tid = ?", tid).commit();
+			AR.update("delete from t_topic where tid = ?", tid).executeUpdate();
 			return true;
 		}
 		return false;

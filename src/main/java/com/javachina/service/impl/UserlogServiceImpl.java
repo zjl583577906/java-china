@@ -40,7 +40,7 @@ public class UserlogServiceImpl implements UserlogService {
 	@Override
 	public boolean delete(Integer id) {
 		if(null != id){
-			AR.update("delete from t_userlog where id = ?", id).commit();
+			AR.update("delete from t_userlog where id = ?", id).executeUpdate();
 			return true;
 		}
 		return false;
