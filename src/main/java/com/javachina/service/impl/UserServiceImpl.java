@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService {
 		String pwd = EncrypKit.md5(loginName + passWord);
 		try {
 			
-			Integer uid = (Integer) AR.update("insert into t_user(login_name, pass_word, email, create_time, update_time) values(?, ?, ?, ?, ?)",
+			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, create_time, update_time) values(?, ?, ?, ?, ?)",
 					loginName, pwd, email, time, time).key();
 			
 			// 发送邮件通知

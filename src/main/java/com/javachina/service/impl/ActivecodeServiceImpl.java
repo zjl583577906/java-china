@@ -28,7 +28,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	}
 		
 	@Override
-	public String save(Integer uid, String type) {
+	public String save(Long uid, String type) {
 		if(null == uid || StringKit.isBlank(type)){
 			return null;
 		}
@@ -47,8 +47,9 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		} else{
+			return activecode.getCode();
 		}
-		
 		return null;
 	}
 

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.blade.ioc.annotation.Inject;
+import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.blade.patchca.PatchcaService;
@@ -188,20 +189,25 @@ public class IndexController extends BaseController {
 		
 		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word) || StringKit.isBlank(email)){
 			request.attribute(this.ERROR, "参数不能为空");
+			request.attribute("login_name", login_name);
+			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
 		if(!PatternKit.isEmail(email)){
 			request.attribute(this.ERROR, "请输入正确的邮箱");
+			request.attribute("login_name", login_name);
+			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
 		QueryParam queryParam = QueryParam.me();
 		queryParam.eq("login_name", login_name);
-		queryParam.in("status", 0, 1);
+		queryParam.in("status", AR.in(0, 1));
 		User user = userService.getUser(queryParam);
 		if(null != user){
 			request.attribute(this.ERROR, "该用户名已经被占用，请更换用户名");
+			request.attribute("login_name", login_name);
 			return this.getView("signup");
 		}
 		
@@ -211,6 +217,8 @@ public class IndexController extends BaseController {
 		user = userService.getUser(queryParam);
 		if(null != user){
 			request.attribute(this.ERROR, "该邮箱已经被注册，请直接登录");
+			request.attribute("login_name", login_name);
+			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		

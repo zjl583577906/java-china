@@ -39,4 +39,7 @@ public class App extends Bootstrap {
 		Constant.MAIL_ADMIN = blade.config().get("app.mail.admin");
 	}
 	
+	@Override
+	public void contextInitialized(Blade blade) {
+	}
 }

@@ -13,12 +13,16 @@ import com.jmail.MailMessage;
 import com.jmail.MailSender;
 import com.jmail.MailSenderImpl;
 
+import blade.kit.logging.Logger;
+import blade.kit.logging.LoggerFactory;
 import jetbrick.template.JetEngine;
 import jetbrick.template.JetTemplate;
 
 @Component
 public class SendMailServiceImpl implements SendMailService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(SendMailServiceImpl.class);
+	
 	private MailSender mailSender = new MailSenderImpl();
 	private MailMessage mailMessage = new MailMessage();
 	
@@ -29,10 +33,9 @@ public class SendMailServiceImpl implements SendMailService {
 			String link_url = Constant.SITE_URL + "/active/" + code;
 			
 			String url = "<a href='"+link_url+"'>"+ link_url +code+"</a>";
-			
 	        JetEngine engine = JetEngine.create();
 	        
-	        JetTemplate template = engine.getTemplate("/mailtemplate/register.html");
+	        JetTemplate template = engine.getTemplate("/template/register.html");
 	        
 			Map<String, Object> context = new HashMap<String, Object>();
 			context.put("username", username);
@@ -44,16 +47,19 @@ public class SendMailServiceImpl implements SendMailService {
 	        
 			String output = writer.toString();
 			
+//			System.out.println(output);
+			
 			mailMessage
 			.subject("BladeJava 注册邮件")
 			.from(Constant.MAIL_USER)
 			.content(output)
 			.addTo(email);
 			
-			mailSender.debug(true).host(Constant.MAIL_HOST).username(Constant.MAIL_USER).password(Constant.MAIL_PASS);
+			mailSender.host(Constant.MAIL_HOST).username(Constant.MAIL_USER).password(Constant.MAIL_PASS);
 			
 			mailSender.send(mailMessage, true);
 			
+			LOGGER.info("user {} signup, send mail [{}] success, code = [{}]", username, email, code);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}

@@ -6,7 +6,7 @@ public interface ActivecodeService {
 	
 	Activecode getActivecode(String code, String type);
 	
-	String save(Integer uid, String type);
+	String save(Long uid, String type);
 	
 	boolean useCode(String code, String type);
 	
