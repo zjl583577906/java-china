@@ -12,13 +12,13 @@ public class Topic implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer tid;
+	private Long tid;
 	
 	//发布人
-	private Integer uid;
+	private Long uid;
 	
 	//所属节点
-	private Integer nid;
+	private Long nid;
 	
 	//帖子标题
 	private String title;
@@ -27,52 +27,52 @@ public class Topic implements Serializable {
 	private String content;
 	
 	//浏览量
-	private Integer views;
+	private Long views;
 	
 	//被收藏数
-	private Integer favorites;
+	private Long favorites;
 	
 	//获得点赞数
-	private Integer stars;
+	private Long stars;
 	
 	//评论数
-	private Integer comments;
+	private Long comments;
 	
 	//是否置顶
 	private Integer is_top;
 	
 	//帖子创建时间
-	private Integer create_time;
+	private Long create_time;
 	
 	//最后更新时间
-	private Integer update_time;
+	private Long update_time;
 	
 	//1:正常 2:删除
 	private Integer status;
 	
 	public Topic(){}
 	
-	public Integer getTid() {
+	public Long getTid() {
 		return tid;
 	}
 
-	public void setTid(Integer tid) {
+	public void setTid(Long tid) {
 		this.tid = tid;
 	}
 	
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	
-	public Integer getNid() {
+	public Long getNid() {
 		return nid;
 	}
 
-	public void setNid(Integer nid) {
+	public void setNid(Long nid) {
 		this.nid = nid;
 	}
 	
@@ -92,35 +92,35 @@ public class Topic implements Serializable {
 		this.content = content;
 	}
 	
-	public Integer getViews() {
+	public Long getViews() {
 		return views;
 	}
 
-	public void setViews(Integer views) {
+	public void setViews(Long views) {
 		this.views = views;
 	}
 	
-	public Integer getFavorites() {
+	public Long getFavorites() {
 		return favorites;
 	}
 
-	public void setFavorites(Integer favorites) {
+	public void setFavorites(Long favorites) {
 		this.favorites = favorites;
 	}
 	
-	public Integer getStars() {
+	public Long getStars() {
 		return stars;
 	}
 
-	public void setStars(Integer stars) {
+	public void setStars(Long stars) {
 		this.stars = stars;
 	}
 	
-	public Integer getComments() {
+	public Long getComments() {
 		return comments;
 	}
 
-	public void setComments(Integer comments) {
+	public void setComments(Long comments) {
 		this.comments = comments;
 	}
 	
@@ -132,19 +132,19 @@ public class Topic implements Serializable {
 		this.is_top = is_top;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 	
-	public Integer getUpdate_time() {
+	public Long getUpdate_time() {
 		return update_time;
 	}
 
-	public void setUpdate_time(Integer update_time) {
+	public void setUpdate_time(Long update_time) {
 		this.update_time = update_time;
 	}
 	

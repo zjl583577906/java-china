@@ -12,10 +12,10 @@ public class Node implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer nid;
+	private Long nid;
 	
 	//父节点id
-	private Integer pid;
+	private Long pid;
 	
 	//节点名称
 	private String title;
@@ -30,29 +30,29 @@ public class Node implements Serializable {
 	private String pic;
 	
 	//帖子数
-	private Integer topics;
+	private Long topics;
 	
 	//创建时间
-	private Integer create_time;
+	private Long create_time;
 	
 	//是否删除
 	private Integer is_del;
 	
 	public Node(){}
 	
-	public Integer getNid() {
+	public Long getNid() {
 		return nid;
 	}
 
-	public void setNid(Integer nid) {
+	public void setNid(Long nid) {
 		this.nid = nid;
 	}
 	
-	public Integer getPid() {
+	public Long getPid() {
 		return pid;
 	}
 
-	public void setPid(Integer pid) {
+	public void setPid(Long pid) {
 		this.pid = pid;
 	}
 	
@@ -80,19 +80,19 @@ public class Node implements Serializable {
 		this.slug = slug;
 	}
 	
-	public Integer getTopics() {
+	public Long getTopics() {
 		return topics;
 	}
 
-	public void setTopics(Integer topics) {
+	public void setTopics(Long topics) {
 		this.topics = topics;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 	

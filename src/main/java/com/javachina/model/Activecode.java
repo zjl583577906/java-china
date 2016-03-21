@@ -12,9 +12,9 @@ public class Activecode implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
+	private Long id;
 	
-	private Integer uid;
+	private Long uid;
 	
 	private String code;
 	
@@ -23,26 +23,26 @@ public class Activecode implements Serializable {
 	private Integer is_use;
 	
 	//过期时间
-	private Integer expires_time;
+	private Long expires_time;
 	
 	//创建时间
-	private Integer create_time;
+	private Long create_time;
 	
 	public Activecode(){}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	
@@ -62,19 +62,19 @@ public class Activecode implements Serializable {
 		this.is_use = is_use;
 	}
 	
-	public Integer getExpires_time() {
+	public Long getExpires_time() {
 		return expires_time;
 	}
 
-	public void setExpires_time(Integer expires_time) {
+	public void setExpires_time(Long expires_time) {
 		this.expires_time = expires_time;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 

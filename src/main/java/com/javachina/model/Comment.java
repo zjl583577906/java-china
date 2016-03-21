@@ -12,54 +12,54 @@ public class Comment implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer cid;
+	private Long cid;
 	
 	//评论人uid
-	private Integer uid;
+	private Long uid;
 	
 	//被评论人uid
-	private Integer to_uid;
+	private Long to_uid;
 	
 	//帖子id
-	private Integer tid;
+	private Long tid;
 	
 	//评论内容
 	private String content;
 	
 	//评论时间
-	private Integer create_time;
+	private Long create_time;
 	
 	public Comment(){}
 	
-	public Integer getCid() {
+	public Long getCid() {
 		return cid;
 	}
 
-	public void setCid(Integer cid) {
+	public void setCid(Long cid) {
 		this.cid = cid;
 	}
 	
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	
-	public Integer getTo_uid() {
+	public Long getTo_uid() {
 		return to_uid;
 	}
 
-	public void setTo_uid(Integer to_uid) {
+	public void setTo_uid(Long to_uid) {
 		this.to_uid = to_uid;
 	}
 	
-	public Integer getTid() {
+	public Long getTid() {
 		return tid;
 	}
 
-	public void setTid(Integer tid) {
+	public void setTid(Long tid) {
 		this.tid = tid;
 	}
 	
@@ -71,11 +71,11 @@ public class Comment implements Serializable {
 		this.content = content;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 	

@@ -69,7 +69,7 @@ public class IndexController extends BaseController {
 		return this.getView("home");
 	}
 	
-	private void putData(Request request, Integer nid){
+	private void putData(Request request, Long nid){
 		
 		// 帖子
 		QueryParam tp = QueryParam.me();
@@ -245,7 +245,7 @@ public class IndexController extends BaseController {
 			request.attribute(this.ERROR, "无效的激活码");
 			return this.getView("active");
 		}
-		Integer expries = activecode.getExpires_time();
+		Long expries = activecode.getExpires_time();
 		if(expries < DateKit.getCurrentUnixTime()){
 			request.attribute(this.ERROR, "该激活码已经过期，请重新发送");
 			return this.getView("active");
@@ -278,21 +278,28 @@ public class IndexController extends BaseController {
 	public ModelAndView forgot(Request request, Response response){
 		String email = request.query("email");
 		if(StringKit.isBlank(email)){
-			request.attribute(this.ERROR, "参数不能为空");
+			request.attribute(this.ERROR, "邮箱不能为空");
 			return this.getView("forgot");
 		}
 		
 		if(!PatternKit.isEmail(email)){
 			request.attribute(this.ERROR, "请输入正确的邮箱");
+			request.attribute("email", email);
 			return this.getView("forgot");
 		}
 		
-		User user = userService.getUser(QueryParam.me().eq("email", email).eq("status", 1));
+		User user = userService.getUser(QueryParam.me().eq("email", email).in("status", AR.in(0, 1)));
 		if(null == user){
-			request.attribute(this.ERROR, "该邮箱没有注册");
+			request.attribute(this.ERROR, "该邮箱没有注册账户,请检查您的邮箱是否正确");
+			request.attribute("email", email);
 			return this.getView("forgot");
 		}
-		userService.resetPwd(email);
+		if(user.getStatus() == 0){
+			request.attribute(this.ERROR, "该邮箱未激活");
+			request.attribute("email", email);
+			return this.getView("forgot");
+		}
+		activecodeService.save(user.getUid(), "forgot");
 		request.attribute(this.STATUS, 200);
 		return this.getView("forgot");
 	}

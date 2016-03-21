@@ -10,18 +10,18 @@ import com.javachina.model.Node;
 
 public interface NodeService {
 	
-	Node getNode(Integer nid);
+	Node getNode(Long nid);
 	
 	Node getNode(QueryParam queryParam);
 	
-	Map<String, Object> getNodeDetail(Integer nid);
+	Map<String, Object> getNodeDetail(Long nid);
 	
 	List<Node> getNodeList(QueryParam queryParam);
 	
 	Page<Node> getPageList(QueryParam queryParam);
 	
-	boolean save(Integer pid, String title, String description, String slug, Integer topics, Integer createTime, Integer isDel );
+	boolean save(Long pid, String title, String description, String slug, Long topics, Long createTime, Integer isDel );
 	
-	boolean delete(Integer nid);
+	boolean delete(Long nid);
 		
 }

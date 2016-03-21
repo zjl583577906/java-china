@@ -1,15 +1,25 @@
 package com.javachina.service.impl;
 
+import com.blade.ioc.annotation.Inject;
 import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.javachina.model.Activecode;
+import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
+import com.javachina.service.SendMailService;
+import com.javachina.service.UserService;
 
 import blade.kit.DateKit;
 import blade.kit.StringKit;
 
 @Service
 public class ActivecodeServiceImpl implements ActivecodeService {
+	
+	@Inject
+	private SendMailService sendMailService;
+	
+	@Inject
+	private UserService userService;
 	
 	@Override
 	public Activecode getActivecode(String code, String type) {
@@ -28,7 +38,10 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 		
 	@Override
 	public String save(Long uid, String type) {
-		if(null == uid || StringKit.isBlank(type)){
+		
+		User user = userService.getUser(uid);
+		
+		if(null == user || StringKit.isBlank(type)){
 			return null;
 		}
 		
@@ -36,8 +49,18 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 		int expires_time = time + 3600;
 		String code = StringKit.getRandomChar(32);
 		try {
+			
 			AR.update("insert into t_activecode(uid, code, type, expires_time, create_time) values(?, ?, ?, ?, ?)",
 					uid, code, type, expires_time, time).executeUpdate();
+			
+			if(type.equals("signup")){
+				sendMailService.signup(user.getLogin_name(), user.getEmail(), code);
+			}
+			
+			if(type.equals("forgot")){
+				sendMailService.forgot(user.getLogin_name(), user.getEmail(), code);
+			}
+			
 			return code;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -46,7 +69,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	}
 
 	@Override
-	public boolean useCode(Integer id, String type) {
+	public boolean useCode(Long id, String type) {
 		if(null == id || StringKit.isBlank(type)){
 			return false;
 		}

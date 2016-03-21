@@ -18,7 +18,7 @@ import blade.kit.StringKit;
 public class NodeServiceImpl implements NodeService {
 	
 	@Override
-	public Node getNode(Integer nid) {
+	public Node getNode(Long nid) {
 		Node node = AR.findById(Node.class, nid);
 		if(null != node && node.getIs_del() == 0){
 			return node;
@@ -48,12 +48,12 @@ public class NodeServiceImpl implements NodeService {
 	}
 	
 	@Override
-	public boolean save( Integer pid, String title, String description, String slug, Integer topics, Integer createTime, Integer isDel ) {
+	public boolean save( Long pid, String title, String description, String slug, Long topics, Long createTime, Integer isDel ) {
 		return false;
 	}
 	
 	@Override
-	public boolean delete(Integer nid) {
+	public boolean delete(Long nid) {
 		if(null != nid){
 			AR.update("delete from t_node where nid = ?", nid).executeUpdate();
 			return true;
@@ -62,7 +62,7 @@ public class NodeServiceImpl implements NodeService {
 	}
 
 	@Override
-	public Map<String, Object> getNodeDetail(Integer nid) {
+	public Map<String, Object> getNodeDetail(Long nid) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(null != nid){
 			Node node = this.getNode(nid);

@@ -13,7 +13,6 @@ import com.javachina.kit.ImageKit;
 import com.javachina.model.User;
 import com.javachina.model.Userinfo;
 import com.javachina.service.ActivecodeService;
-import com.javachina.service.SendMailService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
 
@@ -30,11 +29,8 @@ public class UserServiceImpl implements UserService {
 	@Inject
 	private UserinfoService userinfoService;
 	
-	@Inject
-	private SendMailService sendMailService;
-	
 	@Override
-	public User getUser(Integer uid) {
+	public User getUser(Long uid) {
 		return AR.findById(User.class, uid);
 	}
 	
@@ -72,10 +68,7 @@ public class UserServiceImpl implements UserService {
 					loginName, pwd, email, time, time).key();
 			
 			// 发送邮件通知
-			String code = activecodeService.save(uid, "signup");
-			if(StringKit.isNotBlank(code)){
-				sendMailService.signup(loginName, email, code);
-			}
+			activecodeService.save(uid, "signup");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,7 +77,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean delete(Integer uid) {
+	public boolean delete(Long uid) {
 		if(null != uid){
 			AR.update("delete from t_user where uid = ?", uid).executeUpdate();
 			return true;
@@ -110,7 +103,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public Map<String, Object> getUserDetail(Integer uid) {
+	public Map<String, Object> getUserDetail(Long uid) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(null != uid){
 			User user = this.getUser(uid);
@@ -131,7 +124,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean active(Integer id, Integer uid) {
+	public boolean active(Long id, Long uid) {
 		if (null != id && null != uid) {
 			try {
 				activecodeService.useCode(id, "signup");
@@ -145,7 +138,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateStatus(Integer uid, Integer status) {
+	public boolean updateStatus(Long uid, Integer status) {
 		if(null != uid && null != status){
 			try {
 				AR.update("update t_user set status = ? where uid = ?", status, uid).executeUpdate();

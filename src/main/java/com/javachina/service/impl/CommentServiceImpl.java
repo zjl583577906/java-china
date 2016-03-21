@@ -12,7 +12,7 @@ import com.javachina.service.CommentService;
 public class CommentServiceImpl implements CommentService {
 	
 	@Override
-	public Comment getComment(Integer cid) {
+	public Comment getComment(Long cid) {
 		return AR.findById(Comment.class, cid);
 	}
 		
@@ -33,12 +33,12 @@ public class CommentServiceImpl implements CommentService {
 	}
 	
 	@Override
-	public boolean save( Integer uid, Integer toUid, Integer tid, String content, Integer createTime ) {
+	public boolean save( Long uid, Long toUid, Long tid, String content, Long createTime) {
 		return false;
 	}
 	
 	@Override
-	public boolean delete(Integer cid) {
+	public boolean delete(Long cid) {
 		if(null != cid){
 			AR.update("delete from t_comment where cid = ?", cid).executeUpdate();
 			return true;
@@ -47,7 +47,7 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment getTopicLastComment(Integer cid) {
+	public Comment getTopicLastComment(Long cid) {
 		// TODO Auto-generated method stub
 		return null;
 	}

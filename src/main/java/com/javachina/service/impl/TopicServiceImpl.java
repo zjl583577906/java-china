@@ -60,10 +60,10 @@ public class TopicServiceImpl implements TopicService {
 		if(null != topics && topics.size() > 0){
 			for(Topic topic : topics){
 				
-				Integer tid = topic.getTid();
-				Integer uid = topic.getUid();
-				Integer nid = topic.getNid();
-				Integer comments = topic.getComments();
+				Long tid = topic.getTid();
+				Long uid = topic.getUid();
+				Long nid = topic.getNid();
+				Long comments = topic.getComments();
 				
 				User user = userService.getUser(uid);
 				Node node = nodeService.getNode(nid);

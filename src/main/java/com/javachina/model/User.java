@@ -12,17 +12,17 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer uid;
+	private Long uid;
 	
 	private String login_name;
 	
 	private String pass_word;
 	
 	//我关注的人数
-	private Integer following;
+	private Long following;
 	
 	//未读通知数
-	private Integer notices;
+	private Long notices;
 	
 	//头像
 	private String avatar;
@@ -31,10 +31,10 @@ public class User implements Serializable {
 	private String email;
 	
 	//创建时间
-	private Integer create_time;
+	private Long create_time;
 	
 	//最后一次操作时间
-	private Integer update_time;
+	private Long update_time;
 	
 	//5:普通用户 2:管理员 1:系统管理员
 	private Integer role_id;
@@ -44,11 +44,11 @@ public class User implements Serializable {
 	
 	public User(){}
 	
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	
@@ -68,19 +68,19 @@ public class User implements Serializable {
 		this.pass_word = pass_word;
 	}
 	
-	public Integer getFollowing() {
+	public Long getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(Integer following) {
+	public void setFollowing(Long following) {
 		this.following = following;
 	}
 	
-	public Integer getNotices() {
+	public Long getNotices() {
 		return notices;
 	}
 
-	public void setNotices(Integer notices) {
+	public void setNotices(Long notices) {
 		this.notices = notices;
 	}
 	
@@ -100,19 +100,19 @@ public class User implements Serializable {
 		this.email = email;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 	
-	public Integer getUpdate_time() {
+	public Long getUpdate_time() {
 		return update_time;
 	}
 
-	public void setUpdate_time(Integer update_time) {
+	public void setUpdate_time(Long update_time) {
 		this.update_time = update_time;
 	}
 	

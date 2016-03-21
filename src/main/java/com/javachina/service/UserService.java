@@ -9,11 +9,11 @@ import com.javachina.model.User;
 
 public interface UserService {
 	
-	User getUser(Integer uid);
+	User getUser(Long uid);
 	
 	User getUser(QueryParam queryParam);
 	
-	Map<String, Object> getUserDetail(Integer uid);
+	Map<String, Object> getUserDetail(Long uid);
 	
 	List<User> getUserList(QueryParam queryParam);
 	
@@ -23,12 +23,12 @@ public interface UserService {
 	
 	User signin(String loginName, String passWord);
 	
-	boolean delete(Integer uid);
+	boolean delete(Long uid);
 	
-	boolean updateStatus(Integer uid, Integer status);
+	boolean updateStatus(Long uid, Integer status);
 	
 	boolean resetPwd(String email);
 
-	boolean active(Integer id, Integer uid);
+	boolean active(Long id, Long uid);
 	
 }

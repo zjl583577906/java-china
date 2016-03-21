@@ -12,7 +12,7 @@ import com.javachina.service.UserinfoService;
 public class UserinfoServiceImpl implements UserinfoService {
 	
 	@Override
-	public Userinfo getUserinfo(Integer uid) {
+	public Userinfo getUserinfo(Long uid) {
 		return AR.findById(Userinfo.class, uid);
 	}
 		
@@ -33,7 +33,7 @@ public class UserinfoServiceImpl implements UserinfoService {
 	}
 	
 	@Override
-	public boolean save(Integer uid) {
+	public boolean save(Long uid) {
 		if(null == uid){
 			return false;
 		}
@@ -52,7 +52,7 @@ public class UserinfoServiceImpl implements UserinfoService {
 	}
 	
 	@Override
-	public boolean delete(Integer uid) {
+	public boolean delete(Long uid) {
 		if(null != uid){
 			AR.update("delete from t_userinfo where uid = ?", uid).executeUpdate();
 			return true;

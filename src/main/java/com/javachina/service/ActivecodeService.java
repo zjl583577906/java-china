@@ -8,6 +8,6 @@ public interface ActivecodeService {
 	
 	String save(Long uid, String type);
 	
-	boolean useCode(Integer code, String type);
+	boolean useCode(Long code, String type);
 	
 }

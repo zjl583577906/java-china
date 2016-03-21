@@ -9,16 +9,16 @@ import com.javachina.model.Userinfo;
 
 public interface UserinfoService {
 	
-	public Userinfo getUserinfo(Integer uid);
+	public Userinfo getUserinfo(Long uid);
 	
 	public List<Userinfo> getUserinfoList(QueryParam queryParam);
 	
 	public Page<Userinfo> getPageList(QueryParam queryParam);
 	
-	public boolean save(Integer uid);
+	public boolean save(Long uid);
 	
 	public boolean update(String nickName, String webSite, String github, String email, String signature, String instructions );
 	
-	public boolean delete(Integer uid);
+	public boolean delete(Long uid);
 		
 }
