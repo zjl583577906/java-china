@@ -32,7 +32,7 @@ public class SendMailServiceImpl implements SendMailService {
 			
 	        JetEngine engine = JetEngine.create();
 	        
-	        JetTemplate template = engine.getTemplate("/register.jetx");
+	        JetTemplate template = engine.getTemplate("/mailtemplate/register.html");
 	        
 			Map<String, Object> context = new HashMap<String, Object>();
 			context.put("username", username);
