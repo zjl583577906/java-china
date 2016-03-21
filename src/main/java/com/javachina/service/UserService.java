@@ -25,6 +25,10 @@ public interface UserService {
 	
 	boolean delete(Integer uid);
 	
+	boolean updateStatus(Integer uid, Integer status);
+	
 	boolean resetPwd(String email);
+
+	boolean active(Integer id, Integer uid);
 	
 }

@@ -129,5 +129,32 @@ public class UserServiceImpl implements UserService {
 		}
 		return map;
 	}
+
+	@Override
+	public boolean active(Integer id, Integer uid) {
+		if (null != id && null != uid) {
+			try {
+				activecodeService.useCode(id, "signup");
+				this.updateStatus(uid, 1);
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean updateStatus(Integer uid, Integer status) {
+		if(null != uid && null != status){
+			try {
+				AR.update("update t_user set status = ? where uid = ?", status, uid).executeUpdate();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 		
 }

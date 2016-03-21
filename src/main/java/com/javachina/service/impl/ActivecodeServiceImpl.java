@@ -16,8 +16,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 		if(StringKit.isBlank(code) || StringKit.isBlank(type)){
 			return null;
 		}
-		return AR.find("select * from t_activecode where type = ? and code = ? and is_use = ?", type, code, 0)
-				.first(Activecode.class);
+		return AR.find("select * from t_activecode where type = ? and code = ?", type, code).first(Activecode.class);
 	}
 	
 	public Activecode getActivecodeById(Integer id) {
@@ -34,36 +33,25 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 		}
 		
 		int time = DateKit.getCurrentUnixTime();
-		Activecode activecode = AR.find("select * from t_activecode where type = ? and expires_time > ? and is_use = ?", type, time, 0)
-		.first(Activecode.class);
-		
-		if(null == activecode){
-			int expires_time = time + 3600;
-			String code = StringKit.getRandomChar(32);
-			try {
-				AR.update("insert into t_activecode(uid, code, type, expires_time, create_time) values(?, ?, ?, ?, ?)",
-						uid, code, type, expires_time, time).executeUpdate();
-				return code;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		} else{
-			return activecode.getCode();
+		int expires_time = time + 3600;
+		String code = StringKit.getRandomChar(32);
+		try {
+			AR.update("insert into t_activecode(uid, code, type, expires_time, create_time) values(?, ?, ?, ?, ?)",
+					uid, code, type, expires_time, time).executeUpdate();
+			return code;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
 
 	@Override
-	public boolean useCode(String code, String type) {
-		if(StringKit.isBlank(code) || StringKit.isBlank(type)){
-			return false;
-		}
-		Activecode activecode = this.getActivecode(code, type);
-		if(null == activecode){
+	public boolean useCode(Integer id, String type) {
+		if(null == id || StringKit.isBlank(type)){
 			return false;
 		}
 		try {
-			AR.update("update t_activecode set is_use = ? where id = ?", 1, activecode.getId()).executeUpdate();
+			AR.update("update t_activecode set is_use = ? where id = ?", 1, id).executeUpdate();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

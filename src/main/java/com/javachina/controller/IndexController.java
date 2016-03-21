@@ -17,6 +17,7 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.kit.SessionKit;
 import com.javachina.kit.TimeKit;
+import com.javachina.model.Activecode;
 import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
@@ -24,6 +25,7 @@ import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
+import blade.kit.DateKit;
 import blade.kit.PatternKit;
 import blade.kit.StringKit;
 
@@ -229,6 +231,34 @@ public class IndexController extends BaseController {
 			request.attribute(this.ERROR, "注册发生异常");
 		}
 		return this.getView("signup");
+	}
+	
+	/**
+	 * 激活账户
+	 */
+	@Route(value = "/active/:code", method = HttpMethod.GET)
+	public ModelAndView activeAccount(@PathVariable("code") String code, Request request, Response response){
+		Activecode activecode = activecodeService.getActivecode(code, "signup");
+		if(null == activecode){
+			request.attribute(this.ERROR, "无效的激活码");
+			return this.getView("active");
+		}
+		Integer expries = activecode.getExpires_time();
+		if(expries < DateKit.getCurrentUnixTime()){
+			request.attribute(this.ERROR, "该激活码已经过期，请重新发送");
+			return this.getView("active");
+		}
+		if(activecode.getIs_use() == 1){
+			request.attribute(this.ERROR, "您已经激活成功，不可重复激活");
+			return this.getView("active");
+		}
+		boolean flag = userService.active(activecode.getId(), activecode.getUid());
+		if(!flag){
+			request.attribute(this.ERROR, "激活失败");
+		} else {
+			request.attribute(this.INFO, "激活成功，您可以凭密码登陆");
+		}
+		return this.getView("active");
 	}
 	
 	/**
