@@ -10,12 +10,7 @@
                                 <a href="/">
                                     <img width="50" height="50" class="img-rounded img-responsive pull-left" src="${base_url('/') + login_user.avatar}" alt="avatar">
                                 </a>
-                                <p class="username"><a href="${base_url('/member/') + login_user.username}">${login_user.username}</a></p>
-                            </div>
-                            <div class="user-panel">
-                                <div class="col-xs-4"><center><a href="${base_url('/follow/nodes')}"><p class="big-font">${login_user.node_follow}</p><p class="text-muted">节点收藏</p></a></center></div>
-                                <div class="col-xs-4 side-border"><center><a href="${base_url('/follow/topics')}"><p class="big-font">${login_user.topic_follow}</p><p class="text-muted">主题收藏</p></a></center></div>
-                                <div class="col-xs-4"><center><a href="${base_url('/follow/user')}"><p class="big-font">${login_user.user_follow}</p><p class="text-muted">特别关注</p></a></center></div>
+                                <p class="username"><a href="${base_url('/member/') + login_user.login_name}">${login_user.login_name}</a></p>
                             </div>
                         </div>
                         <div class="row">
@@ -30,7 +25,7 @@
                     </div>
                     #if(null != login_user)
                     <div class="panel-footer">
-                        <a href="${base_url('/notice')}">${login_user.notice} 条未读提醒</a>
+                        <a href="${base_url('/notice')}">${login_user.notices} 条未读提醒</a>
                     </div>
                     #end
                 </div>

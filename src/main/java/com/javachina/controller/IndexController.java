@@ -150,11 +150,13 @@ public class IndexController extends BaseController {
 		String pass_word = request.query("pass_word");
 		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word)){
 			request.attribute(this.ERROR, "用户名和密码不能为空");
+			request.attribute("login_name", login_name);
 			return this.getView("signin");
 		}
 		User user = userService.signin(login_name, pass_word);
 		if(null == user){
 			request.attribute(this.ERROR, "用户名或密码错误");
+			request.attribute("login_name", login_name);
 			return this.getView("signin");
 		}
 		SessionKit.setUser(request.session(), user);

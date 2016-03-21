@@ -34,9 +34,16 @@
                     <li class="#if(active=='home')active#end"><a href="${base_url('/')}">首页</a></li>
                 </ul> -->
                 <ul class="nav navbar-nav navbar-right">
+                #if(null == login_user)
                     <li class="#if(active=='signup')active#end"><a href="${base_url('/signup')}">注册</a></li>
                     <li class="#if(active=='signin')active#end"><a href="${base_url('/signin')}">登录</a></li>
+                #else
+                    <li>
+                    	<a href="${base_url('/logout')}">注销</a>
+                    </li>
+                #end
                 </ul>
+                
                 <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get" target="_blank">
                 	<div class="form-group input-sm">
                         <input type="text" class="form-control input-sm" placeholder="搜索..." name="q">
