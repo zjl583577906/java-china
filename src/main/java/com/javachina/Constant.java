@@ -8,8 +8,9 @@ public class Constant {
 	public static String SITE_URL = "";
 	public static String SITE_NAME = "";
 	
-	static {
-		
-	}
+	public static String MAIL_HOST;
+	public static String MAIL_USER;
+	public static String MAIL_PASS;
+	public static String MAIL_ADMIN;
 	
 }

@@ -14,11 +14,17 @@
 			<artifactId>blade-core</artifactId>
 			<version>1.6.0</version>
 		</dependency>
+		<!-- 邮件发送 -->
+		<dependency>
+			<groupId>com.bladejava</groupId>
+			<artifactId>jmail</artifactId>
+			<version>0.0.1</version>
+		</dependency>
 		<!-- 数据库操作 -->
 		<dependency>
 			<groupId>com.bladejava</groupId>
 			<artifactId>blade-jdbc</artifactId>
-			<version>0.0.5</version>
+			<version>0.0.6</version>
 		</dependency>
 		<!-- 模板引擎 -->
 		<dependency>

@@ -8,7 +8,6 @@ import com.bladejava.view.template.JetbrickTemplateEngine;
 import com.javachina.ext.Funcs;
 import com.javachina.ext.Methods;
 
-import blade.kit.MailKit;
 import jetbrick.template.resolver.GlobalResolver;
 
 public class App extends Bootstrap {
@@ -24,11 +23,6 @@ public class App extends Bootstrap {
 		
 		blade.viewEngin(jetbrickTemplateEngine);
 		
-		// 配置邮箱管理员
-		MailKit.config( blade.config().get("app.mail.smtp"), 
-						blade.config().get("app.mail.user"), 
-						blade.config().get("app.mail.pass"));
-		
 		// 配置数据库
 		DB.open(blade.config().get("jdbc.driver"), 
 				blade.config().get("jdbc.url"), 
@@ -37,6 +31,12 @@ public class App extends Bootstrap {
 		
 		// 初始化配置
 		Constant.SITE_URL = blade.config().get("app.site_url");
+		
+		// 配置邮箱
+		Constant.MAIL_HOST = blade.config().get("app.mail.host");
+		Constant.MAIL_USER = blade.config().get("app.mail.user");
+		Constant.MAIL_PASS = blade.config().get("app.mail.pass");
+		Constant.MAIL_ADMIN = blade.config().get("app.mail.admin");
 	}
 	
 }

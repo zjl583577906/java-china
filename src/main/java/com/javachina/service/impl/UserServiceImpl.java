@@ -9,18 +9,16 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
-import com.javachina.Constant;
 import com.javachina.kit.ImageKit;
-import com.javachina.kit.TaskKit;
 import com.javachina.model.User;
 import com.javachina.model.Userinfo;
 import com.javachina.service.ActivecodeService;
+import com.javachina.service.SendMailService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
 
 import blade.kit.DateKit;
 import blade.kit.EncrypKit;
-import blade.kit.MailKit;
 import blade.kit.StringKit;
 
 @Service
@@ -31,6 +29,9 @@ public class UserServiceImpl implements UserService {
 	
 	@Inject
 	private UserinfoService userinfoService;
+	
+	@Inject
+	private SendMailService sendMailService;
 	
 	@Override
 	public User getUser(Integer uid) {
@@ -70,29 +71,16 @@ public class UserServiceImpl implements UserService {
 			Integer uid = (Integer) AR.update("insert into t_user(login_name, pass_word, email, create_time, update_time) values(?, ?, ?, ?, ?)",
 					loginName, pwd, email, time, time).key();
 			
-			// 异步发送邮件通知
+			// 发送邮件通知
 			String code = activecodeService.save(uid, "signup");
-			sendSignupMail(email, code);
+			if(StringKit.isNotBlank(code)){
+				sendMailService.signup(loginName, email, code);
+			}
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return false;
-	}
-	
-	/**
-	 * 发送注册邮件
-	 * @param email
-	 */
-	private void sendSignupMail(final String email, final String code){
-		Runnable t = new Runnable() {
-			@Override
-			public void run() {
-				String href = Constant.SITE_URL + "/active?code=" + code;
-				MailKit.asynSend(email, "", String.format("", Constant.SITE_NAME, href, href));
-			}
-		};
-		TaskKit.run(t);
 	}
 	
 	@Override
