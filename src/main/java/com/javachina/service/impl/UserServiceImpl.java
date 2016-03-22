@@ -64,11 +64,15 @@ public class UserServiceImpl implements UserService {
 		String pwd = EncrypKit.md5(loginName + passWord);
 		try {
 			
-			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, create_time, update_time) values(?, ?, ?, ?, ?)",
-					loginName, pwd, email, time, time).key();
+			String avatar = "default/" + StringKit.random(5) + ".png";
+			
+			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, avatar, create_time, update_time) values(?, ?, ?, ?, ?)",
+					loginName, pwd, email, avatar, time, time).key();
+			
+			User user = this.getUser(uid);
 			
 			// 发送邮件通知
-			activecodeService.save(uid, "signup");
+			activecodeService.save(user, "signup");
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

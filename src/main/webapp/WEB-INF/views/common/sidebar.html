@@ -1,14 +1,19 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
+                    	#if(null == login_user)
                         <h3 class="panel-title">小帖士</h3>
+                        #else
+                        <h3 class="panel-title">${login_user.login_name}</h3>
+                        #end
                     </div>
                     <div class="panel-body">
                     	#if(null != login_user)
                         <div class="row">
                             <div class="col-xs-12">
-                                <a href="/">
-                                    <img width="50" height="50" class="img-rounded img-responsive pull-left" src="${base_url('/') + login_user.avatar}" alt="avatar">
+                                <a href="${base_url('/member/') + login_user.login_name}">
+                                    <img width="50" height="50" class="img-rounded img-responsive pull-left" 
+                                    	src="${base_url('/assets/avatar/') + login_user.avatar}" alt="${login_user.login_name}">
                                 </a>
                                 <p class="username"><a href="${base_url('/member/') + login_user.login_name}">${login_user.login_name}</a></p>
                             </div>

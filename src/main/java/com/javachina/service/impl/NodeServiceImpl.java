@@ -1,5 +1,6 @@
 package com.javachina.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,32 @@ public class NodeServiceImpl implements NodeService {
 	}
 		
 	@Override
+	public List<Map<String, Object>> getNodeList() {
+		List<Map<String, Object>> result= new ArrayList<Map<String,Object>>();
+		QueryParam np = QueryParam.me();
+		np.eq("is_del", 0).eq("pid", 0).orderby("topics desc");
+		List<Node> parents = this.getNodeList(np);
+		for(Node node : parents){
+			Map<String, Object> nodeMap = this.getNodeDetail(node, null);
+			if(null != nodeMap && !nodeMap.isEmpty()){
+				List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+				QueryParam cp = QueryParam.me();
+				cp.eq("is_del", 0).eq("pid", node.getPid()).orderby("topics desc");
+				List<Node> nodes = this.getNodeList(cp);
+				for(Node item : nodes){
+					Map<String, Object> itemMap = this.getNodeDetail(item, null);
+					if(null != itemMap && !itemMap.isEmpty()){
+						items.add(itemMap);
+					}
+				}
+				nodeMap.put("items", items);
+				result.add(nodeMap);
+			}
+		}
+		return result;
+	}
+	
+	@Override
 	public List<Node> getNodeList(QueryParam queryParam) {
 		if(null != queryParam){
 			return AR.find(queryParam).list(Node.class);
@@ -62,19 +89,20 @@ public class NodeServiceImpl implements NodeService {
 	}
 
 	@Override
-	public Map<String, Object> getNodeDetail(Long nid) {
+	public Map<String, Object> getNodeDetail(Node node, Long nid) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if(null != nid){
-			Node node = this.getNode(nid);
-			if(null != node){
-				map.put("node_name", node.getTitle());
-				map.put("node_slug", node.getSlug());
-				map.put("topic_count", node.getTopics());
-				map.put("description", node.getDescription());
-				if(StringKit.isNotBlank(node.getPic())){
-					String pic = ImageKit.getImgURL(node.getPic());
-					map.put("pic", pic);
-				}
+		if(null == node){
+			node = this.getNode(nid);
+		}
+		if(null != node){
+			map.put("node_name", node.getTitle());
+			map.put("node_slug", node.getSlug());
+			map.put("topic_count", node.getTopics());
+			map.put("pid", node.getPid());
+			map.put("description", node.getDescription());
+			if(StringKit.isNotBlank(node.getPic())){
+				String pic = ImageKit.getImgURL(node.getPic());
+				map.put("pic", pic);
 			}
 		}
 		return map;

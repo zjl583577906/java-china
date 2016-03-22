@@ -119,7 +119,7 @@ public class IndexController extends BaseController {
 		
 		this.putData(request, node.getNid());
 		
-		Map<String, Object> nodeMap = nodeService.getNodeDetail(node.getNid());
+		Map<String, Object> nodeMap = nodeService.getNodeDetail(null, node.getNid());
 		request.attribute("node", nodeMap);
 		
 		return this.getView("node_detail");
@@ -288,7 +288,7 @@ public class IndexController extends BaseController {
 			return this.getView("forgot");
 		}
 		
-		User user = userService.getUser(QueryParam.me().eq("email", email).in("status", AR.in(0, 1)));
+		User user = userService.getUser(QueryParam.me().eq("email", email));
 		if(null == user){
 			request.attribute(this.ERROR, "该邮箱没有注册账户,请检查您的邮箱是否正确");
 			request.attribute("email", email);
@@ -299,8 +299,13 @@ public class IndexController extends BaseController {
 			request.attribute("email", email);
 			return this.getView("forgot");
 		}
-		activecodeService.save(user.getUid(), "forgot");
-		request.attribute(this.STATUS, 200);
+		String code = activecodeService.save(user, "forgot");
+		if(StringKit.isNotBlank(code)){
+			request.attribute(this.INFO, "修改密码链接已经发送到您的邮箱，请注意查收！");
+		} else {
+			request.attribute(this.ERROR, "找回密码失败");
+		}
+		
 		return this.getView("forgot");
 	}
 	

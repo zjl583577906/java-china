@@ -14,9 +14,11 @@ public interface NodeService {
 	
 	Node getNode(QueryParam queryParam);
 	
-	Map<String, Object> getNodeDetail(Long nid);
+	Map<String, Object> getNodeDetail(Node node, Long nid);
 	
 	List<Node> getNodeList(QueryParam queryParam);
+	
+	List<Map<String, Object>> getNodeList();
 	
 	Page<Node> getPageList(QueryParam queryParam);
 	

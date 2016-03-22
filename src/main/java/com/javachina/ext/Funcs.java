@@ -3,8 +3,8 @@ package com.javachina.ext;
 import javax.servlet.ServletContext;
 
 import com.blade.context.BladeWebContext;
+import com.javachina.kit.DateKit;
 
-import blade.kit.DateKit;
 import blade.kit.StringKit;
 
 public class Funcs {
@@ -31,7 +31,7 @@ public class Funcs {
 	 * @param date
 	 * @return
 	 */
-	public static String fmtdate(Integer unixTime) {
+	public static String fmtdate(Long unixTime) {
 		if(null != unixTime){
 			return DateKit.formatDateByUnixTime(unixTime, "yyyy-MM-dd");
 		}
@@ -44,7 +44,7 @@ public class Funcs {
 	 * @param patten
 	 * @return
 	 */
-	public static String fmtdate(Integer unixTime, String patten) {
+	public static String fmtdate(Long unixTime, String patten) {
 		if(null != unixTime && StringKit.isNotBlank(patten)){
 			return DateKit.formatDateByUnixTime(unixTime, patten);
 		}
@@ -52,7 +52,7 @@ public class Funcs {
 	}
 	
 	public static String today(String patten){
-		return fmtdate(DateKit.getCurrentUnixTime(), patten);
+		return fmtdate((long) DateKit.getCurrentUnixTime(), patten);
 	}
 	
 	/**
@@ -77,7 +77,7 @@ public class Funcs {
 	  * @param ctime时间
 	  * @return
 	  */
-	public static String timespan(Integer ctime) {
+	public static String timespan(Long ctime) {
 		String r = "";
 		if (ctime == null)
 			return r;

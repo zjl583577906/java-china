@@ -7,7 +7,6 @@ import com.javachina.model.Activecode;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
 import com.javachina.service.SendMailService;
-import com.javachina.service.UserService;
 
 import blade.kit.DateKit;
 import blade.kit.StringKit;
@@ -17,9 +16,6 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	
 	@Inject
 	private SendMailService sendMailService;
-	
-	@Inject
-	private UserService userService;
 	
 	@Override
 	public Activecode getActivecode(String code, String type) {
@@ -37,9 +33,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	}
 		
 	@Override
-	public String save(Long uid, String type) {
-		
-		User user = userService.getUser(uid);
+	public String save(User user, String type) {
 		
 		if(null == user || StringKit.isBlank(type)){
 			return null;
@@ -51,7 +45,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 		try {
 			
 			AR.update("insert into t_activecode(uid, code, type, expires_time, create_time) values(?, ?, ?, ?, ?)",
-					uid, code, type, expires_time, time).executeUpdate();
+					user.getUid(), code, type, expires_time, time).executeUpdate();
 			
 			if(type.equals("signup")){
 				sendMailService.signup(user.getLogin_name(), user.getEmail(), code);

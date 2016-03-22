@@ -11,21 +11,22 @@
                 	<form id="topic-add" action="${base_url('/topic/add')}" method="post" accept-charset="utf-8" role="form">
                         <div class="form-group">
                             <label for="title">标题</label>
-                            <input type="text" class="form-control" id="title"  name="title" placeholder="标题" value="${title}">
+                            <input type="text" class="form-control" id="title"  name="title" placeholder="请输入帖子标题" 
+                            	required="required" value="${title}" ／>
                         </div>
                         <div class="form-group">
                             <label for="nid">节点</label>
                             <select class="form-control" id="nid"  name="nid">
                                 <option value ="">请选择节点</option>
                                 #for(node : nodes)
-			                    	#if(node.pid == 0 && null != node.children)
-			                    		#if(null != node.children)
-				                    		<optgroup label="${node.nname}">
-					                     	#for(nodeitem : node.children)
-					                     	<option value ="${nodeitem.nid}">${nodeitem.nname}</option>
+			                    	#if(node.pid == 0)
+			                    		#if(null != node.items)
+				                    		<optgroup label="${node.node_name}">
+					                     	#for(item : node.items)
+					                     	<option value ="${item.nid}">${item.node_name}</option>
 					                     	#end
 				                     	#else
-				                     		<option value ="${node.nid}">${node.nname}</option>
+				                     		<option value ="${node.nid}">${node.node_name}</option>
 			                    		#end
 			                    	#end
 			                    #end
@@ -34,7 +35,7 @@
                         <div class="form-group">
                             <label for="nid">主题内容</label>
 	                        <div class="form-group">
-	                            <textarea id="content" class="form-control" name="content" rows="8">${content}</textarea>
+	                            <textarea id="content" class="form-control" placeholder="撸下你要发射的内容!!!" name="content" rows="8" required="required">${content}</textarea>
 	                        </div>
                         </div>
                         <button type="submit" class="btn btn-primary btn-small">发布主题</button>
