@@ -10,14 +10,16 @@ import com.javachina.model.Topic;
 
 public interface TopicService {
 	
-	public Topic getTopic(Integer tid);
+	Topic getTopic(Long tid);
 	
-	public List<Map<String, Object>> getTopicList(QueryParam queryParam);
+	Map<String, Object> getTopicMap(Topic topic, boolean isDetail);
 	
-	public Page<Map<String, Object>> getPageList(QueryParam queryParam);
+	List<Map<String, Object>> getTopicList(QueryParam queryParam);
 	
-	public boolean save( Integer uid, Integer nid, String title, String content, Integer views, Integer favorites, Integer stars, Integer comments, Integer isTop, Integer createTime, Integer updateTime, Integer status );
+	Page<Map<String, Object>> getPageList(QueryParam queryParam);
 	
-	public boolean delete(Integer tid);
+	Long save(Long uid, Long nid, String title, String content, Integer isTop);
+	
+	boolean delete(Long tid);
 		
 }

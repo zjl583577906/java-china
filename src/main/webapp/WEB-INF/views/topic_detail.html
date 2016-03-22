@@ -4,11 +4,15 @@
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-heading topic-detail-heading">
-                    <div class="pull-right"><a href="${base_url('member/') + topic.username}"><img src="${topic.avatar}" alt="${topic.username}"></a></div>
+                    <div class="pull-right">
+                    	<a href="${base_url('/member/') + topic.user_name}" title="${topic.user_name}">
+                    		<img class="media-object avatar avatar-sm" src="${topic.avatar}" alt="${topic.user_name}">
+                    	</a>
+                    </div>
                     <p><a href="${base_url('/')}">首页</a> / <a href="${base_url('/go/') + topic.node_name}">$!{topic.node_name}</a></p>
                     <h1 class="panel-title">$!{topic.title}</h1>
                     <small class="text-muted">
-                        <span>By <a href="${base_url('member/')}${topic.username}">${topic.username}</a></span>&nbsp;•&nbsp;
+                        <span>By <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
                         <span>${fmtdate(topic.create_time)}</span>&nbsp;•&nbsp;
                         <span>${topic.views}次点击</span>
                         #if(null!=login_user && topic.uid == login_user.uid)
@@ -17,7 +21,7 @@
                     </small>
                 </div>
                 <div class="panel-body">
-                    ${mdTohtml(topic.content)}
+                    ${topic.content}
                 </div>
                 <div class="panel-footer">
                 	#if(!isfollow)
@@ -27,6 +31,8 @@
                 	#end
                 </div>
             </div><!-- /.panel content -->
+            
+            #if(topic.comments > 0)
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h3 class="panel-title"><small>$!{topic.comment} 回复 | 直到${today("yyyy-MM-dd HH:mm")}</small><a href="#Reply" class="pull-right"><small class="text-muted">添加回复</small></a></h3>
@@ -35,12 +41,12 @@
                     <ul class="media-list">
                     	#for(comment : comments)
                     	<li class="media" id="Reply${for.index}">
-                            <a href="#Reply" onclick="addReply('&lt;a href=&quot;${base_url('/member/')+comment.username}&quot;&gt;${comment.username}&lt;/a&gt;')" class="pull-right text-muted">#${for.index} <span class="glyphicon glyphicon-share-alt"></span></a>
-                            <a class="media-left" href="${base_url('/member/') + comment.username}">
-                                <img width="50" height="50" class="img-rounded" src="${cdn}/${comment.avatar}" alt="${comment.username}">
+                            <a href="#Reply" onclick="addReply('&lt;a href=&quot;${base_url('/member/')+comment.user_name}&quot;&gt;${comment.user_name}&lt;/a&gt;')" class="pull-right text-muted">#${for.index} <span class="glyphicon glyphicon-share-alt"></span></a>
+                            <a class="media-left" href="${base_url('/member/') + comment.user_name}">
+                                <img width="50" height="50" class="img-rounded" src="${cdn}/${comment.avatar}" alt="${comment.user_name}">
                             </a>
                             <div class="media-body">
-                                <h4 class="media-heading topic-list-heading"><a href="${base_url('/member/') + comment.username}">${comment.username}</a>
+                                <h4 class="media-heading topic-list-heading"><a href="${base_url('/member/') + comment.user_name}">${comment.user_name}</a>
                                 #if(comment.group_id == 1 || comment.group_id == 2)
                                 <img width="30" height="14" class="img-rounded" src="${cdn}/static/img/mod.png" alt="Moderator" title="Moderator">
                                 #end
@@ -54,6 +60,8 @@
                     </ul>
                 </div>
             </div><!-- /.panel comment -->
+            #end
+            
             <div class="panel panel-default" id="Reply">
                 <div class="panel-heading">
                     <h3 class="panel-title">添加一条新回复</h3>
@@ -68,8 +76,8 @@
 	                        <br/>
 	                        <button type="submit" class="btn btn-default">提交</button>
 	                        <script>
-	                            function addReply(username) {
-	                                window.editor.insertHtml('@'+username+'&nbsp;');
+	                            function addReply(user_name) {
+	                                window.editor.insertHtml('@'+user_name+'&nbsp;');
 	                            }
 	
 	                            function validate_form(thisform){

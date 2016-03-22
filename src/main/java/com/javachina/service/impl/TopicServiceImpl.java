@@ -10,6 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.kit.DateKit;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.Comment;
 import com.javachina.model.Node;
@@ -33,7 +34,7 @@ public class TopicServiceImpl implements TopicService {
 	private CommentService commentService;
 	
 	@Override
-	public Topic getTopic(Integer tid) {
+	public Topic getTopic(Long tid) {
 		return AR.findById(Topic.class, tid);
 	}
 	
@@ -59,45 +60,10 @@ public class TopicServiceImpl implements TopicService {
 		List<Map<String, Object>> topicMaps = new ArrayList<Map<String,Object>>();
 		if(null != topics && topics.size() > 0){
 			for(Topic topic : topics){
-				
-				Long tid = topic.getTid();
-				Long uid = topic.getUid();
-				Long nid = topic.getNid();
-				Long comments = topic.getComments();
-				
-				User user = userService.getUser(uid);
-				Node node = nodeService.getNode(nid);
-				
-				if(null == user || null == node){
-					continue;
+				Map<String, Object> map = this.getTopicMap(topic, false);
+				if(null != map && !map.isEmpty()){
+					topicMaps.add(map);
 				}
-				
-				Map<String, Object> map = new HashMap<String, Object>();
-				map.put("tid", tid);
-				map.put("views", topic.getViews());
-				map.put("stars", topic.getStars());
-				map.put("favorites", topic.getFavorites());
-				map.put("comments", comments);
-				map.put("title", topic.getTitle());
-				map.put("create_time", topic.getCreate_time());
-				map.put("update_time", topic.getUpdate_time());
-				map.put("user_name", user.getLogin_name());
-				
-				String avatar = ImageKit.getAvatar(user.getAvatar());
-				
-				map.put("avatar", avatar);
-				map.put("node_name", node.getTitle());
-				map.put("node_slug", node.getSlug());
-				
-				if(comments > 0){
-					Comment comment = commentService.getTopicLastComment(tid);
-					if(null != comment){
-						User reply_user = userService.getUser(comment.getUid());
-						map.put("reply_name", reply_user.getLogin_name());
-					}
-				}
-				
-				topicMaps.add(map);
 			}
 		}
 		return topicMaps;
@@ -118,17 +84,79 @@ public class TopicServiceImpl implements TopicService {
 	}
 	
 	@Override
-	public boolean save( Integer uid, Integer nid, String title, String content, Integer views, Integer favorites, Integer stars, Integer comments, Integer isTop, Integer createTime, Integer updateTime, Integer status ) {
-		return false;
+	public Long save(Long uid, Long nid, String title, String content, Integer isTop) {
+		
+		try {
+			Integer time = DateKit.getCurrentUnixTime();
+			Long tid = (Long) AR
+					.update("insert into t_topic(uid, nid, title, content, is_top, create_time, update_time, status) values(?, ?, ?, ?, ?)",
+							uid, nid, title, content, 0, time, time, 1).key();
+			// 通知@的人
+			if(null != tid){
+				
+			}
+			return tid;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 	@Override
-	public boolean delete(Integer tid) {
+	public boolean delete(Long tid) {
 		if(null != tid){
 			AR.update("delete from t_topic where tid = ?", tid).executeUpdate();
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Map<String, Object> getTopicMap(Topic topic, boolean isDetail) {
+		if(null == topic){
+			return null;
+		}
+		Long tid = topic.getTid();
+		Long uid = topic.getUid();
+		Long nid = topic.getNid();
+		Long comments = topic.getComments();
+		
+		User user = userService.getUser(uid);
+		Node node = nodeService.getNode(nid);
+		
+		if(null == user || null == node){
+			return null;
+		}
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("tid", tid);
+		map.put("views", topic.getViews());
+		map.put("stars", topic.getStars());
+		map.put("favorites", topic.getFavorites());
+		map.put("comments", comments);
+		map.put("title", topic.getTitle());
+		map.put("create_time", topic.getCreate_time());
+		map.put("update_time", topic.getUpdate_time());
+		map.put("user_name", user.getLogin_name());
+		
+		String avatar = ImageKit.getAvatar(user.getAvatar());
+		
+		map.put("avatar", avatar);
+		map.put("node_name", node.getTitle());
+		map.put("node_slug", node.getSlug());
+		
+		if(comments > 0){
+			Comment comment = commentService.getTopicLastComment(tid);
+			if(null != comment){
+				User reply_user = userService.getUser(comment.getUid());
+				map.put("reply_name", reply_user.getLogin_name());
+			}
+		}
+		
+		if(isDetail){
+			map.put("content", topic.getContent());
+		}
+		return map;
 	}
 		
 }
