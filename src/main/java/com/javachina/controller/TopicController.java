@@ -34,9 +34,13 @@ public class TopicController extends BaseController {
 	 */
 	@Route(value = "/topic/add", method = HttpMethod.GET)
 	public ModelAndView show_add_topic(Request request, Response response){
+		putData(request);
+		return this.getView("topic_add");
+	}
+	
+	private void putData(Request request){
 		List<Map<String, Object>> nodes = nodeService.getNodeList();
 		request.attribute("nodes", nodes);
-		return this.getView("topic_add");
 	}
 	
 	/**
@@ -49,6 +53,8 @@ public class TopicController extends BaseController {
 		Long nid = request.queryAsLong("nid");
 		
 		User user = SessionKit.getLoginUser();
+		
+		putData(request);
 		
 		if(StringKit.isBlank(title) || StringKit.isBlank(content) || null == nid){
 			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");
@@ -64,7 +70,7 @@ public class TopicController extends BaseController {
 			return this.getView("topic_add");
 		}
 		
-		if(content.length() > 10){
+		if(content.length() > 1000){
 			request.attribute(this.ERROR, "内容太长了，试试少吐点口水。。。");
 			request.attribute("title", title);
 			request.attribute("content", content);
@@ -94,6 +100,8 @@ public class TopicController extends BaseController {
 		}
 		Map<String, Object> topicMap = topicService.getTopicMap(topic, true);
 		request.attribute("topic", topicMap);
+		// 刷新浏览数
+		topicService.updateCount(tid, "views", +1);
 		return this.getView("topic_detail");
 	}
 	

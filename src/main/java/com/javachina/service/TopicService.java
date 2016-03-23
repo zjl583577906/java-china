@@ -21,5 +21,7 @@ public interface TopicService {
 	Long save(Long uid, Long nid, String title, String content, Integer isTop);
 	
 	boolean delete(Long tid);
+
+	boolean updateCount(Long tid, String type, int count);
 		
 }

@@ -95,6 +95,7 @@ public class NodeServiceImpl implements NodeService {
 			node = this.getNode(nid);
 		}
 		if(null != node){
+			map.put("nid", node.getNid());
 			map.put("node_name", node.getTitle());
 			map.put("node_slug", node.getSlug());
 			map.put("topic_count", node.getTopics());

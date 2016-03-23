@@ -10,6 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.github.rjeschke.txtmark.Processor;
 import com.javachina.kit.DateKit;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.Comment;
@@ -20,6 +21,8 @@ import com.javachina.service.CommentService;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
+
+import blade.kit.StringKit;
 
 @Service
 public class TopicServiceImpl implements TopicService {
@@ -89,8 +92,9 @@ public class TopicServiceImpl implements TopicService {
 		try {
 			Integer time = DateKit.getCurrentUnixTime();
 			Long tid = (Long) AR
-					.update("insert into t_topic(uid, nid, title, content, is_top, create_time, update_time, status) values(?, ?, ?, ?, ?)",
-							uid, nid, title, content, 0, time, time, 1).key();
+					.update("insert into t_topic(uid, nid, title, content, views, favorites, stars, comments, "
+							+ "is_top, create_time, update_time, status) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+							uid, nid, title, content, 0, 0, 0, 0, isTop, time, time, 1).key();
 			// 通知@的人
 			if(null != tid){
 				
@@ -154,9 +158,25 @@ public class TopicServiceImpl implements TopicService {
 		}
 		
 		if(isDetail){
-			map.put("content", topic.getContent());
+			String content = topic.getContent().replaceAll("\r\n", "<br/>");
+			String processed = Processor.process(content);
+			map.put("content", processed);
 		}
 		return map;
+	}
+
+	@Override
+	public boolean updateCount(Long tid, String type, int count) {
+		if(null != tid && StringKit.isNotBlank(type)){
+			try {
+				String sql = "update t_topic set %s = (%s + ?) where tid = ?";
+				AR.update(String.format(sql, type, type), count, tid).executeUpdate();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 		
 }
