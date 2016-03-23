@@ -20,10 +20,12 @@ public interface NodeService {
 	
 	List<Map<String, Object>> getNodeList();
 	
-	Page<Node> getPageList(QueryParam queryParam);
+	Page<Map<String, Object>> getPageList(QueryParam queryParam);
 	
 	boolean save(Long pid, String title, String description, String slug, Long topics, Long createTime, Integer isDel );
 	
 	boolean delete(Long nid);
+	
+	boolean updateCount(Long nid, String type, int count);
 		
 }

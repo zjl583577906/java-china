@@ -31,4 +31,6 @@ public interface UserService {
 
 	boolean active(Long id, Long uid);
 	
+	boolean updateCount(Long uid, String type, int count);
+	
 }

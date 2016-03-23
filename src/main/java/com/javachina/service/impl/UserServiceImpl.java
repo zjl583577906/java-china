@@ -153,5 +153,19 @@ public class UserServiceImpl implements UserService {
 		}
 		return false;
 	}
+
+	@Override
+	public boolean updateCount(Long uid, String type, int count) {
+		if(null != uid && StringKit.isNotBlank(type)){
+			try {
+				String sql = "update t_user set %s = (%s + ?) where uid = ?";
+				AR.update(String.format(sql, type, type), count, uid).executeUpdate();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
 		
 }

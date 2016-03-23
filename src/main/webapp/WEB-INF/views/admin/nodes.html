@@ -12,7 +12,7 @@
 						<a class="btn btn-icon-icon btn-sm btn-google-plus btn-round"><i class="fa fa-search"></i></a>
 					</div>
 					<div class="pull-right pr10">
-						<a href="/admin/nodes/add" type="button" class="btn btn-success">新增节点</a>
+						<a href="${base_url('/admin/nodes/add')}" type="button" class="btn btn-success">新增节点</a>
 					</div>
 				</div>
 				<table class="table table-bordered table-striped mb0">
@@ -26,109 +26,22 @@
 						</tr>
 					</thead>
 					<tbody>
+						#for(node : nodePage.results)
 						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
+							<td>${node.node_name}</td>
+							<td>${node.parent_name}</td>
+							<td>${node.childs}</td>
+							<td>${node.topics}</td>
 							<td>
 								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
 								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
 							</td>
 						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>Spring</td>
-							<td>Java</td>
-							<td>10</td>
-							<td>298</td>
-							<td>
-								<a href="/admin/nodes/1" class="btn btn-info btn-outline btn-sm">编辑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
+						#end
 					</tbody>
 				</table>
 			</div>
+			#if(nodePage.totalPage > 1)
 			<div class="datatable-bottom pt10">
 				<div class="pull-left">
 					<div class="dataTables_info" id="DataTables_Table_0_info"
@@ -148,6 +61,7 @@
 					</div>
 				</div>
 			</div>
+			#end
 		</div>
 	</div>
 </div>

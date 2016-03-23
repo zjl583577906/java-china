@@ -9,7 +9,7 @@
                     		<img class="media-object avatar avatar-sm" src="${topic.avatar}" alt="${topic.user_name}">
                     	</a>
                     </div>
-                    <p><a href="${base_url('/')}">首页</a> / <a href="${base_url('/go/') + topic.node_name}">$!{topic.node_name}</a></p>
+                    <p><a href="${base_url('/')}">首页</a> / <a href="${base_url('/go/') + topic.node_slug}">$!{topic.node_name}</a></p>
                     <h1 class="panel-title">$!{topic.title}</h1>
                     <small class="text-muted">
                         <span>By <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
@@ -20,7 +20,7 @@
                         #end
                     </small>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body topic-detail">
                     ${topic.content}
                 </div>
                 <div class="panel-footer">

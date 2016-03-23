@@ -14,6 +14,9 @@
                             <input type="text" class="form-control" id="title"  name="title" placeholder="请输入帖子标题" 
                             	required="required" value="${title}" ／>
                         </div>
+                        #if(null != nid)
+                        <input type="hidden" name="nid" value="${nid}" />
+                        #else
                         <div class="form-group">
                             <label for="nid">节点</label>
                             <select class="form-control" id="nid"  name="nid">
@@ -32,6 +35,7 @@
 			                    #end
                             </select>
                         </div>
+                        #end
                         <div class="form-group">
                             <label for="nid">主题内容</label>
 	                        <div class="form-group">

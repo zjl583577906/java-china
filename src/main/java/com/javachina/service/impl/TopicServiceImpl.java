@@ -95,6 +95,13 @@ public class TopicServiceImpl implements TopicService {
 					.update("insert into t_topic(uid, nid, title, content, views, favorites, stars, comments, "
 							+ "is_top, create_time, update_time, status) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 							uid, nid, title, content, 0, 0, 0, 0, isTop, time, time, 1).key();
+			
+			// 更新我的发帖数
+			nodeService.updateCount(nid, "topics", +1);
+			
+			// 更新节点下的帖子数
+			userService.updateCount(uid, "topics", +1);
+			
 			// 通知@的人
 			if(null != tid){
 				

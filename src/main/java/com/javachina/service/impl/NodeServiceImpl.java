@@ -67,11 +67,36 @@ public class NodeServiceImpl implements NodeService {
 	}
 	
 	@Override
-	public Page<Node> getPageList(QueryParam queryParam) {
+	public Page<Map<String, Object>> getPageList(QueryParam queryParam) {
 		if(null != queryParam){
-			return AR.find(queryParam).page(Node.class);
+			Page<Node> nodePage = AR.find(queryParam).page(Node.class);
+			return this.getNodePageMap(nodePage);
 		}
 		return null;
+	}
+	
+	private Page<Map<String, Object>> getNodePageMap(Page<Node> nodePage){
+		
+		long totalCount = nodePage.getTotalCount();
+		int page = nodePage.getPage();
+		int pageSize = nodePage.getPageSize();
+		Page<Map<String, Object>> result = new Page<Map<String,Object>>(totalCount, page, pageSize);
+		
+		List<Node> nodes = nodePage.getResults();
+		
+		List<Map<String, Object>> nodeMaps = new ArrayList<Map<String,Object>>();
+		if(null != nodes && nodes.size() > 0){
+			for(Node node : nodes){
+				Map<String, Object> map = this.getNodeDetail(node, null);
+				if(null != map && !map.isEmpty()){
+					nodeMaps.add(map);
+				}
+			}
+		}
+		
+		result.setResults(nodeMaps);
+		
+		return result;
 	}
 	
 	@Override
@@ -98,8 +123,15 @@ public class NodeServiceImpl implements NodeService {
 			map.put("nid", node.getNid());
 			map.put("node_name", node.getTitle());
 			map.put("node_slug", node.getSlug());
-			map.put("topic_count", node.getTopics());
+			map.put("topics", node.getTopics());
 			map.put("pid", node.getPid());
+			Node parent = this.getNode(node.getPid());
+			if(null != parent){
+				map.put("parent_name", parent.getTitle());
+			}
+			// 查询子节点数
+			Long childs = getNodeCount(node.getNid());
+			map.put("childs", childs);
 			map.put("description", node.getDescription());
 			if(StringKit.isNotBlank(node.getPic())){
 				String pic = ImageKit.getImgURL(node.getPic());
@@ -108,5 +140,23 @@ public class NodeServiceImpl implements NodeService {
 		}
 		return map;
 	}
-		
+	
+	private Long getNodeCount(Long nid){
+		return AR.find("select count(1) from t_node where pid = ? and is_del = 0", nid).first(Long.class);
+	}
+
+	@Override
+	public boolean updateCount(Long nid, String type, int count) {
+		if(null != nid && StringKit.isNotBlank(type)){
+			try {
+				String sql = "update t_node set %s = (%s + ?) where nid = ?";
+				AR.update(String.format(sql, type, type), count, nid).executeUpdate();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
 }

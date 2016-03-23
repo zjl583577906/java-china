@@ -24,6 +24,12 @@ public class User implements Serializable {
 	//未读通知数
 	private Long notices;
 	
+	//发表帖子数
+	private Long topics;
+	
+	//发表评论数
+	private Long comments;
+	
 	//头像
 	private String avatar;
 	
@@ -130,6 +136,22 @@ public class User implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Long getTopics() {
+		return topics;
+	}
+
+	public void setTopics(Long topics) {
+		this.topics = topics;
+	}
+
+	public Long getComments() {
+		return comments;
+	}
+
+	public void setComments(Long comments) {
+		this.comments = comments;
 	}
 	
 }

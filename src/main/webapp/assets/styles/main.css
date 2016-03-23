@@ -9,7 +9,7 @@ body {
 	overflow: visible;
 	transition: transform 300ms cubic-bezier(.7, 0, .3, 1);
 	background-color: #e2e2e2;
-	color: #616161;
+	/* color: #616161; */
 	font-size: 14px;
 	line-height: 1.53846154;
 	direction: ltr;
@@ -29,6 +29,14 @@ body, figure {
 
 a:hover{
 color: #4d5256;	
+}
+
+p {
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
 }
 
 .btn-group>.btn-group, .btn-toolbar .btn-group, .btn-toolbar .input-group,
@@ -85,6 +93,13 @@ a {
 
 b, optgroup, strong {
 	font-weight: 700
+}
+.topic-detail{
+	color: #292828;
+}
+
+.topic-detail strong{
+	color:blank;
 }
 
 dfn {
@@ -4835,7 +4850,8 @@ a.list-group-item:focus, a.list-group-item:hover {
 }
 
 .panel-title {
-	font-size: 16px
+	font-size: 16px;
+	color:black;
 }
 
 .panel-footer {
@@ -15548,10 +15564,6 @@ ol.list-style-none, ul.list-style-none {
 
 .small, small {
 	font-size: 11px
-}
-
-p {
-	color: #7a7a7a
 }
 
 .pullquote::before, blockquote::before {

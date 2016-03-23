@@ -1,15 +1,28 @@
 package com.javachina.controller.admin;
 
+import java.util.Map;
+
+import com.blade.ioc.annotation.Inject;
+import com.blade.jdbc.Page;
+import com.blade.jdbc.QueryParam;
 import com.blade.route.annotation.Path;
 import com.blade.route.annotation.Route;
 import com.blade.view.ModelAndView;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.controller.BaseController;
+import com.javachina.service.NodeService;
+import com.javachina.service.TopicService;
 
 @Path("/admin/")
 public class IndexController extends BaseController {
 
+	@Inject
+	private TopicService topicService;
+	
+	@Inject
+	private NodeService nodeService;
+	
 	/**
 	 * 首页
 	 */
@@ -23,6 +36,14 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "nodes")
 	public ModelAndView show_nodes(Request request, Response response){
+		Integer page = request.queryAsInt("p");
+		if(null == page || page < 1){
+			page = 1;
+		}
+		QueryParam np = QueryParam.me();
+		np.eq("is_del", 0).orderby("topics desc").page(page, 10);
+		Page<Map<String, Object>> nodePage = nodeService.getPageList(np);
+		request.attribute("nodePage", nodePage);
 		return this.getAdminView("nodes");
 	}
 	
