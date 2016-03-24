@@ -1,8 +1,11 @@
 package com.javachina.controller;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.blade.Blade;
 import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
@@ -15,6 +18,9 @@ import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.blade.web.multipart.FileItem;
+import com.javachina.Constant;
+import com.javachina.kit.ImageKit;
 import com.javachina.kit.SessionKit;
 import com.javachina.kit.TimeKit;
 import com.javachina.model.Activecode;
@@ -26,8 +32,10 @@ import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
 import blade.kit.DateKit;
+import blade.kit.FileKit;
 import blade.kit.PatternKit;
 import blade.kit.StringKit;
+import blade.kit.json.JSONObject;
 
 @Path("/")
 public class IndexController extends BaseController {
@@ -308,5 +316,49 @@ public class IndexController extends BaseController {
 		
 		return this.getView("forgot");
 	}
+	
+	/**
+	 * 忘记密码页面
+	 */
+	@Route(value = "/uploadimg", method = HttpMethod.POST)
+	public void uploadimg(Request request, Response response){
+		User user = SessionKit.getLoginUser();
+		if(null == user){
+			return;
+		}
+		FileItem[] fileItems = request.files();
+		if(null != fileItems && fileItems.length > 0){
+			
+			FileItem fileItem = fileItems[0];
+			
+			String suffix = FileKit.getExtension(fileItem.getFileName());
+			if(StringKit.isNotBlank(suffix)){
+				suffix = "." + suffix;
+			}
+			
+			String saveName = DateKit.dateFormat(new Date(), "yyyyMMddHHmmssSSS")  + "_" + StringKit.getRandomChar(10) + suffix;
+			
+			File file = new File(Blade.me().webRoot() + File.separator + Constant.UPLOAD_FOLDER + File.separator + saveName);
+			
+			try {
+				
+				ImageKit.copyFileUsingFileChannels(fileItem.getFile(), file);
+				
+				String filePath = Constant.UPLOAD_FOLDER + "/" + saveName;
+				
+				JSONObject res = new JSONObject();
+				res.put("status", 200);
+				res.put("savepath", filePath);
+				res.put("url", Constant.SITE_URL + "/" + filePath);
+				
+				response.json(res.toString());
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+		}
+	}
+	
 	
 }

@@ -102,6 +102,55 @@ b, optgroup, strong {
 	color:blank;
 }
 
+.topic-footer{
+	height:40px;
+}
+
+/*
+heart
+*/
+.heart {
+  background: url(../images/web_heart_animation.png);
+  background-position: left;
+  background-repeat: no-repeat;
+  height: 30px;
+  width: 50px;
+  cursor: pointer;
+  position: absolute;
+  left:1px;
+  bottom: 4px;
+  background-size:1450px; //实际背景图片尺寸2900px
+}
+.heart:hover{
+  background-position: right; //显示最后一个红心帧
+}
+.likeCount{
+  margin-left: 33px;
+  color: #999999
+}     
+
+@-webkit-keyframes heartBlast {
+  0% {background-position: left;}
+  100% {background-position: right;}
+}
+ 
+@keyframes heartBlast {
+  0% {background-position: left;}
+  100% {background-position: right;}
+}
+ 
+.heartAnimation {
+  -webkit-animation-name: heartBlast; //webkit内核浏览器
+  animation-name: heartBlast;
+  -webkit-animation-duration: .8s;
+  animation-duration: .8s;
+  -webkit-animation-iteration-count: 1;
+  animation-iteration-count: 1;
+  -webkit-animation-timing-function: steps(28); //共28个背景图片帧
+  animation-timing-function: steps(28);
+  background-position: right;
+}   
+
 dfn {
 	font-style: italic
 }

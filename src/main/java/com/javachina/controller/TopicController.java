@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.blade.ioc.annotation.Inject;
+import com.blade.jdbc.Page;
+import com.blade.jdbc.QueryParam;
 import com.blade.route.annotation.Path;
 import com.blade.route.annotation.PathVariable;
 import com.blade.route.annotation.Route;
@@ -15,6 +17,7 @@ import com.blade.web.http.Response;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.Topic;
 import com.javachina.model.User;
+import com.javachina.service.CommentService;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 
@@ -28,6 +31,9 @@ public class TopicController extends BaseController {
 	
 	@Inject
 	private NodeService nodeService;
+	
+	@Inject
+	private CommentService commentService;
 	
 	/**
 	 * 发布帖子页面
@@ -98,8 +104,20 @@ public class TopicController extends BaseController {
 			response.go("/");
 			return null;
 		}
+		
+		Integer page = request.queryAsInt("p");
+		if(null == page || page < 1){
+			page = 1;
+		}
+		
 		Map<String, Object> topicMap = topicService.getTopicMap(topic, true);
 		request.attribute("topic", topicMap);
+		
+		QueryParam cp = QueryParam.me();
+		cp.eq("tid", tid).orderby("cid desc").page(page, 10);
+		Page<Map<String, Object>> commentPage = commentService.getPageListMap(cp);
+		request.attribute("commentPage", commentPage);
+		
 		// 刷新浏览数
 		topicService.updateCount(tid, "views", +1);
 		return this.getView("topic_detail");

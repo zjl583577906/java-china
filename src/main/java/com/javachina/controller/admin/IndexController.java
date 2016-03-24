@@ -1,5 +1,6 @@
 package com.javachina.controller.admin;
 
+import java.util.List;
 import java.util.Map;
 
 import com.blade.ioc.annotation.Inject;
@@ -8,9 +9,11 @@ import com.blade.jdbc.QueryParam;
 import com.blade.route.annotation.Path;
 import com.blade.route.annotation.Route;
 import com.blade.view.ModelAndView;
+import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.controller.BaseController;
+import com.javachina.model.Node;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 
@@ -50,8 +53,32 @@ public class IndexController extends BaseController {
 	/**
 	 * 添加节点页面
 	 */
-	@Route(value = "nodes/add")
+	@Route(value = "nodes/add", method = HttpMethod.GET)
 	public ModelAndView show_add_node(Request request, Response response){
+		putData(request);
+		return this.getAdminView("add_node");
+	}
+	
+	public void putData(Request request){
+		QueryParam np = QueryParam.me();
+		np.eq("is_del", 0).eq("pid", 0).orderby("topics desc");
+		List<Node> nodes = nodeService.getNodeList(np);
+		request.attribute("nodes", nodes);
+	}
+	
+	/**
+	 * 添加新节点 
+	 * @return
+	 */
+	@Route(value = "nodes/add", method = HttpMethod.POST)
+	public ModelAndView add_node(Request request, Response response){
+		String node_name = request.query("node_name");
+		String node_slug = request.query("node_slug");
+		Integer pid = request.queryAsInt("pid");
+		String node_pic = request.query("node_pic");
+		
+		
+		
 		return this.getAdminView("add_node");
 	}
 	
