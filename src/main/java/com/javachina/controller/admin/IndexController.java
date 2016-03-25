@@ -7,15 +7,20 @@ import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.blade.route.annotation.Path;
+import com.blade.route.annotation.PathVariable;
 import com.blade.route.annotation.Route;
 import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.controller.BaseController;
+import com.javachina.kit.SessionKit;
 import com.javachina.model.Node;
+import com.javachina.model.User;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
+
+import blade.kit.StringKit;
 
 @Path("/admin/")
 public class IndexController extends BaseController {
@@ -72,22 +77,93 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "nodes/add", method = HttpMethod.POST)
 	public ModelAndView add_node(Request request, Response response){
-		String node_name = request.query("node_name");
+		
+		User user = SessionKit.getLoginUser();
+		if(null == user){
+			return null;
+		}
+		
+		if(user.getRole_id() > 3){
+			return null;
+		}
+		
+		String title = request.query("node_name");
+		String description = request.query("description");
 		String node_slug = request.query("node_slug");
-		Integer pid = request.queryAsInt("pid");
+		Long pid = request.queryAsLong("pid");
 		String node_pic = request.query("node_pic");
 		
+		if(StringKit.isBlank(title) || StringKit.isBlank(node_slug) || null == pid){
+			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");
+			request.attribute("node_name", title);
+			request.attribute("node_slug", node_slug);
+			return this.getAdminView("add_node");
+		}
 		
-		
-		return this.getAdminView("add_node");
+		boolean flag = nodeService.save(pid, user.getUid(), title, description, node_slug, node_pic);
+		if(flag){
+			response.go("/admin/nodes");
+			return null;
+		} else {
+			request.attribute(this.ERROR, "节点添加失败");
+			request.attribute("node_name", title);
+			request.attribute("node_slug", node_slug);
+			return this.getAdminView("add_node");
+		}
 	}
 	
 	/**
 	 * 编辑节点页面
 	 */
-	@Route(value = "nodes/:nid")
-	public ModelAndView show_edit_node(Request request, Response response){
+	@Route(value = "nodes/:nid", method = HttpMethod.GET)
+	public ModelAndView show_edit_node(@PathVariable("nid") Long nid, Request request, Response response){
+		
+		Map<String, Object> nodeMap = nodeService.getNodeDetail(null, nid);
+		request.attribute("node", nodeMap);
+		
 		return this.getAdminView("edit_node");
+	}
+	
+	/**
+	 * 编辑节点
+	 */
+	@Route(value = "nodes/:nid", method = HttpMethod.POST)
+	public ModelAndView edit_node(@PathVariable("nid") Long nid, Request request, Response response){
+		
+		User user = SessionKit.getLoginUser();
+		if(null == user){
+			return null;
+		}
+		
+		if(user.getRole_id() > 3){
+			return null;
+		}
+		
+		String title = request.query("node_name");
+		String description = request.query("description");
+		String node_slug = request.query("node_slug");
+		Long pid = request.queryAsLong("pid");
+		String node_pic = request.query("node_pic");
+		
+		if(StringKit.isBlank(title) || StringKit.isBlank(node_slug) || null == pid){
+			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");
+			request.attribute("node_name", title);
+			request.attribute("node_slug", node_slug);
+			return this.getAdminView("add_node");
+		}
+		
+		boolean flag = nodeService.update(nid, pid, user.getUid(), title, description, node_slug, node_pic);
+		if(flag){
+			request.attribute(this.INFO, "修改成功");
+			request.attribute("node_name", title);
+			request.attribute("node_slug", node_slug);
+			return this.getAdminView("edit_node");
+		} else {
+			request.attribute(this.ERROR, "节点添加失败");
+			request.attribute("node_name", title);
+			request.attribute("node_slug", node_slug);
+			return this.getAdminView("edit_node");
+		}
 	}
 	
 	/**

@@ -13,6 +13,7 @@ import com.javachina.kit.ImageKit;
 import com.javachina.model.Node;
 import com.javachina.service.NodeService;
 
+import blade.kit.DateKit;
 import blade.kit.StringKit;
 
 @Service
@@ -100,7 +101,15 @@ public class NodeServiceImpl implements NodeService {
 	}
 	
 	@Override
-	public boolean save( Long pid, String title, String description, String slug, Long topics, Long createTime, Integer isDel ) {
+	public boolean save(Long pid, Long uid, String title, String description, String slug, String node_pic) {
+		try {
+			Integer time = DateKit.getCurrentUnixTime();
+			AR.update("insert into t_node(pid, uid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?)",
+					pid, uid, title, description, slug, node_pic, time, time).executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	
@@ -156,6 +165,13 @@ public class NodeServiceImpl implements NodeService {
 				e.printStackTrace();
 			}
 		}
+		return false;
+	}
+
+	@Override
+	public boolean update(Long nid, Long pid, Long uid, String title, String description, String node_slug,
+			String node_pic) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 	
