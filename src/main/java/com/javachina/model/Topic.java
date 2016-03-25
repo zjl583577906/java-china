@@ -33,7 +33,7 @@ public class Topic implements Serializable {
 	private Long favorites;
 	
 	//获得点赞数
-	private Long stars;
+	private Long loves;
 	
 	//评论数
 	private Long comments;
@@ -108,14 +108,14 @@ public class Topic implements Serializable {
 		this.favorites = favorites;
 	}
 	
-	public Long getStars() {
-		return stars;
+	public Long getLoves() {
+		return loves;
 	}
 
-	public void setStars(Long stars) {
-		this.stars = stars;
+	public void setLoves(Long loves) {
+		this.loves = loves;
 	}
-	
+
 	public Long getComments() {
 		return comments;
 	}

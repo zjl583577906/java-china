@@ -9,6 +9,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.Types;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.User;
 import com.javachina.model.Userinfo;
@@ -72,7 +73,7 @@ public class UserServiceImpl implements UserService {
 			User user = this.getUser(uid);
 			
 			// 发送邮件通知
-			activecodeService.save(user, "signup");
+			activecodeService.save(user, Types.signup.toString());
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,7 +132,7 @@ public class UserServiceImpl implements UserService {
 	public boolean active(Long id, Long uid) {
 		if (null != id && null != uid) {
 			try {
-				activecodeService.useCode(id, "signup");
+				activecodeService.useCode(id, Types.signup.toString());
 				this.updateStatus(uid, 1);
 				return true;
 			} catch (Exception e) {

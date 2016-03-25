@@ -10,6 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.Types;
 import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.DateKit;
 import com.javachina.kit.ImageKit;
@@ -19,6 +20,7 @@ import com.javachina.model.Topic;
 import com.javachina.model.User;
 import com.javachina.service.CommentService;
 import com.javachina.service.NodeService;
+import com.javachina.service.NoticeService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
@@ -35,6 +37,9 @@ public class TopicServiceImpl implements TopicService {
 	
 	@Inject
 	private CommentService commentService;
+	
+	@Inject
+	private NoticeService noticeService;
 	
 	@Override
 	public Topic getTopic(Long tid) {
@@ -97,10 +102,10 @@ public class TopicServiceImpl implements TopicService {
 							uid, nid, title, content, 0, 0, 0, 0, isTop, time, time, 1).key();
 			
 			// 更新我的发帖数
-			nodeService.updateCount(nid, "topics", +1);
+			nodeService.updateCount(nid, Types.topics.toString(), +1);
 			
 			// 更新节点下的帖子数
-			userService.updateCount(uid, "topics", +1);
+			userService.updateCount(uid, Types.topics.toString(), +1);
 			
 			// 通知@的人
 			if(null != tid){
@@ -142,7 +147,7 @@ public class TopicServiceImpl implements TopicService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tid", tid);
 		map.put("views", topic.getViews());
-		map.put("stars", topic.getStars());
+		map.put("loves", topic.getLoves());
 		map.put("favorites", topic.getFavorites());
 		map.put("comments", comments);
 		map.put("title", topic.getTitle());
@@ -182,6 +187,20 @@ public class TopicServiceImpl implements TopicService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean comment(Long uid, Long to_uid, Long tid, String content) {
+		boolean flag = commentService.save(uid, to_uid, tid, content);
+		if(flag){
+			this.updateCount(tid, Types.comments.toString(), +1);
+			// 通知
+			if(!uid.equals(to_uid)){
+				noticeService.save(Types.comment.toString(), uid, to_uid, tid);
+			}
+			return true;
 		}
 		return false;
 	}

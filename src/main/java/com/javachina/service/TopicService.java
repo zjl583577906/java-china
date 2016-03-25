@@ -20,6 +20,8 @@ public interface TopicService {
 	
 	Long save(Long uid, Long nid, String title, String content, Integer isTop);
 	
+	boolean comment(Long uid, Long to_uid, Long tid, String content);
+	
 	boolean delete(Long tid);
 
 	boolean updateCount(Long tid, String type, int count);

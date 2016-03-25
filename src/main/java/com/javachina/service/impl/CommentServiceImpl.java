@@ -16,6 +16,8 @@ import com.javachina.model.User;
 import com.javachina.service.CommentService;
 import com.javachina.service.UserService;
 
+import blade.kit.DateKit;
+
 @Service
 public class CommentServiceImpl implements CommentService {
 	
@@ -92,7 +94,14 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public boolean save( Long uid, Long toUid, Long tid, String content, Long createTime) {
+	public boolean save(Long uid, Long toUid, Long tid, String content) {
+		try {
+			AR.update("insert into t_comment(uid, to_uid, tid, content, create_time) values(?, ?, ?, ?, ?)",
+					uid, toUid, tid, content, DateKit.getCurrentUnixTime()).executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	

@@ -9,14 +9,12 @@ import com.javachina.model.Favorite;
 
 public interface FavoriteService {
 	
-	Favorite getFavorite(Integer id);
+	boolean isFavorite(String type, Long uid, Long event_id);
 	
 	List<Favorite> getFavoriteList(QueryParam queryParam);
 	
 	Page<Favorite> getPageList(QueryParam queryParam);
 	
-	boolean save( String type, Integer uid, Integer eventId, Integer createTime );
-	
-	boolean delete(Integer id);
+	Long favorite(String type, Long uid, Long eventId);
 		
 }
