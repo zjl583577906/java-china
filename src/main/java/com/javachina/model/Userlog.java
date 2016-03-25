@@ -12,31 +12,31 @@ public class Userlog implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
+	private Long id;
 	
-	private Integer uid;
+	private Long uid;
 	
 	private String action;
 	
 	private String content;
 	
-	private Integer create_time;
+	private Long create_time;
 	
 	public Userlog(){}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
-	public Integer getUid() {
+	public Long getUid() {
 		return uid;
 	}
 
-	public void setUid(Integer uid) {
+	public void setUid(Long uid) {
 		this.uid = uid;
 	}
 	
@@ -56,11 +56,11 @@ public class Userlog implements Serializable {
 		this.content = content;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 	

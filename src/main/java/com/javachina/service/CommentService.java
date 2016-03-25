@@ -10,16 +10,16 @@ import com.javachina.model.Comment;
 
 public interface CommentService {
 	
-	public Comment getComment(Long cid);
+	Comment getComment(Long cid);
 		
-	public Comment getTopicLastComment(Long tid);
+	Comment getTopicLastComment(Long tid);
 	
-	public List<Comment> getCommentList(QueryParam queryParam);
+	List<Comment> getCommentList(QueryParam queryParam);
 	
-	public Page<Map<String, Object>> getPageListMap(QueryParam queryParam);
+	Page<Map<String, Object>> getPageListMap(QueryParam queryParam);
 	
-	public boolean save( Long uid, Long toUid, Long tid, String content, Long createTime );
+	boolean save( Long uid, Long toUid, Long tid, String content, Long createTime );
 	
-	public boolean delete(Long cid);
+	boolean delete(Long cid);
 		
 }

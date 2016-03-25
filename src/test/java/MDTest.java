@@ -1,4 +1,4 @@
-import com.github.rjeschke.txtmark.Processor;
+import com.javachina.ext.markdown.Processor;
 
 public class MDTest {
 

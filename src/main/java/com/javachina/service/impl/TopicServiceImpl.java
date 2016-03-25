@@ -10,7 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
-import com.github.rjeschke.txtmark.Processor;
+import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.DateKit;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.Comment;

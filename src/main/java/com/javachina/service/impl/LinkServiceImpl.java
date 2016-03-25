@@ -1,10 +1,10 @@
 package com.javachina.service.impl;
 
 import java.util.List;
-import com.blade.jdbc.AR;
-import com.blade.jdbc.Page;
-import com.blade.jdbc.QueryParam;
+
 import com.blade.ioc.annotation.Service;
+import com.blade.jdbc.AR;
+import com.blade.jdbc.QueryParam;
 import com.javachina.model.Link;
 import com.javachina.service.LinkService;
 
@@ -25,15 +25,7 @@ public class LinkServiceImpl implements LinkService {
 	}
 	
 	@Override
-	public Page<Link> getPageList(QueryParam queryParam) {
-		if(null != queryParam){
-			return AR.find(queryParam).page(Link.class);
-		}
-		return null;
-	}
-	
-	@Override
-	public boolean save( String title, String url, Integer createTime ) {
+	public boolean save(String title, String url) {
 		return false;
 	}
 	

@@ -9,14 +9,14 @@ import com.javachina.model.Settings;
 
 public interface SettingsService {
 	
-	public Settings getSettings(String skey);
+	Settings getSettings(String skey);
 	
-	public List<Settings> getSettingsList(QueryParam queryParam);
+	List<Settings> getSettingsList(QueryParam queryParam);
 	
-	public Page<Settings> getPageList(QueryParam queryParam);
+	Page<Settings> getPageList(QueryParam queryParam);
 	
-	public boolean save( String svalue );
+	boolean save( String svalue );
 	
-	public boolean delete(String skey);
+	boolean delete(String skey);
 		
 }
