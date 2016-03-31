@@ -50,8 +50,8 @@ public class SendMailServiceImpl implements SendMailService {
 //			System.out.println(output);
 			
 			mailMessage
-			.subject("BladeJava 注册邮件")
-			.from(Constant.MAIL_USER)
+			.subject("注册激活邮件")
+			.from(Constant.MAIL_NICK, Constant.MAIL_USER)
 			.content(output)
 			.addTo(email);
 			
@@ -88,8 +88,8 @@ public class SendMailServiceImpl implements SendMailService {
 //			System.out.println(output);
 			
 			mailMessage
-			.subject("BladeJava 找回密码邮件")
-			.from(Constant.MAIL_USER)
+			.subject("找回密码邮件")
+			.from(Constant.MAIL_NICK, Constant.MAIL_USER)
 			.content(output)
 			.addTo(email);
 			

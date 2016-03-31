@@ -34,6 +34,7 @@ public class App extends Bootstrap {
 		
 		// 配置邮箱
 		Constant.MAIL_HOST = blade.config().get("app.mail.host");
+		Constant.MAIL_NICK = blade.config().get("app.mail.nick");
 		Constant.MAIL_USER = blade.config().get("app.mail.user");
 		Constant.MAIL_PASS = blade.config().get("app.mail.pass");
 		Constant.MAIL_ADMIN = blade.config().get("app.mail.admin");
