@@ -80,7 +80,7 @@ public class TopicController extends BaseController {
 			return this.getView("topic_add");
 		}
 		
-		if(content.length() > 1000){
+		if(content.length() > 10000){
 			request.attribute(this.ERROR, "内容太长了，试试少吐点口水。。。");
 			request.attribute("title", title);
 			request.attribute("content", content);

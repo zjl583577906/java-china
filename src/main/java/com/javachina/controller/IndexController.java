@@ -24,11 +24,13 @@ import com.javachina.kit.ImageKit;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.Activecode;
 import com.javachina.model.Node;
+import com.javachina.model.Notice;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
 import com.javachina.service.FavoriteService;
 import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
+import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
@@ -62,6 +64,10 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private SettingsService settingsService;
+	
+	@Inject
+	private NoticeService noticeService;
+	
 	
 	/**
 	 * 首页

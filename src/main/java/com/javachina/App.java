@@ -12,6 +12,7 @@ import jetbrick.template.resolver.GlobalResolver;
 
 public class App extends Bootstrap {
 	
+	
 	@Override
 	public void init(Blade blade) {
 		// 模板引擎
@@ -20,7 +21,7 @@ public class App extends Bootstrap {
 		GlobalResolver resolver = jetbrickTemplateEngine.getJetEngine().getGlobalResolver();
 		resolver.registerFunctions(Funcs.class);
 		resolver.registerMethods(Methods.class);
-		
+		Constant.VIEW_CONTEXT = jetbrickTemplateEngine.getJetEngine().getGlobalContext();
 		blade.viewEngin(jetbrickTemplateEngine);
 		
 		// 配置数据库
@@ -42,5 +43,7 @@ public class App extends Bootstrap {
 	
 	@Override
 	public void contextInitialized(Blade blade) {
+//		Constant.SYS_INFO = settingsService.getSystemInfo();
+//		Constant.VIEW_CONTEXT.set(Map.class, "sys_info", Constant.SYS_INFO);
 	}
 }

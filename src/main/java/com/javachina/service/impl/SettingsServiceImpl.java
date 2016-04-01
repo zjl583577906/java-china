@@ -6,11 +6,11 @@ import java.util.Map;
 
 import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
-import com.blade.jdbc.QueryParam;
 import com.javachina.model.Settings;
 import com.javachina.service.SettingsService;
 
 import blade.kit.CollectionKit;
+import blade.kit.StringKit;
 
 @Service
 public class SettingsServiceImpl implements SettingsService {
@@ -44,6 +44,24 @@ public class SettingsServiceImpl implements SettingsService {
 			}
 		}
 		return map;
+	}
+
+	@Override
+	public void updateCount(String skey, int count) {
+		try {
+			if (StringKit.isNotBlank(skey) && count != 0) {
+				Settings settings = AR.findById(Settings.class, skey);
+				if (null != settings) {
+					if (StringKit.isNumber(settings.getSvalue().trim())) {
+						Long cur_count = Long.valueOf(settings.getSvalue().trim());
+						String val = (cur_count + count) + "";
+						AR.update("update t_settings set svalue = ? where skey = ?", val, skey).executeUpdate();
+					}
+				}
+			} 
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 		
 }

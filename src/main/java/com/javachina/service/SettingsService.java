@@ -13,5 +13,7 @@ public interface SettingsService {
 	boolean save( String svalue );
 	
 	boolean delete(String skey);
+
+	void updateCount(String skey, int count);
 		
 }

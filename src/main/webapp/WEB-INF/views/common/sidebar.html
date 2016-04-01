@@ -35,6 +35,8 @@
                     #end
                 </div>
                 
+                #if(null == login_user)
+                
 				#if(null != hot_topics && hot_topics.size() > 0)
 				<div class="panel panel-default">
                     <div class="panel-heading">
@@ -53,6 +55,7 @@
                 </div>
 				#end
                 
+                #if(null != hot_nodes && hot_nodes.size() > 0)
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">热门节点</h3>
@@ -65,7 +68,9 @@
 						</p>
 					</div>
                 </div>
+                #end
                 
+                #if(null != sys_info)
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3 class="panel-title">社区运行状况</h3>
@@ -76,5 +81,8 @@
                         <p>回帖数：${sys_info.comment_count}</p>
                     </div>
                 </div>
+                #end
+                
+                #end
                 
             </div><!-- /.col-md-4 -->

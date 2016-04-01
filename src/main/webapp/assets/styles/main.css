@@ -29160,6 +29160,17 @@ transform
 	text-decoration: underline;	
 }
 
+.topic-list-heading {
+    margin: 0 0 10px;
+}
+
+.topic-list-heading a{
+    font-size: 13px;
+    color: gray;
+    text-decoration: none;
+    font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+}
+
 .hot-nodes{
 	padding: 0;
 	margin: 0;

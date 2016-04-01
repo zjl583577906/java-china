@@ -1,5 +1,9 @@
 package com.javachina;
 
+import java.util.Map;
+
+import jetbrick.template.JetGlobalContext;
+
 public class Constant {
 
 	// 登录用户session key
@@ -15,5 +19,8 @@ public class Constant {
 	public static String MAIL_USER;
 	public static String MAIL_PASS;
 	public static String MAIL_ADMIN;
+
+	public static JetGlobalContext VIEW_CONTEXT = null;
+	public static Map<String, Object> SYS_INFO = null;
 	
 }

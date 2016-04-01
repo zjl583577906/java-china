@@ -115,9 +115,8 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public Comment getTopicLastComment(Long cid) {
-		// TODO Auto-generated method stub
-		return null;
+	public Comment getTopicLastComment(Long tid) {
+		return AR.find("select * from t_comment where tid = ? order by cid desc", tid).first(Comment.class);
 	}
 		
 }

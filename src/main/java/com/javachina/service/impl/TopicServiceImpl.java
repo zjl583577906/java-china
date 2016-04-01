@@ -21,6 +21,7 @@ import com.javachina.model.User;
 import com.javachina.service.CommentService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
+import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
@@ -40,6 +41,9 @@ public class TopicServiceImpl implements TopicService {
 	
 	@Inject
 	private NoticeService noticeService;
+	
+	@Inject
+	private SettingsService settingsService;
 	
 	@Override
 	public Topic getTopic(Long tid) {
@@ -96,16 +100,19 @@ public class TopicServiceImpl implements TopicService {
 		
 		try {
 			Integer time = DateKit.getCurrentUnixTime();
+			
 			Long tid = (Long) AR
-					.update("insert into t_topic(uid, nid, title, content, views, favorites, stars, comments, "
-							+ "is_top, create_time, update_time, status) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-							uid, nid, title, content, 0, 0, 0, 0, isTop, time, time, 1).key();
+					.update("insert into t_topic(uid, nid, title, content, is_top, create_time, update_time, status) values(?, ?, ?, ?, ?, ?, ?, ?)",
+							uid, nid, title, content, isTop, time, time, 1).key();
 			
 			// 更新我的发帖数
 			nodeService.updateCount(nid, Types.topics.toString(), +1);
 			
 			// 更新节点下的帖子数
 			userService.updateCount(uid, Types.topics.toString(), +1);
+			
+			// 更新总贴数
+			settingsService.updateCount(Types.topic_count.toString(), +1);
 			
 			// 通知@的人
 			if(null != tid){
