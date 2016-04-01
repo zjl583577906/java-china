@@ -7,11 +7,11 @@ import com.blade.view.ModelAndView;
 
 public class BaseController {
 	
-	final String ERROR = "error";
-	final String INFO = "info";
-	final String SUCCESS = "success";
-	final String FAILURE = "failure";
-	final String STATUS = "status";
+	protected final String ERROR = "error";
+	protected final String INFO = "info";
+	protected final String SUCCESS = "success";
+	protected final String FAILURE = "failure";
+	protected final String STATUS = "status";
 	
 	final int count = 20;
 	

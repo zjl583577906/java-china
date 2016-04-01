@@ -11,6 +11,7 @@ public class Constant {
 	public static String SITE_NAME = "";
 	
 	public static String MAIL_HOST;
+	public static String MAIL_NICK;
 	public static String MAIL_USER;
 	public static String MAIL_PASS;
 	public static String MAIL_ADMIN;

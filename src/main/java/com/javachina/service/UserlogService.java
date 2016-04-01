@@ -9,14 +9,14 @@ import com.javachina.model.Userlog;
 
 public interface UserlogService {
 	
-	public Userlog getUserlog(Integer id);
+	Userlog getUserlog(Integer id);
 	
-	public List<Userlog> getUserlogList(QueryParam queryParam);
+	List<Userlog> getUserlogList(QueryParam queryParam);
 	
-	public Page<Userlog> getPageList(QueryParam queryParam);
+	Page<Userlog> getPageList(QueryParam queryParam);
 	
-	public boolean save( Integer uid, String action, String content, Integer createTime );
+	boolean save( Integer uid, String action, String content, Integer createTime );
 	
-	public boolean delete(Integer id);
+	boolean delete(Integer id);
 		
 }

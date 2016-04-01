@@ -27,6 +27,8 @@ import com.javachina.model.Activecode;
 import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
+import com.javachina.service.FavoriteService;
+import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
@@ -51,6 +53,12 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private NodeService nodeService;
+	
+	@Inject
+	private LoveService loveService;
+	
+	@Inject
+	private FavoriteService favoriteService;
 	
 	/**
 	 * 首页
@@ -360,5 +368,52 @@ public class IndexController extends BaseController {
 		}
 	}
 	
+	/**
+	 * 收藏和取消收藏
+	 */
+	@Route(value = "/favorite", method = HttpMethod.POST)
+	public void favorite(Request request, Response response){
+		User user = SessionKit.getLoginUser();
+		if(null == user){
+			return;
+		}
+		
+		// topic：帖子，node：节点
+		String type = request.query("type");
+		Long tid = request.queryAsLong("tid");
+		
+		if(StringKit.isBlank(type) || null == tid || tid == 0){
+			return;
+		}
+		
+		Long count = favoriteService.favorite(type, user.getUid(), tid);
+		JSONObject res = new JSONObject();
+		res.put("count", count);
+		response.json(res.toString());
+		
+	}
+	
+	/**
+	 * 点赞和取消赞
+	 */
+	@Route(value = "/love", method = HttpMethod.POST)
+	public void love(Request request, Response response){
+		
+		User user = SessionKit.getLoginUser();
+		if(null == user){
+			return;
+		}
+		
+		Long tid = request.queryAsLong("tid");
+		if(null == tid || tid == 0){
+			return;
+		}
+		
+		Long count = loveService.love(user.getUid(), tid);
+		JSONObject res = new JSONObject();
+		res.put("count", count);
+		response.json(res.toString());
+		
+	}
 	
 }

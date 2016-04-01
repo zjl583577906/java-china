@@ -12,21 +12,21 @@ public class Link implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Integer id;
+	private Long id;
 	
 	private String title;
 	
 	private String url;
 	
-	private Integer create_time;
+	private Long create_time;
 	
 	public Link(){}
 	
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	
@@ -46,11 +46,11 @@ public class Link implements Serializable {
 		this.url = url;
 	}
 	
-	public Integer getCreate_time() {
+	public Long getCreate_time() {
 		return create_time;
 	}
 
-	public void setCreate_time(Integer create_time) {
+	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
 	}
 	

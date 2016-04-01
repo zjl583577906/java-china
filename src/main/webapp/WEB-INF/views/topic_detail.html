@@ -23,17 +23,19 @@
                 <div class="panel-body topic-detail">
                     ${topic.content}
                 </div>
+                #if(null != login_user)
                 <div class="panel-footer topic-footer">
-                <div class="heart " id="like1" rel="like"></div> 
-                	<div class="likeCount" id="likeCount1">14</div>
+                	<div class="heart " id="like1" rel="like"></div> 
+                	<div class="likeCount" id="likeCount1">${topic.loves}</div>
                 	<div class="pull-right" style="margin-top: -20px">
-	                	#if(!isfollow)
+	                	#if(!is_favorite)
 	                	<a role="button" class="" href="${base_url('/topic/follow/') + topic.tid}"><small class="text-muted">加入收藏</small></a>
 	                	#else
 	                	<a role="button" class="" href="${base_url('/topic/unfollow/') + topic.tid}"><small class="text-muted">取消收藏</small></a>
 	                	#end
                 	</div>
                 </div>
+                #end
             </div><!-- /.panel content -->
             
             #if(topic.comments > 0)
