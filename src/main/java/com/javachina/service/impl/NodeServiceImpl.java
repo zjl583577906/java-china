@@ -13,6 +13,7 @@ import com.javachina.kit.ImageKit;
 import com.javachina.model.Node;
 import com.javachina.service.NodeService;
 
+import blade.kit.CollectionKit;
 import blade.kit.DateKit;
 import blade.kit.StringKit;
 
@@ -42,17 +43,19 @@ public class NodeServiceImpl implements NodeService {
 		for(Node node : parents){
 			Map<String, Object> nodeMap = this.getNodeDetail(node, null);
 			if(null != nodeMap && !nodeMap.isEmpty()){
-				List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
 				QueryParam cp = QueryParam.me();
-				cp.eq("is_del", 0).eq("pid", node.getPid()).orderby("topics desc");
+				cp.eq("is_del", 0).eq("pid", node.getNid()).orderby("topics desc");
 				List<Node> nodes = this.getNodeList(cp);
-				for(Node item : nodes){
-					Map<String, Object> itemMap = this.getNodeDetail(item, null);
-					if(null != itemMap && !itemMap.isEmpty()){
-						items.add(itemMap);
+				if(CollectionKit.isNotEmpty(nodes)){
+					List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+					for(Node item : nodes){
+						Map<String, Object> itemMap = this.getNodeDetail(item, null);
+						if(null != itemMap && !itemMap.isEmpty()){
+							items.add(itemMap);
+						}
 					}
+					nodeMap.put("items", items);
 				}
-				nodeMap.put("items", items);
 				result.add(nodeMap);
 			}
 		}
@@ -104,7 +107,7 @@ public class NodeServiceImpl implements NodeService {
 	public boolean save(Long pid, Long uid, String title, String description, String slug, String node_pic) {
 		try {
 			Integer time = DateKit.getCurrentUnixTime();
-			AR.update("insert into t_node(pid, uid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?)",
+			AR.update("insert into t_node(pid, uid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?, ?, ?)",
 					pid, uid, title, description, slug, node_pic, time, time).executeUpdate();
 			return true;
 		} catch (Exception e) {

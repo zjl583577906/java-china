@@ -22,7 +22,6 @@ import com.blade.web.multipart.FileItem;
 import com.javachina.Constant;
 import com.javachina.kit.ImageKit;
 import com.javachina.kit.SessionKit;
-import com.javachina.kit.TimeKit;
 import com.javachina.model.Activecode;
 import com.javachina.model.Node;
 import com.javachina.model.User;
@@ -30,6 +29,7 @@ import com.javachina.service.ActivecodeService;
 import com.javachina.service.FavoriteService;
 import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
+import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
@@ -60,6 +60,9 @@ public class IndexController extends BaseController {
 	@Inject
 	private FavoriteService favoriteService;
 	
+	@Inject
+	private SettingsService settingsService;
+	
 	/**
 	 * 首页
 	 */
@@ -70,9 +73,7 @@ public class IndexController extends BaseController {
 		
 		// 最热帖子
 		QueryParam hp = QueryParam.me();
-		Integer start_time = TimeKit.getTodayTime();
-		Integer end_time = TimeKit.getTomorrowTime();
-		hp.eq("status", 1).between("update_time", start_time, end_time).orderby("comments, views desc").add("limit 10");
+		hp.eq("status", 1)/*.between("update_time", start_time, end_time)*/.orderby("tid, comments, views desc").add("limit 10");
 		List<Map<String, Object>> hot_topics = topicService.getTopicList(hp);
 		request.attribute("hot_topics", hot_topics);
 		
@@ -114,6 +115,14 @@ public class IndexController extends BaseController {
 		tp.eq("status", 1).orderby("update_time desc").page(page, 15);
 		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
 		request.attribute("topicPage", topicPage);
+		
+		// 读取节点列表
+		List<Map<String, Object>> nodes = nodeService.getNodeList();
+		request.attribute("nodes", nodes);
+		
+		// 读取社区信息
+		Map<String, Object> sys_info = settingsService.getSystemInfo();
+		request.attribute("sys_info", sys_info);
 	}
 	
 	/**

@@ -29147,6 +29147,17 @@ transform
 .hot-topics li{
 	padding: 5px 0;
 	border-bottom: 1px solid #ddd;
+	line-height: 120%;
+}
+
+.hot-topics li a{
+	font-size:13px;
+	color: #524F57;
+	text-shadow: 0px 1px 0px #fff;
+}
+
+.hot-topics li a:hover{
+	text-decoration: underline;	
 }
 
 .hot-nodes{
@@ -29154,6 +29165,10 @@ transform
 	margin: 0;
 }
 
-.hot-nodes span{
+.hot-nodes a{
 	line-height: 25px;
+}
+
+.hot-nodes a:hover{
+	color: black;
 }

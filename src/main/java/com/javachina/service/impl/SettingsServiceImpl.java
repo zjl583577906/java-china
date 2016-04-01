@@ -1,12 +1,16 @@
 package com.javachina.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
-import com.blade.jdbc.AR;
-import com.blade.jdbc.Page;
-import com.blade.jdbc.QueryParam;
+import java.util.Map;
+
 import com.blade.ioc.annotation.Service;
+import com.blade.jdbc.AR;
+import com.blade.jdbc.QueryParam;
 import com.javachina.model.Settings;
 import com.javachina.service.SettingsService;
+
+import blade.kit.CollectionKit;
 
 @Service
 public class SettingsServiceImpl implements SettingsService {
@@ -14,22 +18,6 @@ public class SettingsServiceImpl implements SettingsService {
 	@Override
 	public Settings getSettings(String skey) {
 		return AR.findById(Settings.class, skey);
-	}
-		
-	@Override
-	public List<Settings> getSettingsList(QueryParam queryParam) {
-		if(null != queryParam){
-			return AR.find(queryParam).list(Settings.class);
-		}
-		return null;
-	}
-	
-	@Override
-	public Page<Settings> getPageList(QueryParam queryParam) {
-		if(null != queryParam){
-			return AR.find(queryParam).page(Settings.class);
-		}
-		return null;
 	}
 	
 	@Override
@@ -44,6 +32,18 @@ public class SettingsServiceImpl implements SettingsService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public Map<String, Object> getSystemInfo() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Settings> settings = AR.find("select * from t_settings").list(Settings.class);
+		if(CollectionKit.isNotEmpty(settings)){
+			for(Settings setting : settings){
+				map.put(setting.getSkey(), setting.getSvalue());
+			}
+		}
+		return map;
 	}
 		
 }

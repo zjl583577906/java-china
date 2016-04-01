@@ -4,7 +4,7 @@
 	-moz-osx-font-smoothing: grayscale
 }
 body, html{
-	overflow-y:hidden;	
+/* 	overflow-y:hidden;	 */
 }
 
 body, figure {
