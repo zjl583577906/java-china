@@ -354,13 +354,16 @@ public class IndexController extends BaseController {
 			if(StringKit.isNotBlank(suffix)){
 				suffix = "." + suffix;
 			}
+			if(!PatternKit.isImage(suffix)){
+				return;
+			}
 			
 			if(null == type){
 				type = "temp";
 			}
 			String key = "";
 			if(type.equals("avatar")){
-				key = type + "/" + user.getLogin_name();
+				key = type + "/" + user.getLogin_name() + suffix;
 			}
 			if(type.equals("node")){
 				String node = request.query("name");
