@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		String pwd = EncrypKit.md5(loginName + passWord);
 		try {
 			
-			String avatar = "default/" + StringKit.random(5) + ".png";
+			String avatar = "avatar/default/" + StringKit.random(5) + ".png";
 			
 			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, avatar, create_time, update_time) values(?, ?, ?, ?, ?)",
 					loginName, pwd, email, avatar, time, time).key();
@@ -114,6 +114,7 @@ public class UserServiceImpl implements UserService {
 			User user = this.getUser(uid);
 			map.put("username", user.getLogin_name());
 			map.put("uid", uid);
+			map.put("email", user.getEmail());
 			String avatar = ImageKit.getAvatar(user.getAvatar());
 			map.put("avatar", avatar);
 			map.put("create_time", user.getCreate_time());
@@ -168,5 +169,33 @@ public class UserServiceImpl implements UserService {
 		}
 		return false;
 	}
-		
+
+	@Override
+	public boolean updateAvatar(Long uid, String avatar) {
+		try {
+			if(null == uid || StringKit.isBlank(avatar)){
+				return false;
+			}
+			AR.update("update t_user set avatar = ? where uid = ?", avatar, uid).executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean updatePwd(Long uid, String newpwd) {
+		try {
+			if(null == uid || StringKit.isBlank(newpwd)){
+				return false;
+			}
+			AR.update("update t_user set pass_word = ? where uid = ?", newpwd, uid).executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 }

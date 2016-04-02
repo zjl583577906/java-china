@@ -5,51 +5,52 @@
 		<div class="panel-body">
 			<div class="row no-margin">
 				<div class="col-lg-12">
-					<form class="form-horizontal bordered-group" role="form">
+					<form class="form-horizontal bordered-group" role="form" method="post" action="${base_url('/admin/nodes/edit')}">
+						#if(null!=error)<div class="alert alert-danger">${error}</div>#end
+                		#if(null!=info)<div class="alert alert-success">${info}</div>#end
+						<input type="hidden" name="nid" value="${node.nid}" />
 						<div class="form-group">
 							<label class="col-sm-2 control-label">节点名称</label>
 							<div class="col-sm-10">
-								<input class="form-control"
-								placeholder="请输入节点名称，比如：开发工具" required="required" value="开发工具"/>
+								<input class="form-control" name="node_name"
+								placeholder="请输入节点名称，比如：开发工具" required="required" value="${node.node_name}"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">唯一标识</label>
 							<div class="col-sm-10">
-								<input class="form-control" placeholder="请输入节点唯一标识，比如：ide" required="required" value="ide"/>
+								<input name="node_slug" class="form-control" placeholder="请输入节点唯一标识，比如：ide" required="required" value="${node.node_slug}"/>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">节点介绍</label>
 							<div class="col-sm-10">
-								<textarea class="form-control" rows="3" placeholder="请输入节点介绍">聊聊你们的开发工具</textarea>
+								<textarea name="description" class="form-control" rows="3" placeholder="请输入节点介绍">${node.description}</textarea>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">选择父节点</label>
 							<div class="col-sm-10">
-								<select class="form-control">
-									<option>技术</option>
-									<option>Java</option>
-									<option>C++</option>
+								<select class="form-control" name="pid">
+									<option value="0">无父节点</option>
+									#for(item : nodes)
+									<option #if(node.pid==item.nid)selected="selected"#end value="${item.nid}">${item.title}</option>
+									#end
 								</option></select>
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">修改节点图标</label>
 							<div class="col-sm-10">
-								<div class="pb10">
-									<img src="/assets/images/face3.0306ffff.jpg" width="50" height="50"/>
-								</div>
-								<input type="file" />
-								<p class="help-block">选择一个图片作为节点图标</p>
-							</div>
+                            	<input type="hidden" name="node_pic" id="node_pic" value=""/>
+                                <img id="upload_img" alt="${node.node_name}" src="${node.pic}" width="73" height="73" onclick="doUpload('${node.node_slug}')" style="cursor: pointer;"/>
+                            </div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label">&nbsp;</label>
 							<div class="col-sm-10">
 								<button type="submit" class="btn btn-success">编辑节点</button>
-								<a href="/admin/nodes" type="button" class="btn btn-default btn-outline">取消操作</a>
+								<a href="${base_url('/admin/nodes')}" type="button" class="btn btn-default btn-outline">取消操作</a>
 							</div>
 						</div>
 					</form>
@@ -59,3 +60,32 @@
 	</div>
 </div>
 #include("./footer.html")
+<script type="text/javascript" src="${base}/assets/scripts/jquery.upload.js"></script>
+<script type="text/javascript">
+//上传方法
+function doUpload(name) {
+	// 上传方法
+	$.upload({
+		// 上传地址
+		url: "${base_url('/uploadimg')}", 
+		// 文件域名字
+		fileName: 'image', 
+		// 上传完成后, 返回json, text
+		dataType: 'json',
+		params : {type:"node", name:name},
+		// 上传之前回调,return true表示可继续上传
+		onSend: function() {
+			return true;
+		},
+		// 上传之后回调
+		onComplate: function(data) {
+			if(data){
+				$("#upload_img").attr('src', data.url);
+				$("#node_pic").val(data.savekey);
+			}
+		}
+	});
+}
+</script>
+</body>
+</html>

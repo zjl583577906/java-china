@@ -4,6 +4,7 @@ import javax.servlet.ServletContext;
 
 import com.blade.context.BladeWebContext;
 import com.javachina.kit.DateKit;
+import com.javachina.kit.ImageKit;
 
 import blade.kit.StringKit;
 
@@ -24,6 +25,10 @@ public class Funcs {
 		String val = ctx + "/" + path;
 		
 		return val.replaceAll("//", "/");
+	}
+	
+	public static String avatar_url(String avatar) {
+		return ImageKit.getAvatar(avatar);
 	}
 	
 	/**

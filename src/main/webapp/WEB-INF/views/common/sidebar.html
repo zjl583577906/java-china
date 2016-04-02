@@ -12,14 +12,13 @@
                         <div class="row">
                             <div class="col-xs-12">
                                 <a href="${base_url('/member/') + login_user.login_name}">
-                                    <img width="50" height="50" class="img-rounded img-responsive pull-left" 
-                                    	src="${base_url('/assets/avatar/') + login_user.avatar}" alt="${login_user.login_name}">
+                                    <img width="50" height="50" class="img-circle img-responsive pull-left" 
+                                    	src="${avatar_url(login_user.avatar)}" alt="${login_user.login_name}">
                                 </a>
-                                <p class="username"><a href="${base_url('/member/') + login_user.login_name}">${login_user.login_name}</a></p>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-12">
+                            <div class="col-xs-12 mt15">
                                 <a href="${base_url('/topic/add')}">创作新主题</a>
                             </div>
                         </div>
@@ -46,7 +45,9 @@
                     	<ul class="list-unstyled hot-topics">
                     		#for(topic : hot_topics)
                     		<li>
-								<a href="${base_url('/member/') + topic.user_name}"><img src="${topic.avatar}" width="30" height="30" /></a>
+								<a href="${base_url('/member/') + topic.user_name}">
+									<img class="img-circle" src="${topic.avatar}" width="30" height="30" />
+								</a>
 								<a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
 							</li>
                     		#end

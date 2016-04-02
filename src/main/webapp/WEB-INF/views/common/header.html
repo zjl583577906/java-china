@@ -38,6 +38,9 @@
                     <li class="#if(active=='signup')active#end"><a href="${base_url('/signup')}">注册</a></li>
                     <li class="#if(active=='signin')active#end"><a href="${base_url('/signin')}">登录</a></li>
                 #else
+                	<li>
+                    	<a href="${base_url('/settings')}">设置</a>
+                    </li>
                 	#if(login_user.role_id < 3)
                 	<li>
                     	<a href="${base_url('/admin')}">进入后台</a>

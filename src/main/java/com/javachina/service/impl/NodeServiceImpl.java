@@ -146,7 +146,7 @@ public class NodeServiceImpl implements NodeService {
 			map.put("childs", childs);
 			map.put("description", node.getDescription());
 			if(StringKit.isNotBlank(node.getPic())){
-				String pic = ImageKit.getImgURL(node.getPic());
+				String pic = ImageKit.getAvatar(node.getPic());
 				map.put("pic", pic);
 			}
 		}
@@ -174,7 +174,17 @@ public class NodeServiceImpl implements NodeService {
 	@Override
 	public boolean update(Long nid, Long pid, Long uid, String title, String description, String node_slug,
 			String node_pic) {
-		// TODO Auto-generated method stub
+		try {
+			if(null == nid){
+				return false;
+			}
+			AR.update("update t_node set pid = ?, uid = ?, title = ?, description = ?, slug = ?, pic = ?, update_time = ? where nid = ?",
+					pid, uid, title, description, node_slug, node_pic, DateKit.getCurrentUnixTime(), nid)
+					.executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return false;
 	}
 	

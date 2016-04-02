@@ -120,15 +120,15 @@ public class IndexController extends BaseController {
 		
 		Map<String, Object> nodeMap = nodeService.getNodeDetail(null, nid);
 		request.attribute("node", nodeMap);
-		
+		putData(request);
 		return this.getAdminView("edit_node");
 	}
 	
 	/**
 	 * 编辑节点
 	 */
-	@Route(value = "nodes/:nid", method = HttpMethod.POST)
-	public ModelAndView edit_node(@PathVariable("nid") Long nid, Request request, Response response){
+	@Route(value = "nodes/edit", method = HttpMethod.POST)
+	public ModelAndView edit_node(Request request, Response response){
 		
 		User user = SessionKit.getLoginUser();
 		if(null == user){
@@ -139,11 +139,16 @@ public class IndexController extends BaseController {
 			return null;
 		}
 		
+		Long nid = request.queryAsLong("nid");
 		String title = request.query("node_name");
 		String description = request.query("description");
 		String node_slug = request.query("node_slug");
 		Long pid = request.queryAsLong("pid");
 		String node_pic = request.query("node_pic");
+		
+		Map<String, Object> nodeMap = nodeService.getNodeDetail(null, nid);
+		request.attribute("node", nodeMap);
+		putData(request);
 		
 		if(StringKit.isBlank(title) || StringKit.isBlank(node_slug) || null == pid){
 			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");

@@ -4,7 +4,6 @@
 	-moz-osx-font-smoothing: grayscale
 }
 
-
 body {
 	overflow: visible;
 	transition: transform 300ms cubic-bezier(.7, 0, .3, 1);
@@ -27,6 +26,9 @@ body, figure {
 	margin: 0
 }
 
+.img-radius{
+	-webkit-border-radius: 50%;
+}
 a:hover{
 color: #4d5256;	
 }

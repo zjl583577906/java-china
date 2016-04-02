@@ -20,8 +20,6 @@ public class Userinfo implements Serializable {
 	
 	private String github;
 	
-	private String email;
-	
 	private String signature;
 	
 	private String instructions;
@@ -58,14 +56,6 @@ public class Userinfo implements Serializable {
 
 	public void setGithub(String github) {
 		this.github = github;
-	}
-	
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
 	}
 	
 	public String getSignature() {

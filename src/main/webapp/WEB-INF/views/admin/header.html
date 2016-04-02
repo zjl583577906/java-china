@@ -56,7 +56,7 @@
 			<ul class="nav navbar-nav navbar-right hidden-xs">
 				<li>
 					<a href="javascript:void(0);" data-toggle="dropdown">
-						<img src="${base_url('/assets/avatar/') + login_user.avatar}"
+						<img src="${avatar_url(login_user.avatar)}"
 							class="header-avatar img-circle ml10" alt="${login_user.login_name}" title="${login_user.login_name}">
 							<span class=pull-left>管理员：${login_user.login_name}</span>
 					</a>
