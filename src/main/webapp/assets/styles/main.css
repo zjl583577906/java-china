@@ -6410,7 +6410,7 @@ keyframes fa-spin { 0%{
 
 a, a:active, a:focus, a:hover, a:visited {
 	text-decoration: none;
-	color: inherit
+	color: #778087;
 }
 
 .fa-glass:before {
@@ -17286,7 +17286,7 @@ footer.content-footer li a:active, footer.content-footer li a:hover,
 
 .widget .widget-details {
 	display: table-cell;
-	vertical-align: middle
+	vertical-align: middle;
 }
 
 .widget .widget-title {
@@ -29117,6 +29117,14 @@ transform
 	padding: 2px;
 }
 
+.home-panel li a{
+	color:#4C5064;
+}
+.home-panel li a:HOVER{
+	color:#232020;
+}
+
+
 .home-panel .widget{
 	padding: 0;
 }
@@ -29146,6 +29154,13 @@ transform
 	font-size: 11px;
 }
 
+.recommend a{
+	color: #eee;
+}
+
+.topic-detail-heading{
+	background-color: #fff;
+}
 .hot-topics li{
 	padding: 5px 0;
 	border-bottom: 1px solid #ddd;
@@ -29159,7 +29174,7 @@ transform
 }
 
 .hot-topics li a:hover{
-	text-decoration: underline;	
+	color: #504C4C;
 }
 
 .topic-list-heading {
@@ -29171,6 +29186,9 @@ transform
     color: gray;
     text-decoration: none;
     font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
+}
+.bbs-stars {
+	
 }
 
 .hot-nodes{
