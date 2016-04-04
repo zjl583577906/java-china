@@ -39,5 +39,13 @@ public class LoveServiceImpl implements LoveService {
 		}
 		return false;
 	}
+
+	@Override
+	public Long getLoveCount(Long tid) {
+		if(null != tid){
+			return AR.find("select count(1) from t_love where tid = ?", tid).first(Long.class);
+		}
+		return 0L;
+	}
 		
 }

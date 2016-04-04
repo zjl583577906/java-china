@@ -4,6 +4,7 @@ import com.blade.interceptor.Interceptor;
 import com.blade.interceptor.annotation.Intercept;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.Constant;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.User;
 
@@ -12,6 +13,10 @@ public class BaseInterceptor implements Interceptor {
 	
 	@Override
 	public boolean before(Request request, Response response) {
+		
+		request.attribute("base", request.contextPath());
+		request.attribute("version", Constant.APP_VERSION);
+		
 		String uri = request.uri();
 		
 		if(uri.indexOf("/admin/") != -1){
@@ -22,7 +27,6 @@ public class BaseInterceptor implements Interceptor {
 			}
 		}
 		
-		request.attribute("base", request.contextPath());
 		return true;
 	}
 

@@ -23,7 +23,6 @@ import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
 import com.javachina.service.FavoriteService;
-import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
@@ -50,9 +49,6 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private NodeService nodeService;
-	
-	@Inject
-	private LoveService loveService;
 	
 	@Inject
 	private FavoriteService favoriteService;
@@ -102,6 +98,7 @@ public class IndexController extends BaseController {
 			if(null != node){
 				tp.eq("nid", node.getNid());
 				request.attribute("tab", tab);
+				request.attribute("node_name", node.getTitle());
 			}
 		} else {
 			if(null != nid){
@@ -120,10 +117,6 @@ public class IndexController extends BaseController {
 		// 读取节点列表
 		List<Map<String, Object>> nodes = nodeService.getNodeList();
 		request.attribute("nodes", nodes);
-		
-		// 读取社区信息
-		Map<String, Object> sys_info = settingsService.getSystemInfo();
-		request.attribute("sys_info", sys_info);
 	}
 	
 	/**
@@ -435,23 +428,34 @@ public class IndexController extends BaseController {
 	 * 点赞和取消赞
 	 */
 	@Route(value = "/love", method = HttpMethod.POST)
-	public void love(Request request, Response response){
+	public String love(Request request, Response response){
 		
 		User user = SessionKit.getLoginUser();
 		if(null == user){
-			return;
+			response.go("/signin");
+			return null;
 		}
 		
 		Long tid = request.queryAsLong("tid");
 		if(null == tid || tid == 0){
-			return;
+			return null;
 		}
 		
-		Long count = loveService.love(user.getUid(), tid);
-		JSONObject res = new JSONObject();
-		res.put("count", count);
-		response.json(res.toString());
-		
+		try {
+			long count = topicService.love(user.getUid(), tid);
+			response.text(count+"");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	/**
+	 * markdown页面
+	 */
+	@Route(value = "/markdown", method = HttpMethod.GET)
+	public ModelAndView markdown(Request request, Response response){
+		return this.getView("markdown");
 	}
 	
 }

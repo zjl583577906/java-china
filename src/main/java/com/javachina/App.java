@@ -1,17 +1,23 @@
 package com.javachina;
 
+import java.util.Map;
+
 import com.blade.Blade;
 import com.blade.Bootstrap;
 import com.blade.context.BladeWebContext;
+import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.DB;
 import com.bladejava.view.template.JetbrickTemplateEngine;
 import com.javachina.ext.Funcs;
 import com.javachina.ext.Methods;
+import com.javachina.service.SettingsService;
 
 import jetbrick.template.resolver.GlobalResolver;
 
 public class App extends Bootstrap {
 	
+	@Inject
+	private SettingsService settingsService;
 	
 	@Override
 	public void init(Blade blade) {
@@ -32,6 +38,7 @@ public class App extends Bootstrap {
 		
 		// 初始化配置
 		Constant.SITE_URL = blade.config().get("app.site_url");
+		Constant.APP_VERSION = blade.config().get("app.version");
 		
 		// 配置邮箱
 		Constant.MAIL_HOST = blade.config().get("app.mail.host");
@@ -43,7 +50,7 @@ public class App extends Bootstrap {
 	
 	@Override
 	public void contextInitialized(Blade blade) {
-//		Constant.SYS_INFO = settingsService.getSystemInfo();
-//		Constant.VIEW_CONTEXT.set(Map.class, "sys_info", Constant.SYS_INFO);
+		Constant.SYS_INFO = settingsService.getSystemInfo();
+		Constant.VIEW_CONTEXT.set(Map.class, "sys_info", Constant.SYS_INFO);
 	}
 }

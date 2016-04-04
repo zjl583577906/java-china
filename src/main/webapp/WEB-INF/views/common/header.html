@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Java中国</title>
-    <link rel="stylesheet" href="${base}/assets/styles/main.css">
+    <title>#if(title!=null&&title!='')${title} - #end ${sys_info.site_title ?! 'Java中国'}</title>
+    <link rel="stylesheet" href="${base}/assets/styles/main.css?ver=${version}">
+    <script src="${base}/assets/scripts/main.js?ver=${version}" type="text/javascript"></script>
     <link rel="shortcut icon" href="${base}/assets/favicon.ico">
-	<meta name="description" content="" />
-    <meta name="keywords" content="" />
+	<meta name="description" content="${sys_info.site_description ?! ''}" />
+    <meta name="keywords" content="${sys_info.site_keywords ?! ''}" />
     <!--[if lt IE 9]>
       <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
@@ -30,10 +31,11 @@
 			
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <!-- <ul class="nav navbar-nav">
-                    <li class="#if(active=='home')active#end"><a href="${base_url('/')}">首页</a></li>
-                </ul> -->
+                <ul class="nav navbar-nav">
+                    <li class="#if(active=='markdown')active#end"><a href="${base_url('/markdown')}">MarkDown</a></li>
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
+                <li><a href="${base_url('/')}">首页</a></li>
                 #if(null == login_user)
                     <li class="#if(active=='signup')active#end"><a href="${base_url('/signup')}">注册</a></li>
                     <li class="#if(active=='signin')active#end"><a href="${base_url('/signin')}">登录</a></li>
@@ -51,10 +53,9 @@
                     </li>
                 #end
                 </ul>
-                
-                <form class="navbar-form navbar-right" role="search" action="http://www.google.com/search" method="get" target="_blank">
+                <form class="navbar-form navbar-right" onsubmit="return dispatch();" role="search" method="get" target="_blank">
                 	<div class="form-group input-sm">
-                        <input type="text" class="form-control input-sm" placeholder="搜索..." name="q">
+                        <input type="text" class="form-control input-sm" placeholder="搜索..." name="q" id="q"/>
                 	</div>
                 </form>
             </div><!-- /.navbar-collapse -->

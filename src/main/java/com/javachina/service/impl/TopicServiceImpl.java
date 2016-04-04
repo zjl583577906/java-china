@@ -19,6 +19,7 @@ import com.javachina.model.Node;
 import com.javachina.model.Topic;
 import com.javachina.model.User;
 import com.javachina.service.CommentService;
+import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
@@ -44,6 +45,9 @@ public class TopicServiceImpl implements TopicService {
 	
 	@Inject
 	private SettingsService settingsService;
+	
+	@Inject
+	private LoveService loveService;
 	
 	@Override
 	public Topic getTopic(Long tid) {
@@ -185,7 +189,7 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public boolean updateCount(Long tid, String type, int count) {
+	public boolean updateCount(Long tid, String type, long count) {
 		if(null != tid && StringKit.isNotBlank(type)){
 			try {
 				String sql = "update t_topic set %s = (%s + ?) where tid = ?";
@@ -210,6 +214,22 @@ public class TopicServiceImpl implements TopicService {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public long love(Long uid, Long tid) {
+		try {
+			Long count = loveService.love(uid, tid);
+			if(count == 1){
+				this.updateCount(tid, Types.loves.toString(), +1);
+			} else {
+				this.updateCount(tid, Types.loves.toString(), -1);
+			}
+			return count;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return 0L;
 	}
 		
 }

@@ -6,4 +6,5 @@ public interface LoveService {
 
 	boolean isLove(Long uid, Long tid);
 	
+	Long getLoveCount(Long tid);
 }

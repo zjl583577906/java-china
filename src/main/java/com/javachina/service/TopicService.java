@@ -24,6 +24,8 @@ public interface TopicService {
 	
 	boolean delete(Long tid);
 
-	boolean updateCount(Long tid, String type, int count);
+	boolean updateCount(Long tid, String type, long count);
+
+	long love(Long uid, Long tid);
 		
 }

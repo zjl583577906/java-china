@@ -1,4 +1,4 @@
-#include("./common/header.html")
+#include("./common/header.html",{title:topic.title ?! ''})
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -13,8 +13,7 @@
                     <h1 class="panel-title">$!{topic.title}</h1>
                     <small class="text-muted">
                         <span>By <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
-                        <span>${fmtdate(topic.create_time)}</span>&nbsp;•&nbsp;
-                        <span>${topic.views}次点击</span>
+                        <span>${fmtdate(topic.create_time)}</span>
                         #if(null!=login_user && topic.uid == login_user.uid)
                         &nbsp;•&nbsp;&nbsp;<span><a href="${base_url('/topic/edit/') + topic.tid}">编辑</a></span>
                         #end
@@ -23,19 +22,23 @@
                 <div class="panel-body topic-detail">
                     ${topic.content}
                 </div>
-                #if(null != login_user)
                 <div class="panel-footer topic-footer">
-                	<div class="heart " id="like1" rel="like"></div> 
-                	<div class="likeCount" id="likeCount1">${topic.loves}</div>
+                	#if(is_love)
+                	<div class="heart heartAnimation" id="like_topic" tid="${topic.tid}" rel="unlike"></div>
+                	#else
+                	<div class="heart " id="like_topic" tid="${topic.tid}" rel="like"></div>
+                	#end
+                	<div class="likeCount" id="likeCount">${topic.loves}</div>
                 	<div class="pull-right" style="margin-top: -20px">
-	                	#if(!is_favorite)
-	                	<a role="button" class="" href="${base_url('/topic/follow/') + topic.tid}"><small class="text-muted">加入收藏</small></a>
+                		<small class="text-muted">${topic.views}次点击&nbsp;•&nbsp;</small>
+                		<small class="text-muted">${topic.favorites}人收藏&nbsp;•&nbsp;</small>
+	                	#if(is_favorite)
+	                	<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);"><small class="text-muted">取消收藏</small></a>
 	                	#else
-	                	<a role="button" class="" href="${base_url('/topic/unfollow/') + topic.tid}"><small class="text-muted">取消收藏</small></a>
+						<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);"><small class="text-muted">加入收藏</small></a>	                	
 	                	#end
                 	</div>
                 </div>
-                #end
             </div><!-- /.panel content -->
             
             #if(topic.comments > 0)
@@ -111,25 +114,39 @@
 $(document).ready(function(){
 
 	$('body').on("click",'.heart',function(){
-		
 		var A=$(this).attr("id");
 		var B=A.split("like");
 		var messageID=B[1];
-		var C=parseInt($("#likeCount"+messageID).html());
+		var C=parseInt($("#likeCount").text());
 		$(this).css("background-position","")
-		var D=$(this).attr("rel");
-	   
-		if(D === 'like') {      
-			$("#likeCount"+messageID).html(C+1);
-			$(this).addClass("heartAnimation").attr("rel","unlike");
-		}
-		else{
-			$("#likeCount"+messageID).html(C-1);
-			$(this).removeClass("heartAnimation").attr("rel","like");
-			$(this).css("background-position","left");
-		}
+		var D = $("#likeCount");
+	    
+		var _this = $(this);
+		var tid = $(this).attr('tid');
+		$.post("${base_url('/love')}", {tid:tid}, function(data){
+			if(data && data != ''){
+				if(data == '1'){
+					D.text(C+1);
+					_this.addClass("heartAnimation").attr("rel","unlike");
+				}else{
+					D.text(C-1);
+					_this.removeClass("heartAnimation").attr("rel","like");
+					_this.css("background-position","left");
+				}
+			}
+		});
 	});
-
+	
+	$('body').on("click",'.follow',function(){
+		var tid = $(this).attr("tid");
+		var _this = $(this);
+		$.post("${base_url('/favorite')}", {type:'topic', tid:tid}, function(data){
+			if(data && data != ''){
+				window.location.reload();
+			}
+		});
+	});
+	
 });
 
 </script>  

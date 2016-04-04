@@ -12,7 +12,7 @@ body {
 	font-size: 14px;
 	line-height: 1.53846154;
 	direction: ltr;
-	-webkit-font-smoothing: antialiased;
+	/* -webkit-font-smoothing: antialiased; */
 	font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
 	-ms-overflow-style: -ms-autohiding-scrollbar
 }
@@ -21123,7 +21123,7 @@ a.text-muted:hover {
 
 .profile-sidebar-item.profile-avatar img {
 	width: 100%;
-	max-width: 250px
+	max-width: 120px;
 }
 
 .profile-sidebar-item.profile-avatar.shadowed-light::before {
