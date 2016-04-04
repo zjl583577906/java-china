@@ -16,6 +16,8 @@ public class Userinfo implements Serializable {
 	
 	private String nick_name;
 	
+	private String jobs;
+	
 	private String web_site;
 	
 	private String github;
@@ -72,6 +74,14 @@ public class Userinfo implements Serializable {
 
 	public void setInstructions(String instructions) {
 		this.instructions = instructions;
+	}
+
+	public String getJobs() {
+		return jobs;
+	}
+
+	public void setJobs(String jobs) {
+		this.jobs = jobs;
 	}
 	
 }

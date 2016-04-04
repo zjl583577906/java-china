@@ -67,6 +67,7 @@
                     <h3 class="panel-title"><small>${profile.username} 最近回复了</small></h3>
                 </div>
                 <div class="panel-body">
+                	#if(null != commentPage && null != commentPage.results)
                     <ul class="media-list">
                     	#for(comment : commentPage.results)
                     	<li class="media">
@@ -81,6 +82,7 @@
                         <hr class="smallhr">
                     	#end
                     </ul>
+                    #end
                 </div>
             </div><!-- /.comments -->
         </div><!-- /.col-md-8 -->

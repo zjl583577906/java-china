@@ -6,7 +6,7 @@
                 <div class="panel-heading topic-detail-heading">
                     <div class="pull-right">
                     	<a href="${base_url('/member/') + topic.user_name}" title="${topic.user_name}">
-                    		<img class="media-object avatar avatar-sm" src="${topic.avatar}" alt="${topic.user_name}">
+                    		<img class="media-object avatar avatar-sm img-circle" src="${topic.avatar}" alt="${topic.user_name}">
                     	</a>
                     </div>
                     <p><a href="${base_url('/')}">首页</a> / <a href="${base_url('/go/') + topic.node_slug}">$!{topic.node_name}</a></p>
@@ -128,10 +128,12 @@ $(document).ready(function(){
 				if(data == '1'){
 					D.text(C+1);
 					_this.addClass("heartAnimation").attr("rel","unlike");
-				}else{
+				}else if(data == '0'){
 					D.text(C-1);
 					_this.removeClass("heartAnimation").attr("rel","like");
 					_this.css("background-position","left");
+				} else if(data == 'signin'){
+					go_signin();
 				}
 			}
 		});
@@ -142,7 +144,11 @@ $(document).ready(function(){
 		var _this = $(this);
 		$.post("${base_url('/favorite')}", {type:'topic', tid:tid}, function(data){
 			if(data && data != ''){
-				window.location.reload();
+				 if(data == 'signin'){
+					 go_signin();
+				 } else{
+					window.location.reload();	
+				}
 			}
 		});
 	});

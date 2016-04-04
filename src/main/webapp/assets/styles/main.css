@@ -29117,9 +29117,14 @@ transform
 	padding: 2px;
 }
 
+.home-panel .nav-tabs{
+	bottom: 0;
+}
+
 .home-panel li a{
 	color:#4C5064;
 }
+
 .home-panel li a:HOVER{
 	color:#232020;
 }
