@@ -67,7 +67,7 @@ public class UserServiceImpl implements UserService {
 			
 			String avatar = "avatar/default/" + StringKit.random(5) + ".png";
 			
-			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, avatar, create_time, update_time) values(?, ?, ?, ?, ?)",
+			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, avatar, create_time, update_time) values(?, ?, ?, ?, ?, ?)",
 					loginName, pwd, email, avatar, time, time).key();
 			
 			User user = this.getUser(uid);
