@@ -9,6 +9,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.ImageTypes;
 import com.javachina.Types;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.User;
@@ -115,12 +116,15 @@ public class UserServiceImpl implements UserService {
 			map.put("username", user.getLogin_name());
 			map.put("uid", uid);
 			map.put("email", user.getEmail());
-			String avatar = ImageKit.getAvatar(user.getAvatar());
+			String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.normal);
 			map.put("avatar", avatar);
 			map.put("create_time", user.getCreate_time());
 			
 			Userinfo userinfo = userinfoService.getUserinfo(uid);
 			if(null != userinfo){
+				map.put("jobs", userinfo.getJobs());
+				map.put("github", userinfo.getGithub());
+				map.put("nick_name", userinfo.getNick_name());
 				map.put("signature", userinfo.getSignature());
 				map.put("website", userinfo.getWeb_site());
 				map.put("instructions", userinfo.getInstructions());

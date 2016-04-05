@@ -14,6 +14,7 @@ import com.blade.web.http.Response;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.User;
 import com.javachina.service.UserService;
+import com.javachina.service.UserinfoService;
 
 import blade.kit.EncrypKit;
 import blade.kit.StringKit;
@@ -23,6 +24,9 @@ public class UserController extends BaseController {
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private UserinfoService userinfoService;
 	
 	/**
 	 * 用户主页
@@ -67,39 +71,39 @@ public class UserController extends BaseController {
 	 * 个人设置
 	 */
 	@Route(value = "settings", method = HttpMethod.POST)
-	public ModelAndView settings(Request request, Response response){
+	public void settings(Request request, Response response){
 		
 		User user = SessionKit.getLoginUser();
 		if(null == user){
-			response.go("/");
-			return null;
+			response.text(this.SIGNIN);
+			return;
 		}
-		
-		Map<String, Object> profile = userService.getUserDetail(user.getUid());
-		request.attribute("profile", profile);
 		
 		String type = request.query("type");
 		if(StringKit.isBlank(type)){
-			return this.getView("settings");
+			return;
 		}
+		
 		String avatar = request.query("avatar");
 		
 		// 修改头像
 		if(type.equals("avatar") && StringKit.isNotBlank(avatar)){
 			userService.updateAvatar(user.getUid(), avatar);
-			profile = userService.getUserDetail(user.getUid());
-			request.attribute("profile", profile);
-			request.attribute(this.INFO, "头像修改成功");
-			return this.getView("settings");
+			response.text(this.SUCCESS);
+			return;
 		}
 		
 		// 修改基本信息
 		if(type.equals("info")){
+			String nickName = request.query("nick_name");
+			String jobs = request.query("jobs");
+			String webSite = request.query("web_site");
+			String github = request.query("github");
+			String signature = request.query("signature");
+			String instructions = request.query("instructions");
+			userinfoService.update(user.getUid(), nickName, jobs, webSite, github, signature, instructions);
 			userService.updateAvatar(user.getUid(), avatar);
-			profile = userService.getUserDetail(user.getUid());
-			request.attribute("profile", profile);
-			request.attribute(this.INFO, "头像修改成功");
-			return this.getView("settings");
+			response.text(this.SUCCESS);
 		}
 				
 		// 修改密码
@@ -109,26 +113,24 @@ public class UserController extends BaseController {
 			String newpwd = request.query("newpwd");
 			
 			if(StringKit.isBlank(curpwd)){
-				request.attribute(this.ERROR, "请输入当前密码");
-				return this.getView("settings");
+				response.text(this.NOTNULL);
+				return;
 			}
 			if(StringKit.isBlank(newpwd)){
-				request.attribute(this.ERROR, "请输入新密码");
-				return this.getView("settings");
+				response.text(this.NOTNULL);
+				return;
 			}
 			
 			if(!EncrypKit.md5(user.getLogin_name() + curpwd).equals(user.getPass_word())){
-				request.attribute(this.ERROR, "当前密码输入错误");
-				return this.getView("settings");
+				response.text("pwd_error");
+				return;
 			}
 			
 			String new_pwd = EncrypKit.md5(user.getLogin_name() + newpwd);
 			userService.updatePwd(user.getUid(), new_pwd);
-			request.attribute(this.INFO, "密码修改成功");
-			return this.getView("settings");
+			response.text(this.SUCCESS);
 		}
 		
-		return this.getView("settings");
 	}
 	
 }

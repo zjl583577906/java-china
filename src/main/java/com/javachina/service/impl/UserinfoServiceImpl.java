@@ -1,5 +1,6 @@
 package com.javachina.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
@@ -47,7 +48,41 @@ public class UserinfoServiceImpl implements UserinfoService {
 	}
 	
 	@Override
-	public boolean update( String nickName, String webSite, String github, String email, String signature, String instructions ) {
+	public boolean update(Long uid, String nickName, String jobs, String webSite, String github, String signature, String instructions) {
+		if(null != uid){
+			StringBuffer updateSql = new StringBuffer("update t_userinfo set ");
+			List<Object> params = new ArrayList<Object>();
+			if(null != nickName){
+				updateSql.append("nick_name = ?");
+				params.add(nickName);
+			}
+			if(null != jobs){
+				updateSql.append("jobs = ?");
+				params.add(jobs);
+			}
+			if(null != webSite){
+				updateSql.append("web_site = ?");
+				params.add(webSite);
+			}
+			if(null != github){
+				updateSql.append("github = ?");
+				params.add(github);
+			}
+			if(null != signature){
+				updateSql.append("signature = ?");
+				params.add(signature);
+			}
+			if(null != instructions){
+				updateSql.append("instructions = ?");
+				params.add(instructions);
+			}
+			if(params.size() > 0){
+				updateSql.append(" where uid = ?");
+				params.add(uid);
+				AR.update(updateSql.toString(), params.toArray()).executeUpdate();
+			}
+			return true;
+		}
 		return false;
 	}
 	

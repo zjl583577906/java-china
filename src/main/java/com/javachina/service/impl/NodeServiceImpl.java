@@ -9,6 +9,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.ImageTypes;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.Node;
 import com.javachina.service.NodeService;
@@ -146,7 +147,7 @@ public class NodeServiceImpl implements NodeService {
 			map.put("childs", childs);
 			map.put("description", node.getDescription());
 			if(StringKit.isNotBlank(node.getPic())){
-				String pic = ImageKit.getAvatar(node.getPic());
+				String pic = ImageKit.getAvatar(node.getPic(), ImageTypes.small);
 				map.put("pic", pic);
 			}
 		}

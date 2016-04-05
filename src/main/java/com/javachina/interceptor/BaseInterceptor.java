@@ -16,6 +16,7 @@ public class BaseInterceptor implements Interceptor {
 		
 		request.attribute("base", request.contextPath());
 		request.attribute("version", Constant.APP_VERSION);
+		request.attribute("cdn", Constant.CDN_URL);
 		
 		String uri = request.uri();
 		

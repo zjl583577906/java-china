@@ -6,10 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
-public class ImageKit {
+import com.javachina.ImageTypes;
 
-	public static String getAvatar(String avatar){
-		return QiniuKit.getUrl(avatar);
+public class ImageKit {
+	
+	public static String getAvatar(String avatar, ImageTypes imageTypes){
+		return QiniuKit.getUrl(avatar + '-' + imageTypes.toString());
 	}
 	
 	@SuppressWarnings("resource")

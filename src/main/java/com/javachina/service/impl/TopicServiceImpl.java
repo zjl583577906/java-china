@@ -10,6 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.ImageTypes;
 import com.javachina.Types;
 import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.DateKit;
@@ -166,7 +167,7 @@ public class TopicServiceImpl implements TopicService {
 		map.put("update_time", topic.getUpdate_time());
 		map.put("user_name", user.getLogin_name());
 		
-		String avatar = ImageKit.getAvatar(user.getAvatar());
+		String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.small);
 		
 		map.put("avatar", avatar);
 		map.put("node_name", node.getTitle());

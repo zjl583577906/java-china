@@ -10,6 +10,7 @@ import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.ImageTypes;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.Comment;
 import com.javachina.model.User;
@@ -85,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
 
 			map.put("cid", comment.getCid());
 			map.put("reply_name", comment_user.getLogin_name());
-			map.put("reply_avatar", ImageKit.getAvatar(comment_user.getAvatar()));
+			map.put("reply_avatar", ImageKit.getAvatar(comment_user.getAvatar(), ImageTypes.small));
 			
 			String content = comment.getContent().replaceAll("\r\n", "<br/>");
 			map.put("content", content);

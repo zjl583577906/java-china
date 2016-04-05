@@ -7,9 +7,9 @@
                     <h3 class="panel-title">用户编辑</h3>
                 </div>
                 <div class="panel-body">
-                	#if(null!=base_error)<div class="alert alert-danger">${base_error}</div>#end
-                	#if(null!=base_success)<div class="alert alert-info">${base_success}</div>#end
-                	<form action="${base_url('/settings?type=info')}" class="form-horizontal" role="form" method="post">
+                	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
+                	#if(null!=info)<div class="alert alert-info">${info}</div>#end
+                	<form id="info_form" class="form-horizontal" role="form">
                         <div class="form-group">
                             <label for="username" class="col-sm-2 control-label">用户名</label>
                             <div class="col-sm-10">
@@ -54,7 +54,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default btn-sm">保存信息</button>
+                                <button type="button" class="btn btn-default btn-sm submit">保存信息</button>
                             </div>
                         </div>
                     </form>
@@ -66,8 +66,8 @@
                     <h3 class="panel-title">更换头像</h3>
                 </div>
                 <div class="panel-body">
-                	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
-                	#if(null!=info)<div class="alert alert-success">${info}</div>#end
+                	#if(null!=avatar_error)<div class="alert alert-danger">${avatar_error}</div>#end
+                	#if(null!=avatar_info)<div class="alert alert-success">${avatar_info}</div>#end
                 	<form action="${base_url('/settings?type=avatar')}" method="post">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">当前头像</label>
@@ -92,7 +92,7 @@
                 </div>
                 <div class="panel-body">
                 	#if(null!=pwd_error)<div class="alert alert-danger">${pwd_error}</div>#end
-                	#if(null!=pwd_success)<div class="alert alert-danger">${pwd_success}</div>#end
+                	#if(null!=pwd_info)<div class="alert alert-danger">${pwd_info}</div>#end
                 	<form action="${base_url('/settings?type=pwd')}" class="form-horizontal" role="form" method="post">
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">当前密码</label>
@@ -125,8 +125,36 @@
 	</div><!-- /.row -->
     </div><!-- /.container -->
 #include("./common/footer.html") 
-<script type="text/javascript" src="${base}/assets/scripts/jquery.upload.js"></script>
+<script type="text/javascript" src="${cdn}/assets/scripts/jquery.upload.js"></script>
 <script type="text/javascript">
+$(document).ready(function(){
+	
+	var p1 = {};
+	$("#info_form :input").change(function (){
+		var key = $(this).attr('name');
+		p1[key] = $(this).val();
+	});
+	
+	$("#info_form .submit").on('click', function(){
+		console.log(p1);
+		$.post("${base_url('/settings?type=info')}", p1, function(data){
+			if(data){
+				if(data == 'signin'){
+					go_signin();
+				} else if(data == 'success'){
+					swal({
+						title:"提示信息", 
+						text:"保存成功!", 
+						type:"success",
+						timer: 2000
+					});
+				}
+			}
+		});
+	});
+	
+});
+	
 //上传方法
 function doUpload() {
 	// 上传方法

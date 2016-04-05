@@ -12,6 +12,8 @@ public class BaseController {
 	protected final String SUCCESS = "success";
 	protected final String FAILURE = "failure";
 	protected final String STATUS = "status";
+	protected final String SIGNIN = "signin";
+	protected final String NOTNULL = "notnull";
 	
 	final int count = 20;
 	

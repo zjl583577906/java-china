@@ -39,6 +39,7 @@ public class App extends Bootstrap {
 		// 初始化配置
 		Constant.SITE_URL = blade.config().get("app.site_url");
 		Constant.APP_VERSION = blade.config().get("app.version");
+		Constant.CDN_URL = blade.config().get("qiniu.cdn");
 		
 		// 配置邮箱
 		Constant.MAIL_HOST = blade.config().get("app.mail.host");

@@ -3,6 +3,7 @@ package com.javachina.ext;
 import javax.servlet.ServletContext;
 
 import com.blade.context.BladeWebContext;
+import com.javachina.ImageTypes;
 import com.javachina.kit.DateKit;
 import com.javachina.kit.ImageKit;
 
@@ -28,7 +29,7 @@ public class Funcs {
 	}
 	
 	public static String avatar_url(String avatar) {
-		return ImageKit.getAvatar(avatar);
+		return ImageKit.getAvatar(avatar, ImageTypes.normal);
 	}
 	
 	/**

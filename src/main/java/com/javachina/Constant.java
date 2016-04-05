@@ -10,6 +10,7 @@ public class Constant {
 	public static final String LOGIN_SESSION_KEY = "login_user";
 	
 	public static String SITE_URL = "";
+	public static String CDN_URL = "";
 	public static String APP_VERSION = "";
 	
 	public static String MAIL_HOST;

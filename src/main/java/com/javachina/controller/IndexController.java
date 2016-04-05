@@ -406,7 +406,7 @@ public class IndexController extends BaseController {
 	public void favorite(Request request, Response response){
 		User user = SessionKit.getLoginUser();
 		if(null == user){
-			response.text("signin");
+			response.text(this.SIGNIN);
 			return;
 		}
 		
@@ -433,7 +433,7 @@ public class IndexController extends BaseController {
 		
 		User user = SessionKit.getLoginUser();
 		if(null == user){
-			response.text("signin");
+			response.text(this.SIGNIN);
 			return null;
 		}
 		
