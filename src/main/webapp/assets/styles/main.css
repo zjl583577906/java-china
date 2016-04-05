@@ -100,6 +100,10 @@ b, optgroup, strong {
 	color: #292828;
 }
 
+.topic-detail img{
+	max-width: 100%;
+}
+
 .topic-detail strong{
 	color:blank;
 }
