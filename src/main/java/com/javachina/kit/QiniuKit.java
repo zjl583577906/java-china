@@ -1,6 +1,7 @@
 package com.javachina.kit;
 
 import java.io.File;
+import java.util.Random;
 
 import com.blade.Blade;
 import com.qiniu.common.QiniuException;
@@ -11,24 +12,25 @@ import com.qiniu.util.StringMap;
 
 public class QiniuKit {
 
+	private static final Random R = new Random();
 	private static String ACCESS_KEY = "";
 	private static String SECRET_KEY = "";
 	private static String BUCKET_NAME = "";
-	private static String CDN = "";
+	private static String[] CDN = null;
 	private static Auth AUTH = null;
 
 	static {
 		ACCESS_KEY = Blade.me().config().get("qiniu.ACCESS_KEY");
 		SECRET_KEY = Blade.me().config().get("qiniu.SECRET_KEY");
 		BUCKET_NAME = Blade.me().config().get("qiniu.BUCKET_NAME");
-
-		CDN = Blade.me().config().get("qiniu.cdn");
+		
+		CDN = Blade.me().config().get("qiniu.cdn").split(",");
 		AUTH = Auth.create(ACCESS_KEY, SECRET_KEY);
-
 	}
 
 	public static String getUrl(String key) {
-		return CDN + "/" + key;
+		int pos = R.nextInt(CDN.length);
+		return CDN[pos] + "/" + key;
 	}
 
 	public static boolean upload(File file, String key) {
