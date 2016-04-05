@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 		String pwd = EncrypKit.md5(loginName + passWord);
 		try {
 			
-			String avatar = "avatar/default/" + StringKit.random(5) + ".png";
+			String avatar = "avatar/default/" + StringKit.getRandomNumber(1, 5) + ".png";
 			
 			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, avatar, status, create_time, update_time) values(?, ?, ?, ?, ?, ?, ?)",
 					loginName, pwd, email, avatar, 0, time, time).key();

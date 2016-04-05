@@ -32,7 +32,7 @@ public class SendMailServiceImpl implements SendMailService {
 		try {
 			String link_url = Constant.SITE_URL + "/active/" + code;
 			
-			String url = "<a href='"+link_url+"'>"+ link_url +code+"</a>";
+			String url = "<a href='"+link_url+"'>"+ link_url + "</a>";
 	        JetEngine engine = JetEngine.create();
 	        
 	        JetTemplate template = engine.getTemplate("/template/register.html");
@@ -70,7 +70,7 @@ public class SendMailServiceImpl implements SendMailService {
 		try {
 			String link_url = Constant.SITE_URL + "/active/" + code;
 			
-			String url = "<a href='"+link_url+"'>"+ link_url +code+"</a>";
+			String url = "<a href='"+link_url+"'>"+ link_url +"</a>";
 	        JetEngine engine = JetEngine.create();
 	        
 	        JetTemplate template = engine.getTemplate("/template/forgot.html");
