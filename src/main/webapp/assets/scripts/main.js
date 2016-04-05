@@ -5,8 +5,14 @@ function go_signin(){
 		type:"warning",
 		confirmButtonText:"点击跳转",
 		timer: 3000
-	},function(){
-		window.location.href= BASE + '/signin';
+	},function(isConfirm){
+		if (isConfirm) {
+			setTimeout(function(){
+				window.location.href= BASE + '/signin';
+			}, 300);
+		} else{
+			window.location.href= BASE + '/signin';
+		}
 	});
 }
 function dispatch() {
