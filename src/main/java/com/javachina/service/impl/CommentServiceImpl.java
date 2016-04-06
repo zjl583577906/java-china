@@ -11,6 +11,7 @@ import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.javachina.ImageTypes;
+import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.ImageKit;
 import com.javachina.model.Comment;
 import com.javachina.model.User;
@@ -89,7 +90,8 @@ public class CommentServiceImpl implements CommentService {
 			map.put("reply_avatar", ImageKit.getAvatar(comment_user.getAvatar(), ImageTypes.small));
 			
 			String content = comment.getContent().replaceAll("\r\n", "<br/>");
-			map.put("content", content);
+			String processed = Processor.process(content);
+			map.put("content", processed);
 		}
 		return map;
 	}

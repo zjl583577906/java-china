@@ -23,14 +23,15 @@
 										</a>
 									</div>
 								</div>
+								<!-- 
 								<hr>
 								<ul class="profile-sidebar-item profile-numbers-count">
 									<li><span class="bold">9854</span> followers</li>
 									<li><span class="bold">7964</span> following</li>
-								</ul>
+								</ul> -->
 								<hr>
 								#if(null != login_user)
-			                        <p class="ml20"><a href="${base_url('/notice')}">${login_user.notices} 条未读提醒</a></p>
+			                        <p class="ml20"><a href="${base_url('/notices')}">${login_user.notices} 条未读提醒</a></p>
 			                    #end
 							</div>
                         </div>

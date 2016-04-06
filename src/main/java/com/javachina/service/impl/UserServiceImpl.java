@@ -167,8 +167,11 @@ public class UserServiceImpl implements UserService {
 	public boolean updateCount(Long uid, String type, int count) {
 		if(null != uid && StringKit.isNotBlank(type)){
 			try {
-				String sql = "update t_user set %s = (%s + ?) where uid = ?";
-				AR.update(String.format(sql, type, type), count, uid).executeUpdate();
+				String sql = String.format("update t_user set %s = (%s + ?) where uid = ?", type, type) ;
+				if(count == -999){
+					sql = "update t_user set %s = 0 where uid = ?";
+				}
+				AR.update(sql, count, uid).executeUpdate();
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

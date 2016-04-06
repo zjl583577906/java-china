@@ -80,7 +80,7 @@ public class TopicController extends BaseController {
 			return this.getView("topic_add");
 		}
 		
-		if(content.length() > 10000){
+		if(content.length() > 5000){
 			request.attribute(this.ERROR, "内容太长了，试试少吐点口水。。。");
 			request.attribute("title", title);
 			request.attribute("content", content);
@@ -155,7 +155,7 @@ public class TopicController extends BaseController {
 	}
 	
 	/**
-	 * 发布帖子操作
+	 * 评论帖子操作
 	 */
 	@Route(value = "/comment/add", method = HttpMethod.POST)
 	public ModelAndView add_comment(Request request, Response response){
@@ -183,14 +183,14 @@ public class TopicController extends BaseController {
 			return this.getView("topic_detail");
 		}
 		
-		if(content.length() > 1000){
+		if(content.length() > 5000){
 			request.attribute(this.ERROR, "内容太长了，试试少吐点口水。。。");
 			this.putDetail(request, response, uid, tid);
 			request.attribute("content", content);
 			return this.getView("topic_detail");
 		}
 		
-		// 发布帖子
+		// 评论帖子
 		boolean flag = topicService.comment(uid, topic.getUid(), tid, content);
 		if(flag){
 			response.go("/topic/" + tid);

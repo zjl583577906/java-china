@@ -22,7 +22,7 @@ public class Notice implements Serializable {
 	
 	private String type;
 	
-	private Integer is_read;
+	private Boolean is_read;
 	
 	private Long create_time;
 	
@@ -60,11 +60,11 @@ public class Notice implements Serializable {
 		this.type = type;
 	}
 
-	public Integer getIs_read() {
+	public Boolean getIs_read() {
 		return is_read;
 	}
 
-	public void setIs_read(Integer is_read) {
+	public void setIs_read(Boolean is_read) {
 		this.is_read = is_read;
 	}
 

@@ -193,8 +193,12 @@ public class TopicServiceImpl implements TopicService {
 	public boolean updateCount(Long tid, String type, long count) {
 		if(null != tid && StringKit.isNotBlank(type)){
 			try {
-				String sql = "update t_topic set %s = (%s + ?) where tid = ?";
-				AR.update(String.format(sql, type, type), count, tid).executeUpdate();
+				StringBuffer upSql = new StringBuffer("update t_topic set %s = (%s + ?) ");
+				if(type.equals(Types.comments.toString())){
+					upSql.append(", update_time = " + DateKit.getCurrentUnixTime());
+				}
+				upSql.append(" where tid = ?");
+				AR.update(String.format(upSql.toString(), type, type), count, tid).executeUpdate();
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -211,6 +215,9 @@ public class TopicServiceImpl implements TopicService {
 			// 通知
 			if(!uid.equals(to_uid)){
 				noticeService.save(Types.comment.toString(), uid, to_uid, tid);
+				// 更新总评论数
+				settingsService.updateCount(Types.comment_count.toString(), +1);
+				userService.updateCount(to_uid, Types.notices.toString(), +1);
 			}
 			return true;
 		}

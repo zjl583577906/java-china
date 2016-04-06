@@ -20,6 +20,7 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.blade.web.multipart.FileItem;
 import com.javachina.Constant;
+import com.javachina.Types;
 import com.javachina.kit.ImageKit;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.Activecode;
@@ -207,6 +208,25 @@ public class IndexController extends BaseController {
 	}
 	
 	/**
+	 * 通知列表
+	 */
+	@Route(value = "/notices")
+	public ModelAndView notices(Request request, Response response){
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.go("/signin");
+			return null;
+		}
+		
+		List<Map<String, Object>> notices = noticeService.read(user.getUid());
+		request.attribute("notices", notices);
+		
+		// 清空我的通知
+//		userService.updateCount(user.getUid(), Types.notices.toString(), -999);
+		return this.getView("notices");
+	}
+	
+	/**
 	 * 注册操作
 	 */
 	@Route(value = "/signup", method = HttpMethod.POST)
@@ -284,6 +304,7 @@ public class IndexController extends BaseController {
 			request.attribute(this.ERROR, "激活失败");
 		} else {
 			request.attribute(this.INFO, "激活成功，您可以凭密码登陆");
+			settingsService.updateCount(Types.user_count.toString(), +1);
 		}
 		return this.getView("active");
 	}
