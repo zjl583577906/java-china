@@ -37,7 +37,10 @@ public class App extends Bootstrap {
 				blade.config().get("jdbc.user"), 
 				blade.config().get("jdbc.pass"), true);
 		
-		DB.setCache(new FIFOCache());
+		// 开启数据库缓存
+		if(blade.config().getAsBoolean("app.db_cahce")){
+			DB.setCache(new FIFOCache());
+		}
 		
 		// 初始化配置
 		Constant.SITE_URL = blade.config().get("app.site_url");
