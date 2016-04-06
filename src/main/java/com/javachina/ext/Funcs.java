@@ -1,8 +1,6 @@
 package com.javachina.ext;
 
-import javax.servlet.ServletContext;
-
-import com.blade.context.BladeWebContext;
+import com.javachina.Constant;
 import com.javachina.ImageTypes;
 import com.javachina.kit.DateKit;
 import com.javachina.kit.ImageKit;
@@ -17,15 +15,7 @@ public class Funcs {
 	 * @return
 	 */
 	public static String base_url(String path) {
-		ServletContext servletContext = BladeWebContext.servletContext();
-		String ctx = servletContext.getContextPath();
-		if(StringKit.isBlank(path)){
-			return ctx;
-		}
-		
-		String val = ctx + "/" + path;
-		
-		return val.replaceAll("//", "/");
+		return Constant.SITE_URL + path;
 	}
 	
 	public static String avatar_url(String avatar) {
