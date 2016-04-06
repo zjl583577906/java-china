@@ -138,10 +138,14 @@ public class NodeServiceImpl implements NodeService {
 			map.put("node_slug", node.getSlug());
 			map.put("topics", node.getTopics());
 			map.put("pid", node.getPid());
-			Node parent = this.getNode(node.getPid());
-			if(null != parent){
-				map.put("parent_name", parent.getTitle());
+			
+			if(node.getPid() > 0){
+				Node parent = this.getNode(node.getPid());
+				if(null != parent){
+					map.put("parent_name", parent.getTitle());
+				}
 			}
+			
 			// 查询子节点数
 			Long childs = getNodeCount(node.getNid());
 			map.put("childs", childs);

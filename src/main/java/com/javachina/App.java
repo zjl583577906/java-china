@@ -7,6 +7,7 @@ import com.blade.Bootstrap;
 import com.blade.context.BladeWebContext;
 import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.DB;
+import com.blade.jdbc.cache.memory.FIFOCache;
 import com.bladejava.view.template.JetbrickTemplateEngine;
 import com.javachina.ext.Funcs;
 import com.javachina.ext.Methods;
@@ -35,6 +36,8 @@ public class App extends Bootstrap {
 				blade.config().get("jdbc.url"), 
 				blade.config().get("jdbc.user"), 
 				blade.config().get("jdbc.pass"), true);
+		
+		DB.setCache(new FIFOCache());
 		
 		// 初始化配置
 		Constant.SITE_URL = blade.config().get("app.site_url");
