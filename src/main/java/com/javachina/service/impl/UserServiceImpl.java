@@ -1,5 +1,6 @@
 package com.javachina.service.impl;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,8 @@ import com.blade.jdbc.QueryParam;
 import com.javachina.ImageTypes;
 import com.javachina.Types;
 import com.javachina.kit.ImageKit;
+import com.javachina.kit.QiniuKit;
+import com.javachina.model.LoginUser;
 import com.javachina.model.User;
 import com.javachina.model.Userinfo;
 import com.javachina.service.ActivecodeService;
@@ -126,7 +129,7 @@ public class UserServiceImpl implements UserService {
 				map.put("github", userinfo.getGithub());
 				map.put("nick_name", userinfo.getNick_name());
 				map.put("signature", userinfo.getSignature());
-				map.put("website", userinfo.getWeb_site());
+				map.put("web_site", userinfo.getWeb_site());
 				map.put("instructions", userinfo.getInstructions());
 			}
 		}
@@ -175,13 +178,20 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public boolean updateAvatar(Long uid, String avatar) {
+	public boolean updateAvatar(Long uid, String avatar_path) {
 		try {
-			if(null == uid || StringKit.isBlank(avatar)){
+			if(null == uid || StringKit.isBlank(avatar_path)){
 				return false;
 			}
-			AR.update("update t_user set avatar = ? where uid = ?", avatar, uid).executeUpdate();
-			return true;
+			File file = new File(avatar_path);
+			if(file.exists()){
+				String key = "avatar/" + file.getName();
+				boolean flag = QiniuKit.upload(file, key);
+				if(flag){
+					AR.update("update t_user set avatar = ? where uid = ?", key, uid).executeUpdate();
+					return true;
+				}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -200,6 +210,33 @@ public class UserServiceImpl implements UserService {
 			e.printStackTrace();
 		}
 		return false;
+	}
+
+	@Override
+	public LoginUser getLoginUser(User user, Long uid) {
+		if(null == user){
+			user = this.getUser(uid);
+		}
+		if(null != user){
+			LoginUser loginUser = new LoginUser();
+			loginUser.setUid(user.getUid());
+			loginUser.setUser_name(user.getLogin_name());
+			loginUser.setPass_word(user.getPass_word());
+			loginUser.setStatus(user.getStatus());
+			loginUser.setRole_id(user.getRole_id());
+			String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.normal);
+			loginUser.setAvatar(avatar);
+			loginUser.setComments(user.getComments());
+			loginUser.setTopics(user.getTopics());
+			loginUser.setNotices(user.getNotices());
+			Userinfo userinfo = userinfoService.getUserinfo(user.getUid());
+			if(null != userinfo){
+				loginUser.setJobs(userinfo.getJobs());
+				loginUser.setNick_name(userinfo.getNick_name());
+			}
+			return loginUser;
+		}
+		return null;
 	}
 	
 }

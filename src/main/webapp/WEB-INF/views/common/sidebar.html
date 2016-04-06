@@ -12,11 +12,11 @@
                         <div class="row">
                         	<div class="profile-sidebar">
 								<div class="profile-sidebar-item profile-avatar">
-									<img src="${avatar_url(login_user.avatar)}" alt="${login_user.login_name}" class="img-circle"/>
+									<img src="${login_user.avatar}" alt="${login_user.user_name}" class="img-circle"/>
 								</div>
 								<div class="profile-sidebar-item profile-info">
-									<span class="h5 bold">${login_user.login_name}</span>
-									<p>Web Developer</p>
+									<span class="h5 bold">${login_user.user_name}</span>
+									<p>${login_user.jobs ?! ''}</p>
 									<div class="w150 center-block mt10">
 										<a class="btn btn-danger btn-block" href="${base_url('/topic/add')}">
 											<span>发布新帖子</span>

@@ -15,8 +15,8 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.controller.BaseController;
 import com.javachina.kit.SessionKit;
+import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
-import com.javachina.model.User;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 
@@ -78,7 +78,7 @@ public class IndexController extends BaseController {
 	@Route(value = "nodes/add", method = HttpMethod.POST)
 	public ModelAndView add_node(Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			return null;
 		}
@@ -130,7 +130,7 @@ public class IndexController extends BaseController {
 	@Route(value = "nodes/edit", method = HttpMethod.POST)
 	public ModelAndView edit_node(Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			return null;
 		}

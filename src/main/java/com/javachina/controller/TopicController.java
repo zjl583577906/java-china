@@ -16,8 +16,8 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.Types;
 import com.javachina.kit.SessionKit;
+import com.javachina.model.LoginUser;
 import com.javachina.model.Topic;
-import com.javachina.model.User;
 import com.javachina.service.CommentService;
 import com.javachina.service.FavoriteService;
 import com.javachina.service.LoveService;
@@ -62,7 +62,7 @@ public class TopicController extends BaseController {
 		String content = request.query("content");
 		Long nid = request.queryAsLong("nid");
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		
 		putData(request);
 		
@@ -109,7 +109,7 @@ public class TopicController extends BaseController {
 	@Route(value = "/topic/:tid", method = HttpMethod.GET)
 	public ModelAndView show_add_topic(@PathVariable("tid") Long tid, Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		
 		Long uid = null;
 		if(null != user){
@@ -160,7 +160,7 @@ public class TopicController extends BaseController {
 	@Route(value = "/comment/add", method = HttpMethod.POST)
 	public ModelAndView add_comment(Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			response.go("/");
 			return null;

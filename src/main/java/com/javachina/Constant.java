@@ -8,6 +8,8 @@ public class Constant {
 
 	// 登录用户session key
 	public static final String LOGIN_SESSION_KEY = "login_user";
+
+	public static final String UPLOAD_FOLDER = "assets/temp";
 	
 	public static String SITE_URL = "";
 	public static String CDN_URL = "";

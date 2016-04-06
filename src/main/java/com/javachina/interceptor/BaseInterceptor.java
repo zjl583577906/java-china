@@ -6,7 +6,7 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.Constant;
 import com.javachina.kit.SessionKit;
-import com.javachina.model.User;
+import com.javachina.model.LoginUser;
 
 @Intercept
 public class BaseInterceptor implements Interceptor {
@@ -21,7 +21,7 @@ public class BaseInterceptor implements Interceptor {
 		String uri = request.uri();
 		
 		if(uri.indexOf("/admin/") != -1){
-			User user = SessionKit.getLoginUser();
+			LoginUser user = SessionKit.getLoginUser();
 			if(null == user){
 				response.go("/signin");
 				return false;

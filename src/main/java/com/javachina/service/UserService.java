@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
+import com.javachina.model.LoginUser;
 import com.javachina.model.User;
 
 public interface UserService {
@@ -23,6 +24,8 @@ public interface UserService {
 	
 	User signin(String loginName, String passWord);
 	
+	LoginUser getLoginUser(User user, Long uid);
+	
 	boolean delete(Long uid);
 	
 	boolean updateStatus(Long uid, Integer status);
@@ -33,7 +36,7 @@ public interface UserService {
 	
 	boolean updateCount(Long uid, String type, int count);
 
-	boolean updateAvatar(Long uid, String avatar);
+	boolean updateAvatar(Long uid, String avatar_path);
 
 	boolean updatePwd(Long uid, String new_pwd);
 	

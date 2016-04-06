@@ -1,8 +1,11 @@
 package com.javachina.controller;
 
+import java.io.File;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import com.blade.Blade;
 import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
@@ -16,9 +19,11 @@ import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.blade.web.multipart.FileItem;
-import com.javachina.kit.QiniuKit;
+import com.javachina.Constant;
+import com.javachina.kit.ImageKit;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.Activecode;
+import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
@@ -178,7 +183,8 @@ public class IndexController extends BaseController {
 			request.attribute("login_name", login_name);
 			return this.getView("signin");
 		}
-		SessionKit.setUser(request.session(), user);
+		LoginUser loginUser = userService.getLoginUser(user, null);
+		SessionKit.setLoginUser(request.session(), loginUser);
 		response.go("/");
 		return null;
 	}
@@ -333,7 +339,7 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "/uploadimg", method = HttpMethod.POST)
 	public void uploadimg(Request request, Response response){
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			return;
 		}
@@ -354,28 +360,7 @@ public class IndexController extends BaseController {
 			if(null == type){
 				type = "temp";
 			}
-			String key = "";
-			if(type.equals("avatar")){
-				key = type + "/" + user.getLogin_name() + suffix;
-			}
-			if(type.equals("node")){
-				String node = request.query("name");
-				key = type + "/" + node + suffix;
-			}
 			
-			JSONObject res = new JSONObject();
-			
-			boolean flag = QiniuKit.upload(fileItem.getFile(), key);
-			if(flag){
-				res.put("status", 200);
-				res.put("savekey", key);
-				res.put("url", QiniuKit.getUrl(key));
-			} else {
-				res.put("status", 500);
-			}
-			response.json(res.toString());
-			
-			/*
 			String saveName = DateKit.dateFormat(new Date(), "yyyyMMddHHmmssSSS")  + "_" + StringKit.getRandomChar(10) + suffix;
 			File file = new File(Blade.me().webRoot() + File.separator + Constant.UPLOAD_FOLDER + File.separator + saveName);
 			
@@ -387,6 +372,7 @@ public class IndexController extends BaseController {
 				
 				JSONObject res = new JSONObject();
 				res.put("status", 200);
+				res.put("savekey", filePath);
 				res.put("savepath", filePath);
 				res.put("url", Constant.SITE_URL + "/" + filePath);
 				
@@ -394,7 +380,7 @@ public class IndexController extends BaseController {
 				
 			} catch (Exception e) {
 				e.printStackTrace();
-			}*/
+			}
 			
 		}
 	}
@@ -404,7 +390,7 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "/favorite", method = HttpMethod.POST)
 	public void favorite(Request request, Response response){
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			response.text(this.SIGNIN);
 			return;
@@ -431,7 +417,7 @@ public class IndexController extends BaseController {
 	@Route(value = "/love", method = HttpMethod.POST)
 	public String love(Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			response.text(this.SIGNIN);
 			return null;

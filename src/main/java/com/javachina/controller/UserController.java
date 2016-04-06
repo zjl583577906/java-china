@@ -1,7 +1,9 @@
 package com.javachina.controller;
 
+import java.io.File;
 import java.util.Map;
 
+import com.blade.Blade;
 import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.QueryParam;
 import com.blade.route.annotation.Path;
@@ -12,6 +14,7 @@ import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.kit.SessionKit;
+import com.javachina.model.LoginUser;
 import com.javachina.model.User;
 import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
@@ -57,7 +60,7 @@ public class UserController extends BaseController {
 	@Route(value = "settings", method = HttpMethod.GET)
 	public ModelAndView show_settings(Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
+		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
 			response.go("/");
 			return null;
@@ -71,26 +74,30 @@ public class UserController extends BaseController {
 	 * 个人设置
 	 */
 	@Route(value = "settings", method = HttpMethod.POST)
-	public void settings(Request request, Response response){
+	public ModelAndView settings(Request request, Response response){
 		
-		User user = SessionKit.getLoginUser();
-		if(null == user){
+		LoginUser loginUser = SessionKit.getLoginUser();
+		if(null == loginUser){
 			response.text(this.SIGNIN);
-			return;
+			return null;
 		}
 		
 		String type = request.query("type");
 		if(StringKit.isBlank(type)){
-			return;
+			return null;
 		}
 		
 		String avatar = request.query("avatar");
 		
 		// 修改头像
 		if(type.equals("avatar") && StringKit.isNotBlank(avatar)){
-			userService.updateAvatar(user.getUid(), avatar);
+			String avatar_path = Blade.me().webRoot() + File.separator + avatar;
+			userService.updateAvatar(loginUser.getUid(), avatar_path);
+			
+			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+			SessionKit.setLoginUser(request.session(), loginUserTemp);
 			response.text(this.SUCCESS);
-			return;
+			return null;
 		}
 		
 		// 修改基本信息
@@ -101,35 +108,44 @@ public class UserController extends BaseController {
 			String github = request.query("github");
 			String signature = request.query("signature");
 			String instructions = request.query("instructions");
-			userinfoService.update(user.getUid(), nickName, jobs, webSite, github, signature, instructions);
-			userService.updateAvatar(user.getUid(), avatar);
+			userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, signature, instructions);
+			userService.updateAvatar(loginUser.getUid(), avatar);
+			
+			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+			SessionKit.setLoginUser(request.session(), loginUserTemp);
 			response.text(this.SUCCESS);
+			return null;
 		}
 				
 		// 修改密码
 		if(type.equals("pwd")){
 			
+			Map<String, Object> profile = userService.getUserDetail(loginUser.getUid());
+			request.attribute("profile", profile);
+			
 			String curpwd = request.query("curpwd");
 			String newpwd = request.query("newpwd");
 			
-			if(StringKit.isBlank(curpwd)){
-				response.text(this.NOTNULL);
-				return;
-			}
-			if(StringKit.isBlank(newpwd)){
-				response.text(this.NOTNULL);
-				return;
+			if(StringKit.isBlank(curpwd) || StringKit.isBlank(newpwd)){
+				request.attribute(this.ERROR, "参数不能为空!");
+				return this.getView("settings");
 			}
 			
-			if(!EncrypKit.md5(user.getLogin_name() + curpwd).equals(user.getPass_word())){
-				response.text("pwd_error");
-				return;
+			if(!EncrypKit.md5(loginUser.getUser_name() + curpwd).equals(loginUser.getPass_word())){
+				request.attribute(this.ERROR, "旧密码输入错误");
+				return this.getView("settings");
 			}
 			
-			String new_pwd = EncrypKit.md5(user.getLogin_name() + newpwd);
-			userService.updatePwd(user.getUid(), new_pwd);
-			response.text(this.SUCCESS);
+			String new_pwd = EncrypKit.md5(loginUser.getUser_name() + newpwd);
+			userService.updatePwd(loginUser.getUid(), new_pwd);
+			
+			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+			SessionKit.setLoginUser(request.session(), loginUserTemp);
+			
+			request.attribute(this.INFO, "密码修改成功");
+			return this.getView("settings");
 		}
+		return null;
 		
 	}
 	
