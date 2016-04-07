@@ -23,6 +23,7 @@ import com.javachina.service.UserinfoService;
 
 import blade.kit.DateKit;
 import blade.kit.EncrypKit;
+import blade.kit.FileKit;
 import blade.kit.StringKit;
 
 @Service
@@ -128,6 +129,7 @@ public class UserServiceImpl implements UserService {
 				map.put("jobs", userinfo.getJobs());
 				map.put("github", userinfo.getGithub());
 				map.put("nick_name", userinfo.getNick_name());
+				map.put("location", userinfo.getLocation());
 				map.put("signature", userinfo.getSignature());
 				map.put("web_site", userinfo.getWeb_site());
 				map.put("instructions", userinfo.getInstructions());
@@ -188,7 +190,18 @@ public class UserServiceImpl implements UserService {
 			}
 			File file = new File(avatar_path);
 			if(file.exists()){
-				String key = "avatar/" + file.getName();
+				
+				User user = this.getUser(uid);
+				if(null == user){
+					return false;
+				}
+				
+				String ext = FileKit.getExtension(file.getName());
+				if(StringKit.isBlank(ext)){
+					ext = "png";
+				}
+				String key = "avatar/" + user.getLogin_name() + "." + ext;
+				
 				boolean flag = QiniuKit.upload(file, key);
 				if(flag){
 					AR.update("update t_user set avatar = ? where uid = ?", key, uid).executeUpdate();

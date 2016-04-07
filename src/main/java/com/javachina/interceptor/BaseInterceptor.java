@@ -8,11 +8,18 @@ import com.javachina.Constant;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.LoginUser;
 
+import blade.kit.logging.Logger;
+import blade.kit.logging.LoggerFactory;
+
 @Intercept
 public class BaseInterceptor implements Interceptor {
 	
+	private static final Logger LOGGE = LoggerFactory.getLogger(BaseInterceptor.class);
+	
 	@Override
 	public boolean before(Request request, Response response) {
+		
+		LOGGE.info("user addr >>> " + request.address());
 		
 		request.attribute("base", request.contextPath());
 		request.attribute("version", Constant.APP_VERSION);

@@ -20,6 +20,8 @@ public class Userinfo implements Serializable {
 	
 	private String web_site;
 	
+	private String location;
+	
 	private String github;
 	
 	private String signature;
@@ -82,6 +84,14 @@ public class Userinfo implements Serializable {
 
 	public void setJobs(String jobs) {
 		this.jobs = jobs;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
 	}
 	
 }

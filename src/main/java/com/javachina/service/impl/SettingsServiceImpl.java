@@ -37,7 +37,7 @@ public class SettingsServiceImpl implements SettingsService {
 	@Override
 	public Map<String, Object> getSystemInfo() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Settings> settings = AR.find("select * from t_settings").list(Settings.class);
+		List<Settings> settings = AR.find("select * from t_settings").cache(false).list(Settings.class);
 		if(CollectionKit.isNotEmpty(settings)){
 			for(Settings setting : settings){
 				map.put(setting.getSkey(), setting.getSvalue());

@@ -69,7 +69,7 @@ public class IndexController extends BaseController {
 	/**
 	 * 首页
 	 */
-	@Route(value = "/")
+	@Route(value = "/", method = HttpMethod.GET)
 	public ModelAndView show_home(Request request, Response response){
 		
 		this.putData(request, null);
@@ -153,7 +153,7 @@ public class IndexController extends BaseController {
 	/**
 	 * 获取验证码
 	 */
-	@Route(value = "/captcha")
+	@Route(value = "/captcha", method = HttpMethod.GET)
 	public void show_captcha(Request request, Response response){
 		PatchcaService.get().size(200, 40).render(request, response);
 	}
@@ -210,7 +210,7 @@ public class IndexController extends BaseController {
 	/**
 	 * 通知列表
 	 */
-	@Route(value = "/notices")
+	@Route(value = "/notices", method = HttpMethod.GET)
 	public ModelAndView notices(Request request, Response response){
 		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){

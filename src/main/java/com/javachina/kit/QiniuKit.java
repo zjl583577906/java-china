@@ -8,6 +8,7 @@ import com.qiniu.common.QiniuException;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
+import com.qiniu.util.StringMap;
 
 public class QiniuKit {
 
@@ -57,8 +58,9 @@ public class QiniuKit {
 	}
 
 	public static String getUpToken(String key) {
-//		return AUTH.uploadToken(BUCKET_NAME, key, 3600, new StringMap().put("insertOnly", 1 ));
-		return AUTH.uploadToken(BUCKET_NAME);
+		return AUTH.uploadToken(BUCKET_NAME, key, 3600, new StringMap()
+				.put("scope", BUCKET_NAME+":"+key));
+//		return AUTH.uploadToken(BUCKET_NAME);
 	}
 
 }
