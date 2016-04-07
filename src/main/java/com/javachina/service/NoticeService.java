@@ -7,5 +7,8 @@ public interface NoticeService {
 	
 	boolean save(String type, Long uid, Long to_uid, Long event_id);
 	
-	List<Map<String, Object>> read(Long uid);
+	boolean read(Long to_uid);
+	
+	List<Map<String, Object>> getNotices(Long uid);
+	
 }

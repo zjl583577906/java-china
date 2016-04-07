@@ -22,7 +22,7 @@ public class Notice implements Serializable {
 	
 	private String type;
 	
-	private Boolean is_read;
+	private Boolean is_del;
 	
 	private Long create_time;
 	
@@ -59,13 +59,13 @@ public class Notice implements Serializable {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-	public Boolean getIs_read() {
-		return is_read;
+	
+	public Boolean getIs_del() {
+		return is_del;
 	}
 
-	public void setIs_read(Boolean is_read) {
-		this.is_read = is_read;
+	public void setIs_del(Boolean is_del) {
+		this.is_del = is_del;
 	}
 
 	public Long getCreate_time() {

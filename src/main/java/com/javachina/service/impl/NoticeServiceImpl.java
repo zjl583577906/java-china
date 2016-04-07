@@ -38,7 +38,7 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> read(Long uid) {
+	public List<Map<String, Object>> getNotices(Long uid) {
 		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		if(null != uid){
 			
@@ -51,9 +51,6 @@ public class NoticeServiceImpl implements NoticeService {
 						result.add(map);
 					}
 				}
-				
-				// 删除
-//				AR.update("delete from t_notice where to_uid = ?", uid).executeUpdate();
 			}
 		}
 		return result;
@@ -76,6 +73,20 @@ public class NoticeServiceImpl implements NoticeService {
 		map.put("title", title);
 		map.put("user_name", user.getLogin_name());
 		return map;
+	}
+
+	@Override
+	public boolean read(Long to_uid) {
+		if(null != to_uid){
+			// 删除
+			try {
+				AR.update("update t_notice set is_del = 1 where to_uid = ?", to_uid).executeUpdate();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
 	}
 
 }

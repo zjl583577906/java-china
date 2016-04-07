@@ -218,11 +218,13 @@ public class IndexController extends BaseController {
 			return null;
 		}
 		
-		List<Map<String, Object>> notices = noticeService.read(user.getUid());
+		List<Map<String, Object>> notices = noticeService.getNotices(user.getUid());
 		request.attribute("notices", notices);
 		
 		// 清空我的通知
-//		userService.updateCount(user.getUid(), Types.notices.toString(), -999);
+		userService.updateCount(user.getUid(), Types.notices.toString(), -999);
+		noticeService.read(user.getUid());
+		
 		return this.getView("notices");
 	}
 	
