@@ -81,14 +81,14 @@
                 		<form action="${base_url('/comment/add')}" class="form-horizontal" role="form" method="post" onsubmit="return validate_form(this)">
                 			<input type="hidden" name="tid" value="${topic.tid}">
 	                        <input type="hidden" name="tuid" value="${topic.uid}">
-	                        <textarea id="content" class="form-control" name="content" rows="4">${content}</textarea>
-	                        <br/>
+	                        <p class="emoji-picker-container">
+	                        <textarea id="content" data-emojiable="true" class="form-control textarea-control-comment" name="content" rows="4" placeholder="对楼主说点儿什么吧.."></textarea>
+	                        </p>
 	                        <button type="submit" class="btn btn-default">提交</button>
 	                        <script>
 	                            function addReply(user_name) {
 	                                window.editor.insertHtml('@'+user_name+'&nbsp;');
 	                            }
-	
 	                            function validate_form(thisform){
 	                                if (window.editor.text().length<2){
 	                                    alert('回复内容不得少于2字');
@@ -109,7 +109,6 @@
     </div>
 </div>
 #include("./common/footer.html")
-
 <script>
 $(document).ready(function(){
 
@@ -152,10 +151,7 @@ $(document).ready(function(){
 			}
 		});
 	});
-	
 });
-
 </script>  
-
 </body>
 </html>

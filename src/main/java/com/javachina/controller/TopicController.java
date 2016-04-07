@@ -93,6 +93,8 @@ public class TopicController extends BaseController {
 			response.go("/topic/" + tid);
 			return null;
 		} else {
+			request.attribute("title", title);
+			request.attribute("content", content);
 			request.attribute(this.ERROR, "帖子发布失败。。。");
 		}
 		return this.getView("topic_add");

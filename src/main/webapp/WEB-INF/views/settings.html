@@ -76,6 +76,7 @@
                             <div class="col-sm-10">
                             	<input type="hidden" name="avatar" id="user_avatar" value=""/>
                                 <img id="upload_img" alt="${profile.username}" src="${profile.avatar}" width="73" height="73" onclick="doUpload()" style="cursor: pointer;" class="img-circle"/>
+                                <input type="file" name="fileUpload" class="fileUpload" accept="image/png,image/jpg,image/jpeg" style="display: none;"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -127,7 +128,7 @@
 	</div><!-- /.row -->
     </div><!-- /.container -->
 #include("./common/footer.html") 
-<script type="text/javascript" src="${cdn}/assets/scripts/jquery.upload.js"></script>
+<script type="text/javascript" src="${cdn}/assets/scripts/jquery.liteuploader.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	
@@ -175,31 +176,32 @@ $(document).ready(function(){
 		}
 	});
 	
-});
+	$(".fileUpload").liteUploader({
+	    script: "${base_url('/uploadimg')}",
+	    params: {type:'avatar'},
+	    rules: {
+	        allowedFileTypes: "image/jpeg,image/png,image/jpeg",
+	        maxSize: 51200
+		}
+	}).on("lu:success", function (e, data) {
+		  //console.log(data);
+		  if(data){
+		  	$("#upload_img").attr('src', data.url);
+			$("#user_avatar").val(data.savepath);
+		  }
+	}).on("lu:errors", function (e, errors) {
+		console.log(errors);
+	});
 	
+	$(".fileUpload").change(function () {
+	    $(this).data("liteUploader").startUpload();
+	});
+	
+});
+  
 //上传方法
 function doUpload() {
-	// 上传方法
-	$.upload({
-		// 上传地址
-		url: "${base_url('/uploadimg')}", 
-		// 文件域名字
-		fileName: 'image', 
-		// 上传完成后, 返回json, text
-		dataType: 'json',
-		params : {type:"avatar"},
-		// 上传之前回调,return true表示可继续上传
-		onSend: function() {
-			return true;
-		},
-		// 上传之后回调
-		onComplate: function(data) {
-			if(data){
-				$("#upload_img").attr('src', data.url);
-				$("#user_avatar").val(data.savepath);
-			}
-		}
-	});
+	$(".fileUpload").click();
 }
 </script>
 </body>

@@ -42,7 +42,7 @@
 							<div class="col-sm-10">
 								<input type="hidden" name="node_pic" id="node_pic" />
 								<img id="upload_img" src="" width="73" height="73" onclick="doUpload()" style="cursor: pointer;"/>
-								
+								<input type="file" name="fileUpload" class="fileUpload" accept="image/png,image/jpg,image/jpeg" style="display: none;"/>
 								<p class="help-block">选择一个图片作为节点图标</p>
 							</div>
 						</div>
@@ -60,31 +60,37 @@
 	</div>
 </div>
 #include("./footer.html")
-<script type="text/javascript" src="${base}/assets/scripts/jquery.upload.js"></script>
+<script type="text/javascript" src="${cdn}/assets/scripts/jquery.liteuploader.min.js"></script>
 <script type="text/javascript">
+
+$(document).ready(function(){
+		
+	$(".fileUpload").liteUploader({
+	    script: "${base_url('/uploadimg')}",
+	    params: {type:'node'},
+	    rules: {
+	        allowedFileTypes: "image/jpeg,image/png,image/jpeg",
+	        maxSize: 51200
+		}
+	}).on("lu:success", function (e, data) {
+		  //console.log(data);
+		  if(data){
+			  $("#upload_img").attr('src', data.url);
+			  $("#node_pic").val(data.savepath);
+		  }
+	}).on("lu:errors", function (e, errors) {
+		console.log(errors);
+	});
+	
+	$(".fileUpload").change(function () {
+	    $(this).data("liteUploader").startUpload();
+	});
+	
+});
+
 //上传方法
 function doUpload() {
-	// 上传方法
-	$.upload({
-		// 上传地址
-		url: "${base_url('/uploadimg')}", 
-		// 文件域名字
-		fileName: 'image', 
-		// 上传完成后, 返回json, text
-		dataType: 'json',
-		params : {type:"node"},
-		// 上传之前回调,return true表示可继续上传
-		onSend: function() {
-			return true;
-		},
-		// 上传之后回调
-		onComplate: function(data) {
-			if(data){
-				$("#upload_img").attr('src', data.url);
-				$("#node_pic").val(data.savepath);
-			}
-		}
-	});
+	$(".fileUpload").click();
 }
 </script>
 </body>

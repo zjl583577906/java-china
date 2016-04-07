@@ -11,7 +11,7 @@
                 	<form id="topic-add" action="${base_url('/topic/add')}" method="post" accept-charset="utf-8" role="form">
                         <div class="form-group">
                             <label for="title">标题</label>
-                            <input type="text" class="form-control" id="title"  name="title" placeholder="请输入帖子标题" 
+                            <input type="text" class="form-control" id="title" name="title" placeholder="请输入帖子标题" 
                             	required="required" value="${title}" ／>
                         </div>
                         #if(null != nid)
@@ -39,7 +39,8 @@
                         <div class="form-group">
                             <label for="nid">主题内容</label>
 	                        <div class="form-group">
-	                            <textarea id="content" class="form-control" placeholder="撸下你要发射的内容!!!" name="content" rows="8" required="required">${content}</textarea>
+	                            <textarea data-emojiable="true" id="content" class="form-control" 
+	                            	placeholder="撸下你要发射的内容!!!" name="content" rows="8" required="required">${content}</textarea>
 	                        </div>
                         </div>
                         <button type="submit" class="btn btn-primary btn-small">发布主题</button>
