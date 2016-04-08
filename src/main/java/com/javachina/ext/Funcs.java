@@ -22,6 +22,16 @@ public class Funcs {
 		return ImageKit.getAvatar(avatar, ImageTypes.normal);
 	}
 	
+	public static String emoji(String content){
+		if(StringKit.isNotBlank(content)){
+			if(content.indexOf(":") == -1){
+				return content;
+			}
+			return content.replaceAll(":([a-z\\-]{2,30}):", "<i class=\"twa twa-$1\"></i>");
+		}
+		return "";
+	}
+	
 	/**
 	 * 格式化日期
 	 * @param date

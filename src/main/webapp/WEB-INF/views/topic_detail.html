@@ -1,4 +1,5 @@
 #include("./common/header.html",{title:topic.title ?! ''})
+<link rel="stylesheet" type="text/css" href="${base}/assets/styles/twemoji-awesome.css">
 <div class="container">
     <div class="row">
         <div class="col-md-8">
@@ -20,7 +21,7 @@
                     </small>
                 </div>
                 <div class="panel-body topic-detail">
-                    ${topic.content}
+                    ${emoji(topic.content)}
                 </div>
                 <div class="panel-footer topic-footer">
                 	#if(is_love)
