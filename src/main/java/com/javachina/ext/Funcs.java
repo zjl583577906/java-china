@@ -27,7 +27,7 @@ public class Funcs {
 			if(content.indexOf(":") == -1){
 				return content;
 			}
-			return content.replaceAll(":([a-z\\-]{2,30}):", "<i class=\"twa twa-$1\"></i>");
+			return content.replaceAll(":([a-z\\-]{2,30}):", "<i class=\"twa twa-lg twa-$1\"></i>");
 		}
 		return "";
 	}

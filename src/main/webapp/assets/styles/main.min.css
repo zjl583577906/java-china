@@ -27338,3 +27338,36 @@ transform
 .hot-nodes a:hover{
 	color: black;
 }
+
+.bs-docs-footer {
+    padding-top: 40px;
+    padding-bottom: 40px;
+    margin-top: 100px;
+    color: #767676;
+    text-align: center;
+    border-top: 1px solid #e5e5e5;
+}
+.bs-docs-footer-links {
+    padding-left: 0;
+    margin-top: 20px;
+}
+.bs-docs-footer-links li {
+    display: inline;
+    padding: 0 2px;
+}
+.text-muted {
+    color: #777;
+}
+ul, menu, dir {
+    display: block;
+    list-style-type: disc;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    -webkit-padding-start: 40px;
+}
+ol, ul {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
