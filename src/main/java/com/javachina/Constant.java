@@ -10,6 +10,10 @@ public class Constant {
 	public static final String LOGIN_SESSION_KEY = "login_user";
 
 	public static final String UPLOAD_FOLDER = "assets/temp";
+
+	public static final String USER_IN_COOKIE = "SH_SIGNIN_USER";
+
+	public static String AES_SALT = "java-china";
 	
 	public static String SITE_URL = "";
 	public static String CDN_URL = "";

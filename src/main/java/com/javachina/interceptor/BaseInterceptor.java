@@ -4,12 +4,15 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.blade.interceptor.Interceptor;
 import com.blade.interceptor.annotation.Intercept;
+import com.blade.ioc.annotation.Inject;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.javachina.Constant;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.LoginUser;
+import com.javachina.service.UserService;
 
+import blade.kit.StringKit;
 import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
 
@@ -17,6 +20,9 @@ import blade.kit.logging.LoggerFactory;
 public class BaseInterceptor implements Interceptor {
 	
 	private static final Logger LOGGE = LoggerFactory.getLogger(BaseInterceptor.class);
+	
+	@Inject
+	private UserService userService;
 	
 	@Override
 	public boolean before(Request request, Response response) {
@@ -27,10 +33,19 @@ public class BaseInterceptor implements Interceptor {
 		request.attribute("version", Constant.APP_VERSION);
 		request.attribute("cdn", Constant.CDN_URL);
 		
-		String uri = request.uri();
+		LoginUser user = SessionKit.getLoginUser();
 		
+		if(null == user){
+			String val = SessionKit.getCookie(request, Constant.USER_IN_COOKIE);
+			if(StringKit.isNumber(val)){
+				Long uid = Long.valueOf(val);
+				LoginUser loginUser = userService.getLoginUser(null, uid);
+				SessionKit.setLoginUser(request.session(), loginUser);
+			}
+		}
+		
+		String uri = request.uri();
 		if(uri.indexOf("/admin/") != -1){
-			LoginUser user = SessionKit.getLoginUser();
 			if(null == user){
 				response.go("/signin");
 				return false;
