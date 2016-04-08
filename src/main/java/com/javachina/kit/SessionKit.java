@@ -41,7 +41,10 @@ public class SessionKit {
 	
 	public static String getCookie(Request request, String cookieName) {
 		if(null != request && StringKit.isNotBlank(cookieName)){
-			return request.cookie(cookieName);
+			String val = request.cookie(cookieName);
+			if(StringKit.isNotBlank(val)){
+				return MagicCrypt.aesDecrypt(val);
+			}
 		}
 		return null;
 	}

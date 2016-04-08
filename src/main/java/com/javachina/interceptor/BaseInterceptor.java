@@ -37,7 +37,7 @@ public class BaseInterceptor implements Interceptor {
 		
 		if(null == user){
 			String val = SessionKit.getCookie(request, Constant.USER_IN_COOKIE);
-			if(StringKit.isNumber(val)){
+			if(null != val && StringKit.isNumber(val)){
 				Long uid = Long.valueOf(val);
 				LoginUser loginUser = userService.getLoginUser(null, uid);
 				SessionKit.setLoginUser(request.session(), loginUser);
