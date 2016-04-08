@@ -33,7 +33,7 @@ public class SessionKit {
 	
 	public static void setCookie(Response response, String cookieName, Long uid) {
 		if(null != response && StringKit.isNotBlank(cookieName) && null != uid){
-			String val = MagicCrypt.aesEncrypt(uid+"");
+			String val = AES.encrypt(uid+"");
 			boolean isSSL = Constant.SITE_URL.startsWith("https");
 			response.cookie(cookieName, val, 604800, isSSL);
 		}
@@ -43,7 +43,7 @@ public class SessionKit {
 		if(null != request && StringKit.isNotBlank(cookieName)){
 			String val = request.cookie(cookieName);
 			if(StringKit.isNotBlank(val)){
-				return MagicCrypt.aesDecrypt(val);
+				return AES.decrypt(val);
 			}
 		}
 		return null;

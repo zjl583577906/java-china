@@ -13,8 +13,6 @@ public class Constant {
 
 	public static final String USER_IN_COOKIE = "SH_SIGNIN_USER";
 
-	public static String AES_SALT = "java-china";
-	
 	public static String SITE_URL = "";
 	public static String CDN_URL = "";
 	public static String APP_VERSION = "";
