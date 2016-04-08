@@ -159,7 +159,7 @@ $(document).ready(function(){
 	$("#avatar_form .submit").on('click', function(){
 		var avatar = $("#avatar_form #user_avatar").val();
 		if(avatar && avatar != ''){
-			$.post("${base_url('/settings?type=avatar')}", {avatar : avatar}, function(data){
+			$.post("${base_url('/settings')}", {type:'avatar', avatar : avatar}, function(data){
 				if(data){
 					if(data == 'signin'){
 						go_signin();
@@ -169,6 +169,13 @@ $(document).ready(function(){
 							text:"头像更换成功!", 
 							type:"success",
 							timer: 2000
+						});
+					} else if(data == 'failure'){
+						swal({
+							title:"提示信息", 
+							text:"头像更换失败!", 
+							type:"error",
+							timer: 3000
 						});
 					}
 				}

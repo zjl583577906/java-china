@@ -188,6 +188,7 @@ public class UserServiceImpl implements UserService {
 			if(null == uid || StringKit.isBlank(avatar_path)){
 				return false;
 			}
+			
 			File file = new File(avatar_path);
 			if(file.exists()){
 				
@@ -200,7 +201,8 @@ public class UserServiceImpl implements UserService {
 				if(StringKit.isBlank(ext)){
 					ext = "png";
 				}
-				String key = "avatar/" + user.getLogin_name() + "." + ext;
+				
+				String key = "avatar/" + user.getLogin_name() + "/" + StringKit.getRandomChar(4) + "/" + StringKit.getRandomNumber(4) + "." + ext;
 				
 				boolean flag = QiniuKit.upload(file, key);
 				if(flag){

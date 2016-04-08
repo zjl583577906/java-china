@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.Random;
 
 import com.blade.Blade;
+import com.qiniu.common.Config;
 import com.qiniu.common.QiniuException;
+import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
@@ -20,6 +22,9 @@ public class QiniuKit {
 	private static Auth AUTH = null;
 
 	static {
+		
+		Config.zone = new Zone("http://up.qiniug.com", "http://up.qiniu.com");
+		
 		ACCESS_KEY = Blade.me().config().get("qiniu.ACCESS_KEY");
 		SECRET_KEY = Blade.me().config().get("qiniu.SECRET_KEY");
 		BUCKET_NAME = Blade.me().config().get("qiniu.BUCKET_NAME");
@@ -34,6 +39,7 @@ public class QiniuKit {
 	}
 
 	public static boolean upload(File file, String key) {
+		
 		// 创建上传对象
 		UploadManager uploadManager = new UploadManager();
 		try {
@@ -41,7 +47,6 @@ public class QiniuKit {
 			Response res = uploadManager.put(file, key, getUpToken(key));
 			// 打印返回的信息
 			System.out.println(res.bodyString());
-			
 			return true;
 		} catch (QiniuException e) {
 			Response r = e.response;

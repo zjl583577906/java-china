@@ -109,11 +109,15 @@ public class UserController extends BaseController {
 			String signature = request.query("signature");
 			String instructions = request.query("instructions");
 			userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, signature, instructions);
-			userService.updateAvatar(loginUser.getUid(), avatar);
+			boolean flag = userService.updateAvatar(loginUser.getUid(), avatar);
 			
-			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
-			SessionKit.setLoginUser(request.session(), loginUserTemp);
-			response.text(this.SUCCESS);
+			if(flag){
+				LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+				SessionKit.setLoginUser(request.session(), loginUserTemp);
+				response.text(this.SUCCESS);
+			} else {
+				response.text(this.FAILURE);
+			}
 			return null;
 		}
 				
