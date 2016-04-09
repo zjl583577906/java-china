@@ -23,5 +23,5 @@ Java中国是使用Blade框架搭建的论坛系统，致力于打造一个简�
 
 ## 预览图 
 
-![alt](http://7xsk2r.com2.z0.glb.clouddn.com/QQ20160404-0.png)
+![alt](http://7xsk2r.com2.z0.glb.clouddn.com/QQ20160410-0.png)
 
