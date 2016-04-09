@@ -185,8 +185,7 @@ $(document).ready(function(){
 	
 	$('body').on("click",'.share-weibo',function(){
 		var share_url = 'http://service.weibo.com/share/share.php?url=' + window.location.href + '&title=' + $('.topic-detail-heading .panel-title').text();
-		myWindow=window.open(share_url,'','width=550,height=422');
-		myWindow.focus();
+		openWindow(share_url, '', 550, 422);
 	});
 });
 </script>  
