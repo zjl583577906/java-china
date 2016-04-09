@@ -189,4 +189,12 @@ public class IndexController extends BaseController {
 		return this.getView("markdown");
 	}
 	
+	/**
+	 * about页面
+	 */
+	@Route(value = "/about", method = HttpMethod.GET)
+	public ModelAndView about(Request request, Response response){
+		return this.getView("about");
+	}
+	
 }
