@@ -72,8 +72,8 @@
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading topic-list-heading"><a href="${base_url('/member/') + comment.reply_name}">${comment.reply_name}</a>
-                                #if(comment.group_id == 1 || comment.group_id == 2)
-                                <img width="30" height="14" class="img-rounded" src="${cdn}/static/img/mod.png" alt="Moderator" title="Moderator">
+                                #if(comment.role_id < 3)
+                                <img width="30" height="14" class="img-rounded" src="" alt="Moderator" title="Moderator">
                                 #end
                                 &nbsp;&nbsp;
                                 <small>${timespan(comment.replytime)}</small></h4>

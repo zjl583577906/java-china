@@ -64,6 +64,7 @@ public class App extends Bootstrap {
 	
 	@Override
 	public void contextInitialized(Blade blade) {
+		settingsService.refreshCount();
 		Constant.SYS_INFO = settingsService.getSystemInfo();
 		Constant.VIEW_CONTEXT.set(Map.class, "sys_info", Constant.SYS_INFO);
 	}

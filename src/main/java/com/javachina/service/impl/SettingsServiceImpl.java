@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
+import com.javachina.Types;
 import com.javachina.model.Settings;
 import com.javachina.service.SettingsService;
 
@@ -62,6 +63,17 @@ public class SettingsServiceImpl implements SettingsService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void refreshCount() {
+		Long comments = AR.find("select count(1) from t_comment").first(Long.class);
+		Long users = AR.find("select count(1) from t_user where status = 1").first(Long.class);
+		Long topics = AR.find("select count(1) from t_topic where status = 1").first(Long.class);
+		
+		AR.update("update t_settings set svalue = ? where skey = ?", users, Types.user_count.toString()).executeUpdate();
+		AR.update("update t_settings set svalue = ? where skey = ?", comments, Types.comment_count.toString()).executeUpdate();
+		AR.update("update t_settings set svalue = ? where skey = ?", topics, Types.topic_count.toString()).executeUpdate();
 	}
 		
 }

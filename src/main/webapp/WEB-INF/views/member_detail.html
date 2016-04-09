@@ -26,6 +26,15 @@
                     </div>
                     <div class="col-md-12">
                         <p>$!{profile.instructions}</p>
+                        <p>
+                        	坐标：<a href="http://www.google.com/maps?q=${profile.location}" target="_blank">${profile.location}</a>
+                        </p>
+                        <p>
+                        	站点：<a href="${profile.web_site}" target="_blank">${profile.web_site}</a>
+                        </p>
+                        <p>
+                        	Github：<a href="${profile.github}" target="_blank">${profile.github}</a>
+                        </p>
                     </div>
                 </div>
             </div><!-- /.info -->
@@ -84,7 +93,7 @@
                 </div>
             </div><!-- /.comments -->
         </div><!-- /.col-md-8 -->
-        #include("./common/sidebar.html")
+        
     </div>
 </div>
 #include("./common/footer.html")

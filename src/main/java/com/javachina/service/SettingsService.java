@@ -15,5 +15,7 @@ public interface SettingsService {
 	boolean delete(String skey);
 
 	void updateCount(String skey, int count);
-		
+	
+	void refreshCount();
+	
 }
