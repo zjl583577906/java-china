@@ -159,7 +159,7 @@ public class TopicServiceImpl implements TopicService {
 		map.put("favorites", topic.getFavorites());
 		map.put("comments", comments);
 		map.put("title", topic.getTitle());
-		map.put("is_chosen", topic.getIs_chosen());
+		map.put("is_essence", topic.getIs_essence());
 		map.put("create_time", topic.getCreate_time());
 		map.put("update_time", topic.getUpdate_time());
 		map.put("user_name", user.getLogin_name());

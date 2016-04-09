@@ -207,8 +207,8 @@ public class TopicController extends BaseController {
 	/**
 	 * 加精和取消加精
 	 */
-	@Route(value = "/chosen", method = HttpMethod.POST)
-	public String chosen(Request request, Response response){
+	@Route(value = "/essence", method = HttpMethod.POST)
+	public String essence(Request request, Response response){
 		
 		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
@@ -231,14 +231,35 @@ public class TopicController extends BaseController {
 		}
 		
 		try {
-			Integer count = topic.getIs_chosen() == 1 ? -1 : 1;
+			Integer count = topic.getIs_essence() == 1 ? -1 : 1;
 			boolean updateTime = count > 0;
-			topicService.updateCount(tid, Types.is_chosen.toString(), count, updateTime);
+			topicService.updateCount(tid, Types.is_essence.toString(), count, updateTime);
 			response.text(this.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+	
+	/**
+	 * 精华帖页面
+	 */
+	@Route(value = "/essence", method = HttpMethod.GET)
+	public ModelAndView essencePage(Request request, Response response){
+		
+		// 帖子
+		QueryParam tp = QueryParam.me();
+		Integer page = request.queryAsInt("p");
+		
+		if(null == page || page < 1){
+			page = 1;
+		}
+		
+		tp.eq("status", 1).eq("is_essence", 1).orderby("update_time desc").page(page, 15);
+		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
+		request.attribute("topicPage", topicPage);
+		
+		return this.getView("essence");
 	}
 	
 }

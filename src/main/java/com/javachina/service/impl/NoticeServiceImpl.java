@@ -39,21 +39,20 @@ public class NoticeServiceImpl implements NoticeService {
 	
 	@Override
 	public List<Map<String, Object>> getNoticeList(Long uid) {
-		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		if(null != uid){
-			
 			List<Notice> notices = AR.find("select * from t_notice where is_read = 0 and to_uid = ?", uid).list(Notice.class);
-			
 			if(null != notices && notices.size() > 0){
+				List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 				for(Notice notice : notices){
 					Map<String, Object> map = this.getNotice(notice);
 					if(null != map && !map.isEmpty()){
 						result.add(map);
 					}
 				}
+				return result;
 			}
 		}
-		return result;
+		return null;
 	}
 	
 	private Map<String, Object> getNotice(Notice notice){
@@ -80,7 +79,7 @@ public class NoticeServiceImpl implements NoticeService {
 		if(null != to_uid){
 			// 删除
 			try {
-				AR.update("update t_notice set is_del = 1 where to_uid = ?", to_uid).executeUpdate();
+				AR.update("update t_notice set is_read = 1 where to_uid = ?", to_uid).executeUpdate();
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -41,8 +41,8 @@ public class Topic implements Serializable {
 	//是否置顶
 	private Integer is_top;
 	
-	//是否精选
-	private Integer is_chosen;
+	//是否是精华贴
+	private Integer is_essence;
 	
 	//帖子创建时间
 	private Long create_time;
@@ -159,12 +159,12 @@ public class Topic implements Serializable {
 		this.status = status;
 	}
 
-	public Integer getIs_chosen() {
-		return is_chosen;
+	public Integer getIs_essence() {
+		return is_essence;
 	}
 
-	public void setIs_chosen(Integer is_chosen) {
-		this.is_chosen = is_chosen;
+	public void setIs_essence(Integer is_essence) {
+		this.is_essence = is_essence;
 	}
 	
 }

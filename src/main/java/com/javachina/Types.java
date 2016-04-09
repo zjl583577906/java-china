@@ -17,6 +17,6 @@ public enum Types {
 	topic_count, 
 	comment_count, 
 	github,
-	is_chosen
+	is_essence
 	
 }

@@ -495,35 +495,35 @@ pre code, table {
 }
 
 .text-left {
-	text-align: left
+	text-align: left;
 }
 
 .text-right {
-	text-align: right
+	text-align: right;
 }
 
 .text-center {
-	text-align: center
+	text-align: center;
 }
 
 .text-justify {
-	text-align: justify
+	text-align: justify;
 }
 
 .text-nowrap {
-	white-space: nowrap
+	white-space: nowrap;
 }
 
 .text-lowercase {
-	text-transform: lowercase
+	text-transform: lowercase;
 }
 
 .text-uppercase {
-	text-transform: uppercase
+	text-transform: uppercase;
 }
 
 .text-capitalize {
-	text-transform: capitalize
+	text-transform: capitalize;
 }
 
 .page-header {
@@ -581,7 +581,7 @@ dd {
 }
 
 .brand, .btn-group-vertical>.btn-group:after, .btn-toolbar:after,
-	.chat-panel .chat-header::after, .chat-panel .chat-users .nav-tabs::after,
+	.nav-tabs::after,
 	.clearfix:after, .container-fluid:after, .container:after,
 	.dl-horizontal dd:after, .dropdown-menu>li>a, .form-horizontal .form-group:after,
 	.invoice-totals::after, .location-selector::after, .mail-view-header .mail-view-header-toolbar::after,
@@ -27379,13 +27379,16 @@ ol, ul {
     margin-top: 0;
     margin-bottom: 10px;
 }
-.chosen .panel{
+.essence .panel{
 	margin: 0;
 	padding: 0;
 	border-bottom: 1px solid #e2e2e2;
-	height: 50px;
-	line-height: 20px;
+	height: 40px;
+	line-height: 0px;
 }
-.chosen small{
+.essence small{
 	color: red;
+}
+.essence a:hover{
+	color: #565555;
 }

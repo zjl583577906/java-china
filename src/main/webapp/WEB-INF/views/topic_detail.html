@@ -39,10 +39,10 @@
 						<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">加入收藏</small></a>	                	
 	                	#end
 	                	#if(null!=login_user && login_user.role_id < 3)
-	                	#if(topic.is_chosen == 0)
-	                	<a class="chosen" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">加精</small></a>
+	                	#if(topic.is_essence == 0)
+	                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">加精</small></a>
 	                	#else
-	                	<a class="chosen" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">取消加精</small></a>
+	                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">取消加精</small></a>
 	                	#end
 	                	#end
                 	</div>
@@ -160,10 +160,10 @@ $(document).ready(function(){
 		});
 	});
 	
-	$('body').on("click",'.chosen',function(){
+	$('body').on("click",'.essence',function(){
 		var tid = $(this).attr("tid");
 		var _this = $(this);
-		$.post("${base_url('/chosen')}", {event_id : tid}, function(data){
+		$.post("${base_url('/essence')}", {event_id : tid}, function(data){
 			if(data && data != ''){
 				 if(data == 'signin'){
 					 go_signin();
