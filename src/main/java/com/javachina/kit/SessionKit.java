@@ -49,7 +49,18 @@ public class SessionKit {
 		if(null != response && StringKit.isNotBlank(cookieName) && null != uid){
 			String val = AES.encrypt(uid+"");
 			boolean isSSL = Constant.SITE_URL.startsWith("https");
-			response.cookie(cookieName, val, 604800, isSSL);
+			String path = BladeWebContext.servletContext().getContextPath() + "/";
+			response.cookie(path, cookieName, val, 604800, isSSL);
+		}
+	}
+	
+	public static void setCookie(Response response, String cookieName, String value) {
+		if(null != response && StringKit.isNotBlank(cookieName) && StringKit.isNotBlank(value)){
+			String val = AES.encrypt(value);
+			boolean isSSL = Constant.SITE_URL.startsWith("https");
+			response.removeCookie(cookieName);
+			String path = BladeWebContext.servletContext().getContextPath() + "/";
+			response.cookie(path, cookieName, val, 604800, isSSL);
 		}
 	}
 	
@@ -65,6 +76,7 @@ public class SessionKit {
 
 	public static void removeCookie(Response response) {
 		response.removeCookie(Constant.USER_IN_COOKIE);
+		response.removeCookie(Constant.JC_REFERRER_COOKIE);
 	}
 	
 }

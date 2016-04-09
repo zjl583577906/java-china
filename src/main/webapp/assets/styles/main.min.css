@@ -7,14 +7,16 @@
 body {
 	overflow: visible;
 	transition: transform 300ms cubic-bezier(.7, 0, .3, 1);
-	background-color: #e2e2e2;
-	/* color: #616161; */
+	background-color: #CDD2DF;
+	background-image: url("../images/shadow_light.png"),url("../images/pixels.png");
+	background-position: 0 0px, 0 0;
+    background-repeat: repeat-x, repeat;
 	font-size: 14px;
 	line-height: 1.53846154;
 	direction: ltr;
 	/* -webkit-font-smoothing: antialiased; */
 	font-family: "Helvetica Neue", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", "Microsoft Yahei", sans-serif;
-	-ms-overflow-style: -ms-autohiding-scrollbar
+	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
 
 body, html {
@@ -27304,9 +27306,10 @@ transform
 	color: #eee;
 }
 
-.topic-detail-heading{
+.topic-detail-heading .panel-heading{
 	background-color: #fff;
 }
+
 .hot-topics li{
 	padding: 5px 0;
 	border-bottom: 1px solid #ddd;

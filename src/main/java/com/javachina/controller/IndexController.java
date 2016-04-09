@@ -106,6 +106,11 @@ public class IndexController extends BaseController {
 	public ModelAndView go(@PathVariable("slug") String slug,
 			Request request, Response response){
 		
+		LoginUser loginUser = SessionKit.getLoginUser();
+		if(null == loginUser){
+			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
+		}
+		
 		QueryParam np = QueryParam.me();
 		np.eq("is_del", 0).eq("slug", slug);
 		

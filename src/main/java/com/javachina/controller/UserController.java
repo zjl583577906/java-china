@@ -101,7 +101,13 @@ public class UserController extends BaseController {
 		if(StringKit.isNotBlank(rememberme) && rememberme.equals("on")){
 			SessionKit.setCookie(response, Constant.USER_IN_COOKIE, loginUser.getUid());
 		}
-		response.go("/");
+		
+		String val = SessionKit.getCookie(request, Constant.JC_REFERRER_COOKIE);
+		if(StringKit.isNotBlank(val)){
+			response.redirect(val);
+		} else {
+			response.go("/");
+		}
 		return null;
 	}
 	

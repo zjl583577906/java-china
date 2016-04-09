@@ -12,6 +12,7 @@ public class Constant {
 	public static final String UPLOAD_FOLDER = "assets/temp";
 
 	public static final String USER_IN_COOKIE = "SH_SIGNIN_USER";
+	public static final String JC_REFERRER_COOKIE = "JC_REFERRER_COOKIE";
 
 	public static String SITE_URL = "";
 	public static String CDN_URL = "";

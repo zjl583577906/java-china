@@ -14,6 +14,7 @@ import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.LoginUser;
@@ -116,12 +117,15 @@ public class TopicController extends BaseController {
 		Long uid = null;
 		if(null != user){
 			uid = user.getUid();
+		} else {
+			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
 		}
 		
 		putDetail(request, response, uid, tid);
 		
 		// 刷新浏览数
 		topicService.updateCount(tid, Types.views.toString(), +1, false);
+		
 		return this.getView("topic_detail");
 	}
 	
