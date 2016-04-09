@@ -13,6 +13,6 @@ public enum Types {
 	comment, 
 	user_count, 
 	topic_count, 
-	comment_count
+	comment_count, github
 	
 }

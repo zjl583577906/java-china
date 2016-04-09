@@ -15,6 +15,24 @@ function go_signin(){
 		}
 	});
 }
+function alertError(msg){
+	swal({
+		title:"提示信息", 
+		text: msg, 
+		type:"error",
+		timer: 3000
+	});
+}
+
+function alertOk(msg){
+	swal({
+		title:"提示信息", 
+		text: msg, 
+		type:"success",
+		timer: 3000
+	});
+}
+
 function dispatch() {
     var q = document.getElementById("q");
     if (q.value != "") {

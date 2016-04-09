@@ -20,11 +20,13 @@ public interface UserService {
 	
 	Page<User> getPageList(QueryParam queryParam);
 	
-	boolean signup(String loginName, String passWord, String email);
+	User signup(String loginName, String passWord, String email);
 	
 	User signin(String loginName, String passWord);
 	
 	LoginUser getLoginUser(User user, Long uid);
+	
+	boolean hasUser(String login_name);
 	
 	boolean delete(Long uid);
 	

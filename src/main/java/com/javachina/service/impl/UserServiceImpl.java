@@ -62,9 +62,9 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public boolean signup(String loginName, String passWord, String email) {
+	public User signup(String loginName, String passWord, String email) {
 		if(StringKit.isBlank(loginName) || StringKit.isBlank(passWord) || StringKit.isBlank(email)){
-			return false;
+			return null;
 		}
 		int time = DateKit.getCurrentUnixTime();
 		String pwd = EncrypKit.md5(loginName + passWord);
@@ -79,11 +79,11 @@ public class UserServiceImpl implements UserService {
 			
 			// 发送邮件通知
 			activecodeService.save(user, Types.signup.toString());
-			return true;
+			return user;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	@Override
@@ -107,8 +107,8 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 		String pwd = EncrypKit.md5(loginName + passWord);
-	    User user = AR.find("select * from t_user where login_name = ? and pass_word = ? and status = ?",
-				loginName, pwd, 1).first(User.class);
+	    User user = AR.find("select * from t_user where login_name = ? and pass_word = ? and status in (0, 1)",
+				loginName, pwd).first(User.class);
 		return user;
 	}
 
@@ -255,6 +255,18 @@ public class UserServiceImpl implements UserService {
 			return loginUser;
 		}
 		return null;
+	}
+
+	@Override
+	public boolean hasUser(String login_name) {
+		if(StringKit.isNotBlank(login_name)){
+			Long count = AR.find("select count(1) from t_user where login_name = ? and status in (0, 1)", login_name).first(Long.class);
+			if(count == 0){
+				count = AR.find("select count(1) from t_user where email = ? and status in (0, 1)", login_name).first(Long.class);
+			}
+			return count > 0;
+		}
+		return false;
 	}
 	
 }

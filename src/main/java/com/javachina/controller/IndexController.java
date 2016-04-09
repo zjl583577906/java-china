@@ -212,6 +212,7 @@ public class IndexController extends BaseController {
 	@Route(value = "/logout")
 	public void logout(Request request, Response response){
 		SessionKit.removeUser(request.session());
+		SessionKit.removeCookie(response);
 		response.go("/");
 	}
 	
@@ -281,8 +282,8 @@ public class IndexController extends BaseController {
 			return this.getView("signup");
 		}
 		
-		boolean flag = userService.signup(login_name, pass_word, email);
-		if(flag){
+		User user_ = userService.signup(login_name, pass_word, email);
+		if(null != user_){
 			request.attribute(this.INFO, "注册成功，已经向您的邮箱 " + email + " 发送了一封激活申请，请注意查收！");
 		} else {
 			request.attribute(this.ERROR, "注册发生异常");

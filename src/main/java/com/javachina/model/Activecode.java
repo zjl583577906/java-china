@@ -7,7 +7,7 @@ import com.blade.jdbc.annotation.Table;
 /**
  * Activecode对象
  */
-@Table(value = "t_activecode", PK = "${table.pkName}")
+@Table(value = "t_activecode", PK = "id")
 public class Activecode implements Serializable {
 
 	private static final long serialVersionUID = 1L;

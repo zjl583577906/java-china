@@ -1,0 +1,116 @@
+#include("./common/header.html", {active:"signin", title:"Github 登录"})
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+			<div class="col-md-6 app layout-fixed-header bg-white usersession">
+				<div class="full-height">
+					<div class=center-wrapper>
+						<div class=center-content>
+							<div class="row no-margin col-md-8">
+								<div class="box-tab">
+									<ul class="nav nav-tabs">
+										<li class="active"><a data-toggle="tab" href="#signup" aria-expanded="true">绑定新账号</a></li>
+										<li class=""><a data-toggle="tab" href="#signin" aria-expanded="false">绑定已有帐号</a></li>
+									</ul>
+									<div class="tab-content">
+										<div id="signup" class="tab-pane active">
+											<form id="signup_form" role="form" class="form-layout" method="post" onsubmit="return signup();">
+												<div class=form-inputs>
+													<div class="input-group mb15">
+														<span class="input-group-addon">用户名</span>
+														<input type="text" id="login_name" class="form-control input-lg" 
+														placeholder="请使用半角的 a-z 或数字 0-9" required="required" value=""/>
+													</div>
+													<div class="input-group mb15">
+														<span class="input-group-addon">邮　箱</span>
+														<input type="email" id="email" class="form-control input-lg" 
+														placeholder="请使用真实电子邮箱注册，我们不会将你的邮箱地址分享给任何人" required="required" value=""/>
+													</div>
+													<div class="input-group mb15">
+														<span class="input-group-addon">密　码</span>
+														<input type="password" id="pass_word" class="form-control input-lg" placeholder="请输入6-20位密码"  required="required" />
+													</div>
+												</div>
+												<button class="btn btn-success btn-block btn-lg mb15" type="submit">注册并绑定账号</button>
+												</p>
+											</form>
+										</div>
+										<div id="signin" class="tab-pane">
+											<form id="signin_form" role="form" class="form-layout" method="post" onsubmit="return signin();" />
+												<div class=form-inputs>
+													<input type="hidden" name="open_id" value="${open_id}" />
+													<input type="text" class="form-control input-lg" id="login_name"
+														placeholder="请输入账号或者邮箱" required="required" value=""/> 
+													<input type="password" class="form-control input-lg" id="pass_word"
+														placeholder="请输入登录密码" required="required" />
+												</div>
+												<button class="btn btn-success btn-block btn-lg mb15" type="submit">
+													<span>绑定并登录</span>
+												</button>
+											</form>
+										</div>
+										
+									</div>
+								</div>
+								
+								<div id="result" class="alert alert-success mt20 mr20 ml20 hide"></div>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>			        	
+        </div>
+        #include("./common/sidebar.html")
+    </div>
+</div>
+#include("./common/footer.html")
+<script>
+$('a[data-toggle=tab]').on('click', function(e){
+	e.preventDefault();
+});
+function signup(){
+	$.post("${base_url('/oauth/user/bind')}", {
+		type : 'signup',
+		login_name : $('#signup_form #login_name').val(),
+		email : $('#signup_form #email').val(),
+		pass_word : $('#signup_form #pass_word').val()
+	}, function(data){
+		if(data){
+			if(data == 'exist_login'){
+				alertError("用户已存在，请绑定已有帐号!");
+			} if(data == 'exist_email'){
+				alertError("邮箱已存在，请绑定已有帐号!");
+			} else if(data == 'success'){
+				$('.box-tab').hide();
+				$('#result').show().html('注册成功，已经向您的邮箱 ' + $('#signup_form #email').val() + ' 发送了一封激活申请，请注意查收！');
+			} else if(data == 'failure'){
+				alertError("绑定失败!");
+			}
+		}
+	});
+	return false;
+}
+function signin(){
+	$.post("${base_url('/oauth/user/bind')}", {
+		type : 'signin',
+		login_name : $('#signin_form #login_name').val(),
+		pass_word : $('#signin_form #pass_word').val()
+	}, function(data){
+		if(data){
+			if(data == 'no_user'){
+				alertError("不存在该用户!");
+			} else if(data == 'pwd_error'){
+				alertError("用户名或密码错误!");
+			} else if(data == 'no_active'){
+				alertError("该用户未激活，请激活后进行绑定!");
+			} else if(data == 'success'){
+				window.location.href = "${base_url('/')}";
+			}
+		}
+	});
+	return false;
+}
+</script>
+</body>
+</html>

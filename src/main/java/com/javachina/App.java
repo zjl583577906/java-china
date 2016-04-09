@@ -55,6 +55,11 @@ public class App extends Bootstrap {
 		Constant.MAIL_USER = blade.config().get("app.mail.user");
 		Constant.MAIL_PASS = blade.config().get("app.mail.pass");
 		Constant.MAIL_ADMIN = blade.config().get("app.mail.admin");
+		
+		// github授权key
+		Constant.GITHUB_CLIENT_ID = blade.config().get("github.CLIENT_ID");
+		Constant.GITHUB_CLIENT_SECRET = blade.config().get("github.CLIENT_SECRET");
+		Constant.GITHUB_REDIRECT_URL = blade.config().get("github.REDIRECT_URL");
 	}
 	
 	@Override

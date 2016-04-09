@@ -145,12 +145,7 @@ $(document).ready(function(){
 				if(data == 'signin'){
 					go_signin();
 				} else if(data == 'success'){
-					swal({
-						title:"提示信息", 
-						text:"保存成功!", 
-						type:"success",
-						timer: 2000
-					});
+					alertOk('保存成功!');
 				}
 			}
 		});
@@ -164,19 +159,9 @@ $(document).ready(function(){
 					if(data == 'signin'){
 						go_signin();
 					} else if(data == 'success'){
-						swal({
-							title:"提示信息", 
-							text:"头像更换成功!", 
-							type:"success",
-							timer: 2000
-						});
+						alertOk("头像更换成功!");
 					} else if(data == 'failure'){
-						swal({
-							title:"提示信息", 
-							text:"头像更换失败!", 
-							type:"error",
-							timer: 3000
-						});
+						alertError("头像更换失败!");
 					}
 				}
 			});

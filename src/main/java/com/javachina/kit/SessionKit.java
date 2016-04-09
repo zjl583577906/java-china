@@ -11,6 +11,20 @@ import blade.kit.StringKit;
 
 public class SessionKit {
 
+	public static void set(Session session, String name, Object value){
+		if(null != session && StringKit.isNotBlank(name) && null != value){
+			removeUser(session);
+			session.attribute(name, value);
+		}
+	}
+	
+	public static <T> T get(Session session, String name){
+		if(null != session && StringKit.isNotBlank(name)){
+			return session.attribute(name);
+		}
+		return null;
+	}
+	
 	public static void setLoginUser(Session session, LoginUser login_user){
 		if(null != session && null != login_user){
 			removeUser(session);
@@ -47,6 +61,10 @@ public class SessionKit {
 			}
 		}
 		return null;
+	}
+
+	public static void removeCookie(Response response) {
+		response.removeCookie(Constant.USER_IN_COOKIE);
 	}
 	
 }

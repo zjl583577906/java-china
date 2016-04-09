@@ -17,6 +17,10 @@ public class Constant {
 	public static String CDN_URL = "";
 	public static String APP_VERSION = "";
 	
+	public static String GITHUB_CLIENT_ID = "";
+	public static String GITHUB_CLIENT_SECRET = "";
+	public static String GITHUB_REDIRECT_URL = "";
+	
 	public static String MAIL_HOST;
 	public static String MAIL_NICK;
 	public static String MAIL_USER;
