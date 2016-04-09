@@ -1,8 +1,8 @@
 #include("./common/header.html",{title:topic.title ?! ''})
-<link rel="stylesheet" type="text/css" href="${base}/assets/styles/twemoji-awesome.css">
+<link rel="stylesheet" type="text/css" href="${base}/assets/styles/twemoji-awesome.css" />
 <div class="container">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-9">
             <div class="panel panel-default topic-detail-heading">
                 <div class="panel-heading">
                     <div class="pull-right">
@@ -98,7 +98,8 @@
                 			<input type="hidden" name="tid" value="${topic.tid}">
 	                        <input type="hidden" name="tuid" value="${topic.uid}">
 	                        <p class="emoji-picker-container">
-	                        <textarea id="content" data-emojiable="true" class="form-control textarea-control-comment" name="content" rows="4" placeholder="对楼主说点儿什么吧.."></textarea>
+	                        <textarea id="content" data-emojiable="true" class="form-control textarea-control-comment" 
+	                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
 	                        </p>
 	                        <button type="submit" class="btn btn-default">提交</button>
 	                        <script>
@@ -171,7 +172,7 @@ $(document).ready(function(){
 	$('body').on("click",'.essence',function(){
 		var tid = $(this).attr("tid");
 		var _this = $(this);
-		$.post("${base_url('/essence')}", {event_id : tid}, function(data){
+		$.post("${base_url('/essence')}", {tid : tid}, function(data){
 			if(data && data != ''){
 				 if(data == 'signin'){
 					 go_signin();
