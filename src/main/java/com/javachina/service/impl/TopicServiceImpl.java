@@ -20,7 +20,6 @@ import com.javachina.model.Node;
 import com.javachina.model.Topic;
 import com.javachina.model.User;
 import com.javachina.service.CommentService;
-import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
@@ -46,9 +45,6 @@ public class TopicServiceImpl implements TopicService {
 	
 	@Inject
 	private SettingsService settingsService;
-	
-	@Inject
-	private LoveService loveService;
 	
 	@Override
 	public Topic getTopic(Long tid) {
@@ -163,6 +159,7 @@ public class TopicServiceImpl implements TopicService {
 		map.put("favorites", topic.getFavorites());
 		map.put("comments", comments);
 		map.put("title", topic.getTitle());
+		map.put("is_chosen", topic.getIs_chosen());
 		map.put("create_time", topic.getCreate_time());
 		map.put("update_time", topic.getUpdate_time());
 		map.put("user_name", user.getLogin_name());
@@ -190,11 +187,11 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public boolean updateCount(Long tid, String type, long count) {
+	public boolean updateCount(Long tid, String type, long count, boolean updateTime) {
 		if(null != tid && StringKit.isNotBlank(type)){
 			try {
 				StringBuffer upSql = new StringBuffer("update t_topic set %s = (%s + ?) ");
-				if(type.equals(Types.comments.toString())){
+				if(updateTime){
 					upSql.append(", update_time = " + DateKit.getCurrentUnixTime());
 				}
 				upSql.append(" where tid = ?");
@@ -211,7 +208,7 @@ public class TopicServiceImpl implements TopicService {
 	public boolean comment(Long uid, Long to_uid, Long tid, String content) {
 		boolean flag = commentService.save(uid, to_uid, tid, content);
 		if(flag){
-			this.updateCount(tid, Types.comments.toString(), +1);
+			this.updateCount(tid, Types.comments.toString(), +1, true);
 			// 通知
 			if(!uid.equals(to_uid)){
 				noticeService.save(Types.comment.toString(), uid, to_uid, tid);
@@ -225,19 +222,11 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public long love(Long uid, Long tid) {
-		try {
-			Long count = loveService.love(uid, tid);
-			if(count == 1){
-				this.updateCount(tid, Types.loves.toString(), +1);
-			} else {
-				this.updateCount(tid, Types.loves.toString(), -1);
-			}
-			return count;
-		} catch (Exception e) {
-			e.printStackTrace();
+	public Long getTopics(Long uid) {
+		if(null != uid){
+			return AR.find("select count(1) from t_topic where uid = ? and status = 1", uid).first(Long.class);
 		}
 		return 0L;
 	}
-		
+	
 }

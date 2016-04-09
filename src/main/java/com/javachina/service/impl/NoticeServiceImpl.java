@@ -38,7 +38,7 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 	
 	@Override
-	public List<Map<String, Object>> getNotices(Long uid) {
+	public List<Map<String, Object>> getNoticeList(Long uid) {
 		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
 		if(null != uid){
 			
@@ -87,6 +87,14 @@ public class NoticeServiceImpl implements NoticeService {
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public Long getNotices(Long uid) {
+		if(null != uid){
+			return AR.find("select count(1) from t_notice where to_uid = ? and is_read = 0", uid).first(Long.class);
+		}
+		return 0L;
 	}
 
 }

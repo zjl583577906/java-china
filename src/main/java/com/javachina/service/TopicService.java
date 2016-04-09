@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
-
 import com.javachina.model.Topic;
 
 public interface TopicService {
@@ -23,9 +22,9 @@ public interface TopicService {
 	boolean comment(Long uid, Long to_uid, Long tid, String content);
 	
 	boolean delete(Long tid);
+	
+	boolean updateCount(Long tid, String type, long count, boolean updateCount);
 
-	boolean updateCount(Long tid, String type, long count);
-
-	long love(Long uid, Long tid);
-		
+	Long getTopics(Long uid);
+	
 }

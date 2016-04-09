@@ -25,18 +25,25 @@
                 </div>
                 <div class="panel-footer topic-footer">
                 	#if(is_love)
-                	<div class="heart heartAnimation" id="like_topic" tid="${topic.tid}" rel="unlike"></div>
+                	<div class="heart heartRed" id="like_topic" tid="${topic.tid}" rel="unlike"></div>
                 	#else
                 	<div class="heart " id="like_topic" tid="${topic.tid}" rel="like"></div>
                 	#end
                 	<div class="likeCount" id="likeCount">${topic.loves}</div>
                 	<div class="pull-right" style="margin-top: -20px">
                 		<small class="text-muted">${topic.views}次点击&nbsp;•&nbsp;</small>
-                		<small class="text-muted">${topic.favorites}人收藏&nbsp;•&nbsp;</small>
+                		<small class="text-muted">${topic.favorites}人收藏</small>
 	                	#if(is_favorite)
-	                	<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);"><small class="text-muted">取消收藏</small></a>
+	                	<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">取消收藏</small></a>
 	                	#else
-						<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);"><small class="text-muted">加入收藏</small></a>	                	
+						<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">加入收藏</small></a>	                	
+	                	#end
+	                	#if(null!=login_user && login_user.role_id < 3)
+	                	#if(topic.is_chosen == 0)
+	                	<a class="chosen" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">加精</small></a>
+	                	#else
+	                	<a class="chosen" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">取消加精</small></a>
+	                	#end
 	                	#end
                 	</div>
                 </div>
@@ -123,17 +130,17 @@ $(document).ready(function(){
 	    
 		var _this = $(this);
 		var tid = $(this).attr('tid');
-		$.post("${base_url('/love')}", {tid:tid}, function(data){
+		$.post("${base_url('/favorite')}", {type:'love',event_id : tid}, function(data){
 			if(data && data != ''){
-				if(data == '1'){
+				if(data == 'signin'){
+					go_signin();
+				} else if(data == '1'){
 					D.text(C+1);
 					_this.addClass("heartAnimation").attr("rel","unlike");
-				}else if(data == '0'){
+				}else if(data == '-1'){
 					D.text(C-1);
 					_this.removeClass("heartAnimation").attr("rel","like");
 					_this.css("background-position","left");
-				} else if(data == 'signin'){
-					go_signin();
 				}
 			}
 		});
@@ -142,16 +149,31 @@ $(document).ready(function(){
 	$('body').on("click",'.follow',function(){
 		var tid = $(this).attr("tid");
 		var _this = $(this);
-		$.post("${base_url('/favorite')}", {type:'topic', tid:tid}, function(data){
+		$.post("${base_url('/favorite')}", {type:'topic', event_id : tid}, function(data){
 			if(data && data != ''){
 				 if(data == 'signin'){
 					 go_signin();
 				 } else{
 					window.location.reload();	
+				 }
+			}
+		});
+	});
+	
+	$('body').on("click",'.chosen',function(){
+		var tid = $(this).attr("tid");
+		var _this = $(this);
+		$.post("${base_url('/chosen')}", {event_id : tid}, function(data){
+			if(data && data != ''){
+				 if(data == 'signin'){
+					 go_signin();
+				 } else if(data == 'success'){
+					window.location.reload();	
 				}
 			}
 		});
 	});
+	
 });
 </script>  
 </body>

@@ -18,18 +18,6 @@ public class User implements Serializable {
 	
 	private String pass_word;
 	
-	//我关注的人数
-	private Long following;
-	
-	//未读通知数
-	private Long notices;
-	
-	//发表帖子数
-	private Long topics;
-	
-	//发表评论数
-	private Long comments;
-	
 	//头像
 	private String avatar;
 	
@@ -72,22 +60,6 @@ public class User implements Serializable {
 
 	public void setPass_word(String pass_word) {
 		this.pass_word = pass_word;
-	}
-	
-	public Long getFollowing() {
-		return following;
-	}
-
-	public void setFollowing(Long following) {
-		this.following = following;
-	}
-	
-	public Long getNotices() {
-		return notices;
-	}
-
-	public void setNotices(Long notices) {
-		this.notices = notices;
 	}
 	
 	public String getAvatar() {
@@ -138,20 +110,4 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
-	public Long getTopics() {
-		return topics;
-	}
-
-	public void setTopics(Long topics) {
-		this.topics = topics;
-	}
-
-	public Long getComments() {
-		return comments;
-	}
-
-	public void setComments(Long comments) {
-		this.comments = comments;
-	}
-	
 }

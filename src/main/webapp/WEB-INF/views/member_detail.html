@@ -5,17 +5,13 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-2">
-                        <img width="73" height="73" class="img-radius img-responsive" src="${profile.avatar}" alt="${profile.username}">
+                        <img width="73" height="73" class="img-circle" src="${profile.avatar}" alt="${profile.username}">
                     </div>
                     <div class="col-md-10">
-                    	#if(!isfollow)
-	                    	#if(null == login_user || (null != login_user && login_user.uid != profile.uid) )
-	                    	<a href="${base_url('/user/follow/') + profile.uid}" class="btn btn-default pull-right" role="button">关注Ta</a>
-		                   	#end
+                    	#if(!is_follow)
+	                    	<a href="javascript:void(0);" uid="${profile.uid}" class="btn btn-primary btn-outline pull-right following" role="button">关注Ta</a>
 	                   	#else
-	                   		#if(null == login_user || (null != login_user && login_user.uid != profile.uid) )
-	                   		<a href="javascript:void(0)" class="btn btn-default pull-right" role="button">取消关注</a>
-	                   		#end
+	                   		<a href="javascript:void(0);" uid="${profile.uid}" class="btn btn-danger btn-outline pull-right following" role="button">取消关注</a>
                     	#end
                         <h4>${profile.username}</h4>
                         <p class="text-muted"><small>${profile.username}是第${profile.uid}号会员，加入于${fmtdate(profile.create_time)}</small></p>
@@ -90,5 +86,23 @@
     </div>
 </div>
 #include("./common/footer.html")
+<script>
+$(document).ready(function(){
+	$('body').on("click",'.following',function(){
+		var uid = $(this).attr("uid");
+		var _this = $(this);
+		$.post("${base_url('/favorite')}", {type:'following', event_id : uid}, function(data){
+			if(data && data != ''){
+				 if(data == 'signin'){
+					 go_signin();
+				 } else{
+					window.location.reload();	
+				 }
+			}
+		});
+	});
+	
+});
+</script>  
 </body>
 </html>

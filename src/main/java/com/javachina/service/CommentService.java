@@ -21,5 +21,7 @@ public interface CommentService {
 	boolean save( Long uid, Long toUid, Long tid, String content);
 	
 	boolean delete(Long cid);
+	
+	Long getComments(Long uid);
 		
 }

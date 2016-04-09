@@ -9,6 +9,8 @@ public interface NoticeService {
 	
 	boolean read(Long to_uid);
 	
-	List<Map<String, Object>> getNotices(Long uid);
+	List<Map<String, Object>> getNoticeList(Long uid);
+
+	Long getNotices(Long uid);
 	
 }

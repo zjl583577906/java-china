@@ -7,12 +7,16 @@ public enum Types {
 	views,
 	notices,
 	favorites,
+	following,
+	love, 
 	loves, 
 	signup, 
 	comments, 
 	comment, 
 	user_count, 
 	topic_count, 
-	comment_count, github
+	comment_count, 
+	github,
+	is_chosen
 	
 }

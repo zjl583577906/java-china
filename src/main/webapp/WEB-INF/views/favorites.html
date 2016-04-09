@@ -1,0 +1,28 @@
+#include("./common/header.html", {title : '我收藏的帖子'})
+<link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 chosen">
+        	#if(null != favoritesPage)
+        	#for(topic : favoritesPage.results)
+        	<div class="panel panel-default">
+			  <div class="panel-body">
+			  	<i class="fa fa-heart"></i> <a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
+			  	<p class="pull-right">
+			  		<span class="label label-default">
+			  			<a href="${base_url('/go/') + topic.node_slug}">${topic.node_name}</a>
+			  		</span>
+			  	</p>
+			  </div>
+			</div>
+        	#end
+        	#else
+        	<div class="alert alert-info">嗨，${login_user.user_name}！你没有收藏一个帖子。</div>
+        	#end
+        </div>
+        #include("./common/sidebar.html")
+    </div>
+</div>
+#include("./common/footer.html")
+</body>
+</html>

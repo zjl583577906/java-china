@@ -41,6 +41,9 @@ public class Topic implements Serializable {
 	//是否置顶
 	private Integer is_top;
 	
+	//是否精选
+	private Integer is_chosen;
+	
 	//帖子创建时间
 	private Long create_time;
 	
@@ -154,6 +157,14 @@ public class Topic implements Serializable {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public Integer getIs_chosen() {
+		return is_chosen;
+	}
+
+	public void setIs_chosen(Integer is_chosen) {
+		this.is_chosen = is_chosen;
 	}
 	
 }

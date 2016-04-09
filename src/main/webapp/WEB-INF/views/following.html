@@ -1,0 +1,19 @@
+#include("./common/header.html", {title : '我关注的用户'})
+<link href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 chosen">
+        	#if(null != followingPage)
+        	#for(topic : followingPage.results)
+        	
+        	#end
+        	#else
+        	<div class="alert alert-info">嗨，${login_user.user_name}！你没有关注任何用户。</div>
+        	#end
+        </div>
+        #include("./common/sidebar.html")
+    </div>
+</div>
+#include("./common/footer.html")
+</body>
+</html>

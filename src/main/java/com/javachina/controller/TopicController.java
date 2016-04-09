@@ -20,9 +20,9 @@ import com.javachina.model.LoginUser;
 import com.javachina.model.Topic;
 import com.javachina.service.CommentService;
 import com.javachina.service.FavoriteService;
-import com.javachina.service.LoveService;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
+import com.javachina.service.UserService;
 
 import blade.kit.StringKit;
 
@@ -42,7 +42,7 @@ public class TopicController extends BaseController {
 	private FavoriteService favoriteService;
 	
 	@Inject
-	private LoveService loveService;
+	private UserService userService;
 	
 	/**
 	 * 发布帖子页面
@@ -121,7 +121,7 @@ public class TopicController extends BaseController {
 		putDetail(request, response, uid, tid);
 		
 		// 刷新浏览数
-		topicService.updateCount(tid, Types.views.toString(), +1);
+		topicService.updateCount(tid, Types.views.toString(), +1, false);
 		return this.getView("topic_detail");
 	}
 	
@@ -147,7 +147,7 @@ public class TopicController extends BaseController {
 		request.attribute("is_favorite", is_favorite);
 		
 		// 是否点赞
-		boolean is_love = loveService.isLove(uid, tid);
+		boolean is_love = favoriteService.isFavorite(Types.love.toString(), uid, tid);
 		request.attribute("is_love", is_love);
 		
 		QueryParam cp = QueryParam.me();
@@ -202,6 +202,43 @@ public class TopicController extends BaseController {
 		}
 		
 		return this.getView("topic_detail");
+	}
+	
+	/**
+	 * 加精和取消加精
+	 */
+	@Route(value = "/chosen", method = HttpMethod.POST)
+	public String chosen(Request request, Response response){
+		
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.text(this.SIGNIN);
+			return null;
+		}
+		
+		if(user.getRole_id() > 3){
+			return null;
+		}
+		
+		Long tid = request.queryAsLong("tid");
+		if(null == tid || tid == 0){
+			return null;
+		}
+		
+		Topic topic = topicService.getTopic(tid);
+		if(null == topic){
+			return null;
+		}
+		
+		try {
+			Integer count = topic.getIs_chosen() == 1 ? -1 : 1;
+			boolean updateTime = count > 0;
+			topicService.updateCount(tid, Types.is_chosen.toString(), count, updateTime);
+			response.text(this.SUCCESS);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	
 }

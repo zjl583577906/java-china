@@ -18,6 +18,10 @@ import com.javachina.model.LoginUser;
 import com.javachina.model.User;
 import com.javachina.model.Userinfo;
 import com.javachina.service.ActivecodeService;
+import com.javachina.service.CommentService;
+import com.javachina.service.FavoriteService;
+import com.javachina.service.NoticeService;
+import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
 
@@ -33,7 +37,19 @@ public class UserServiceImpl implements UserService {
 	private ActivecodeService activecodeService;
 	
 	@Inject
+	private TopicService topicService;
+	
+	@Inject
 	private UserinfoService userinfoService;
+	
+	@Inject
+	private FavoriteService favoriteService;
+	
+	@Inject
+	private CommentService commentService;
+	
+	@Inject
+	private NoticeService noticeService;
 	
 	@Override
 	public User getUser(Long uid) {
@@ -244,14 +260,28 @@ public class UserServiceImpl implements UserService {
 			loginUser.setRole_id(user.getRole_id());
 			String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.normal);
 			loginUser.setAvatar(avatar);
-			loginUser.setComments(user.getComments());
-			loginUser.setTopics(user.getTopics());
-			loginUser.setNotices(user.getNotices());
+			
+			Long comments = commentService.getComments(user.getUid());
+			loginUser.setComments(comments);
+			
+			Long topics = topicService.getTopics(user.getUid());
+			loginUser.setTopics(topics);
+			
+			Long notices = noticeService.getNotices(user.getUid());
+			loginUser.setNotices(notices);
+			
 			Userinfo userinfo = userinfoService.getUserinfo(user.getUid());
 			if(null != userinfo){
 				loginUser.setJobs(userinfo.getJobs());
 				loginUser.setNick_name(userinfo.getNick_name());
 			}
+			
+			Long favorites = favoriteService.favorites(Types.topic.toString(), user.getUid());
+			loginUser.setFavorites(favorites);
+			
+			Long following = favoriteService.favorites(Types.following.toString(), user.getUid());
+			loginUser.setFollowing(following);
+			
 			return loginUser;
 		}
 		return null;

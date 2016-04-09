@@ -13,6 +13,10 @@ public class LoginUser {
 	private long topics;
 	private long comments;
 	private long notices;
+	// 我收藏的主题数
+	private long favorites;
+	// 我关注的用户数
+	private long following;
 	
 	public LoginUser() {
 		// TODO Auto-generated constructor stub
@@ -104,6 +108,22 @@ public class LoginUser {
 
 	public void setNotices(long notices) {
 		this.notices = notices;
+	}
+
+	public long getFavorites() {
+		return favorites;
+	}
+
+	public void setFavorites(long favorites) {
+		this.favorites = favorites;
+	}
+
+	public long getFollowing() {
+		return following;
+	}
+
+	public void setFollowing(long following) {
+		this.following = following;
 	}
 	
 }

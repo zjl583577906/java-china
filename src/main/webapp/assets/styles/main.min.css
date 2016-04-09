@@ -110,6 +110,7 @@ b, optgroup, strong {
 
 .topic-footer{
 	height:40px;
+	line-height: 20px;
 }
 
 /*
@@ -156,6 +157,10 @@ heart
   animation-timing-function: steps(28);
   background-position: right;
 }   
+
+.heartRed {
+  background-position: right;
+} 
 
 dfn {
 	font-style: italic
@@ -13745,7 +13750,7 @@ ol.list-style-none, ul.list-style-none {
 }
 
 .small, small {
-	font-size: 11px
+	font-size: 12px
 }
 
 .pullquote::before, blockquote::before {
@@ -27285,8 +27290,8 @@ transform
 	color: #ccc;
 }
 
-.comment-bt a{
-	font-size: 11px;
+.comment-bt a,span{
+	font-size: 12px;
 }
 
 .recommend a{
@@ -27340,9 +27345,9 @@ transform
 }
 
 .bs-docs-footer {
-    padding-top: 40px;
-    padding-bottom: 40px;
-    margin-top: 100px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-top: 10px;
     color: #767676;
     text-align: center;
     border-top: 1px solid #e5e5e5;
@@ -27354,6 +27359,9 @@ transform
 .bs-docs-footer-links li {
     display: inline;
     padding: 0 2px;
+}
+.notices{
+	
 }
 .text-muted {
     color: #777;
@@ -27370,4 +27378,14 @@ ul, menu, dir {
 ol, ul {
     margin-top: 0;
     margin-bottom: 10px;
+}
+.chosen .panel{
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #e2e2e2;
+	height: 50px;
+	line-height: 20px;
+}
+.chosen small{
+	color: red;
 }

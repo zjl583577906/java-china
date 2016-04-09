@@ -121,5 +121,13 @@ public class CommentServiceImpl implements CommentService {
 	public Comment getTopicLastComment(Long tid) {
 		return AR.find("select * from t_comment where tid = ? order by cid desc", tid).first(Comment.class);
 	}
+
+	@Override
+	public Long getComments(Long uid) {
+		if(null != uid){
+			return AR.find("select count(1) from t_comment where uid = ?", uid).first(Long.class);
+		}
+		return 0L;
+	}
 		
 }
