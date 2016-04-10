@@ -13,6 +13,7 @@ public enum Types {
 	signup, 
 	comments, 
 	comment, 
+	at,
 	user_count, 
 	topic_count, 
 	comment_count, 

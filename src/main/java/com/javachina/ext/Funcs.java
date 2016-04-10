@@ -3,7 +3,7 @@ package com.javachina.ext;
 import com.javachina.Constant;
 import com.javachina.ImageTypes;
 import com.javachina.kit.DateKit;
-import com.javachina.kit.ImageKit;
+import com.javachina.kit.Utils;
 
 import blade.kit.StringKit;
 
@@ -19,7 +19,7 @@ public class Funcs {
 	}
 	
 	public static String avatar_url(String avatar) {
-		return ImageKit.getAvatar(avatar, ImageTypes.normal);
+		return Utils.getAvatar(avatar, ImageTypes.normal);
 	}
 	
 	public static String emoji(String content){

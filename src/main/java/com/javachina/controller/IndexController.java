@@ -18,8 +18,8 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.blade.web.multipart.FileItem;
 import com.javachina.Constant;
-import com.javachina.kit.ImageKit;
 import com.javachina.kit.SessionKit;
+import com.javachina.kit.Utils;
 import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
 import com.javachina.service.NodeService;
@@ -162,7 +162,7 @@ public class IndexController extends BaseController {
 			
 			try {
 				
-				ImageKit.copyFileUsingFileChannels(fileItem.getFile(), file);
+				Utils.copyFileUsingFileChannels(fileItem.getFile(), file);
 				
 				String filePath = Constant.UPLOAD_FOLDER + "/" + saveName;
 				

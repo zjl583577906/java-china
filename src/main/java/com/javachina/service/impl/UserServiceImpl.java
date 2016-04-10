@@ -12,8 +12,8 @@ import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.javachina.ImageTypes;
 import com.javachina.Types;
-import com.javachina.kit.ImageKit;
 import com.javachina.kit.QiniuKit;
+import com.javachina.kit.Utils;
 import com.javachina.model.LoginUser;
 import com.javachina.model.User;
 import com.javachina.model.Userinfo;
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
 			map.put("username", user.getLogin_name());
 			map.put("uid", uid);
 			map.put("email", user.getEmail());
-			String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.normal);
+			String avatar = Utils.getAvatar(user.getAvatar(), ImageTypes.normal);
 			map.put("avatar", avatar);
 			map.put("create_time", user.getCreate_time());
 			
@@ -258,7 +258,7 @@ public class UserServiceImpl implements UserService {
 			loginUser.setPass_word(user.getPass_word());
 			loginUser.setStatus(user.getStatus());
 			loginUser.setRole_id(user.getRole_id());
-			String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.normal);
+			String avatar = Utils.getAvatar(user.getAvatar(), ImageTypes.normal);
 			loginUser.setAvatar(avatar);
 			
 			Long comments = commentService.getComments(user.getUid());
@@ -297,6 +297,14 @@ public class UserServiceImpl implements UserService {
 			return count > 0;
 		}
 		return false;
+	}
+
+	@Override
+	public User getUser(String user_name) {
+		if(StringKit.isNotBlank(user_name)){
+			return AR.find("select * from t_user where login_name = ? and status = 1", user_name).first(User.class);
+		}
+		return null;
 	}
 	
 }

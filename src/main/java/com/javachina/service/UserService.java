@@ -12,6 +12,8 @@ public interface UserService {
 	
 	User getUser(Long uid);
 	
+	User getUser(String user_name);
+	
 	User getUser(QueryParam queryParam);
 	
 	Map<String, Object> getUserDetail(Long uid);

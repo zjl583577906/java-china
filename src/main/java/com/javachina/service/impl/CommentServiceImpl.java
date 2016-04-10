@@ -12,7 +12,7 @@ import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.javachina.ImageTypes;
 import com.javachina.ext.markdown.Processor;
-import com.javachina.kit.ImageKit;
+import com.javachina.kit.Utils;
 import com.javachina.model.Comment;
 import com.javachina.model.User;
 import com.javachina.service.CommentService;
@@ -86,8 +86,9 @@ public class CommentServiceImpl implements CommentService {
 			}
 
 			map.put("cid", comment.getCid());
+			map.put("role_id", comment_user.getRole_id());
 			map.put("reply_name", comment_user.getLogin_name());
-			map.put("reply_avatar", ImageKit.getAvatar(comment_user.getAvatar(), ImageTypes.small));
+			map.put("reply_avatar", Utils.getAvatar(comment_user.getAvatar(), ImageTypes.small));
 			
 			String content = comment.getContent().replaceAll("\r\n", "<br/>");
 			String processed = Processor.process(content);

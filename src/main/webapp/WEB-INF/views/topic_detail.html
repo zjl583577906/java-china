@@ -7,7 +7,7 @@
                 <div class="panel-heading">
                     <div class="pull-right">
                     	<a href="${base_url('/member/') + topic.user_name}" title="${topic.user_name}">
-                    		<img class="media-object avatar avatar-sm img-circle" src="${topic.avatar}" alt="${topic.user_name}">
+                    		<img class="avatar avatar-sm img-circle" src="${topic.avatar}" alt="${topic.user_name}">
                     	</a>
                     </div>
                     <p><a href="${base_url('/')}">首页</a> / <a href="${base_url('/go/') + topic.node_slug}">$!{topic.node_name}</a></p>
@@ -33,7 +33,7 @@
 	                	#end
 	                	<span class="likeCount" id="likeCount">${topic.loves}</span>
 	                	&nbsp;&nbsp;&nbsp;&nbsp;
-	                	<span><a href="javascript:void(0);" class="share-weibo">Weibo</a></span>
+	                	<span><a href="javascript:void(0);" class="share-weibo"><i class="fa fa-share-alt"></i> Weibo</a></span>
                 	</div>
                 	
                 	<div class="pull-right right">
@@ -66,14 +66,16 @@
                     <ul class="media-list">
                     	#for(comment : commentPage.results)
                     	<li class="media" id="Reply${comment.cid}">
-                            <a href="#Reply${for.index}" onclick="addReply('&lt;a href=&quot;${base_url('/member/')+comment.reply_name}&quot;&gt;${comment.user_name}&lt;/a&gt;')" class="pull-right text-muted">#${for.index} <span class="glyphicon glyphicon-share-alt"></span></a>
+                            <a href="javascript:void(0);" alt="${comment.reply_name}" class="pull-right text-muted at-user">
+                            	<i class="fa fa-mail-forward"></i> #${for.index}
+                            </a>
                             <a class="media-left" href="${base_url('/member/') + comment.reply_name}">
-                                <img width="50" height="50" class="img-rounded" src="${comment.reply_avatar}" alt="${comment.reply_name}}">
+                                <img class="avatar avatar-sm img-circle" src="${comment.reply_avatar}" alt="${comment.reply_name}">
                             </a>
                             <div class="media-body">
                                 <h4 class="media-heading topic-list-heading"><a href="${base_url('/member/') + comment.reply_name}">${comment.reply_name}</a>
                                 #if(comment.role_id < 3)
-                                <img width="30" height="14" class="img-rounded" src="" alt="Moderator" title="Moderator">
+                                
                                 #end
                                 &nbsp;&nbsp;
                                 <small>${timespan(comment.replytime)}</small></h4>
@@ -93,31 +95,22 @@
                 </div>
                 <div class="panel-body">
                 	#if(null != login_user)
-                		#if(null!=error)<div class="alert alert-danger">${error}</div>#end
-                		<form action="${base_url('/comment/add')}" class="form-horizontal" role="form" method="post" onsubmit="return validate_form(this)">
-                			<input type="hidden" name="tid" value="${topic.tid}">
-	                        <input type="hidden" name="tuid" value="${topic.uid}">
-	                        <p class="emoji-picker-container">
-	                        <textarea id="content" data-emojiable="true" class="form-control textarea-control-comment" 
-	                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
-	                        </p>
-	                        <button type="submit" class="btn btn-default">提交</button>
-	                        <script>
-	                            function addReply(user_name) {
-	                                window.editor.insertHtml('@'+user_name+'&nbsp;');
-	                            }
-	                            function validate_form(thisform){
-	                                if (window.editor.text().length<2){
-	                                    alert('回复内容不得少于2字');
-	                                    return false;
-	                                }
-	                            }
-	                        </script>
-		                </form>
-		           #else
-		                <div class="well text-center">
-	                    	<a href="${base_url('/signup')}">注册</a> 参与讨论 or <a href="${base_url('/signin')}">登录</a>
-	                    </div>
+                	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
+               		<form action="${base_url('/comment/add')}" class="form-horizontal" role="form" method="post">
+               			<input type="hidden" name="tid" value="${topic.tid}">
+                        <input type="hidden" name="tuid" value="${topic.uid}">
+                        <p class="emoji-picker-container">
+                        <textarea id="content" data-emojiable="true" class="form-control textarea-control-comment" 
+                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
+                        </p>
+                        <div class="pull-right">
+                        	<button type="submit" class="btn btn-success">回复</button>
+                        </div>
+	                </form>
+		           	#else
+	                <div class="well text-center">
+                    	<a href="${base_url('/signup')}">注册</a> 参与讨论 or <a href="${base_url('/signin')}">登录</a>
+                    </div>
 	                #end
                 </div>
             </div><!-- /.panel add comment -->
@@ -187,6 +180,13 @@ $(document).ready(function(){
 		var share_url = 'http://service.weibo.com/share/share.php?url=' + window.location.href + '&title=' + $('.topic-detail-heading .panel-title').text();
 		openWindow(share_url, '', 550, 422);
 	});
+	
+	$('body').on("click",'.at-user',function(){
+		var user_name = $(this).attr('alt');
+		var html = $('#content').html() + '@' + user_name + ' ';
+		$('#content').html(html);
+	});
+	
 });
 </script>  
 </body>

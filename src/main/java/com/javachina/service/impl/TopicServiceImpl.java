@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import com.blade.ioc.annotation.Inject;
 import com.blade.ioc.annotation.Service;
@@ -14,7 +15,7 @@ import com.javachina.ImageTypes;
 import com.javachina.Types;
 import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.DateKit;
-import com.javachina.kit.ImageKit;
+import com.javachina.kit.Utils;
 import com.javachina.model.Comment;
 import com.javachina.model.Node;
 import com.javachina.model.Topic;
@@ -26,6 +27,7 @@ import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
+import blade.kit.CollectionKit;
 import blade.kit.StringKit;
 
 @Service
@@ -117,7 +119,15 @@ public class TopicServiceImpl implements TopicService {
 			
 			// 通知@的人
 			if(null != tid){
-				
+				Set<String> atUsers = Utils.getAtUsers(content);
+				if(CollectionKit.isNotEmpty(atUsers)){
+					for(String user_name : atUsers){
+						User user = userService.getUser(user_name);
+						if(null != user){
+							noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+						}
+					}
+				}
 			}
 			return tid;
 		} catch (Exception e) {
@@ -164,7 +174,7 @@ public class TopicServiceImpl implements TopicService {
 		map.put("update_time", topic.getUpdate_time());
 		map.put("user_name", user.getLogin_name());
 		
-		String avatar = ImageKit.getAvatar(user.getAvatar(), ImageTypes.small);
+		String avatar = Utils.getAvatar(user.getAvatar(), ImageTypes.small);
 		
 		map.put("avatar", avatar);
 		map.put("node_name", node.getTitle());
@@ -204,6 +214,14 @@ public class TopicServiceImpl implements TopicService {
 		return false;
 	}
 
+	/**
+	 * 评论帖子
+	 * @param uid		评论人uid
+	 * @param to_uid	发帖人uid
+	 * @param tid		帖子id
+	 * @param content	评论内容
+	 * @return
+	 */
 	@Override
 	public boolean comment(Long uid, Long to_uid, Long tid, String content) {
 		boolean flag = commentService.save(uid, to_uid, tid, content);
@@ -212,6 +230,18 @@ public class TopicServiceImpl implements TopicService {
 			// 通知
 			if(!uid.equals(to_uid)){
 				noticeService.save(Types.comment.toString(), uid, to_uid, tid);
+				
+				// 通知@的用户
+				Set<String> atUsers = Utils.getAtUsers(content);
+				if(CollectionKit.isNotEmpty(atUsers)){
+					for(String user_name : atUsers){
+						User user = userService.getUser(user_name);
+						if(null != user){
+							noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+						}
+					}
+				}
+				
 				// 更新总评论数
 				settingsService.updateCount(Types.comment_count.toString(), +1);
 				userService.updateCount(to_uid, Types.notices.toString(), +1);
