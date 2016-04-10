@@ -1,6 +1,6 @@
 # java-china
 
-Java中国是使用Blade框架搭建的论坛系统，致力于打造一个简洁优质的Java程序员论坛。
+Java中国是使用Blade框架搭建的论坛系统，致力于打造一个简洁优质的Java程序员论坛，支持@用户，github登录，emoji表情。
 
 目前还在开发中，beta地址 [http://beta.java-china.org](http://beta.java-china.org)
 
