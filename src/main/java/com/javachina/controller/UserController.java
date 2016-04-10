@@ -24,9 +24,11 @@ import com.javachina.model.Activecode;
 import com.javachina.model.LoginUser;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
+import com.javachina.service.CommentService;
 import com.javachina.service.FavoriteService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
+import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
 
@@ -52,10 +54,16 @@ public class UserController extends BaseController {
 	private UserinfoService userinfoService;
 	
 	@Inject
+	private CommentService commentService;
+	
+	@Inject
 	private NoticeService noticeService;
 	
 	@Inject
 	private FavoriteService favoriteService;
+	
+	@Inject
+	private TopicService topicService;
 
 	/**
 	 * 获取验证码
@@ -305,10 +313,23 @@ public class UserController extends BaseController {
 		LoginUser loginUser = SessionKit.getLoginUser();
 		if(null == loginUser){
 			request.attribute("is_follow", false);
+			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
 		} else {
 			boolean is_follow = favoriteService.isFavorite(Types.following.toString(), loginUser.getUid(), user.getUid());
 			request.attribute("is_follow", is_follow);
 		}
+		
+		// 最新创建的主题
+		QueryParam tp = QueryParam.me();
+		tp.eq("status", 1).eq("uid", user.getUid()).orderby("update_time desc").page(1, 10);
+		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
+		request.attribute("topicPage", topicPage);
+		
+		// 最新发布的回复
+		QueryParam cp = QueryParam.me();
+		cp.eq("uid", user.getUid()).orderby("create_time desc").page(1, 10);
+		Page<Map<String, Object>> commentPage = commentService.getPageListMap(cp);
+		request.attribute("commentPage", commentPage);
 		
 		return this.getView("member_detail");
 	}

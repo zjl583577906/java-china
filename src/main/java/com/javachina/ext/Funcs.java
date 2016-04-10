@@ -18,6 +18,19 @@ public class Funcs {
 		return Constant.SITE_URL + path;
 	}
 	
+	/**
+	 * 取某个区间的随机数
+	 * @param max
+	 * @return
+	 */
+	public static int random(int max) {
+		int radom = Integer.valueOf(StringKit.getRandomNumber(1, max));
+		if(radom == 0){
+			return 1;
+		}
+		return radom;
+	}
+	
 	public static String avatar_url(String avatar) {
 		return Utils.getAvatar(avatar, ImageTypes.normal);
 	}

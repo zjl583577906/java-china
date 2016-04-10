@@ -27389,6 +27389,17 @@ ol, ul {
     margin-top: 0;
     margin-bottom: 10px;
 }
+.essence {
+	margin: 0;
+	padding: 0;
+	border-bottom:;
+	box-shadow:;
+}
+
+.bg-fb{
+	background-color: #F8F8F8;
+}
+
 .essence .panel{
 	height: 50px;
 	margin: 0;
@@ -27407,4 +27418,24 @@ ol, ul {
     /* background-color: #fff; */
     border-bottom: 1px solid #e2e2e2;
     box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.profile-bg {
+	position:absolute;
+    top:0;
+    left:0;
+    width: 100%;
+    height: 100%;
+    
+    background-image:url(../images/profile/bg1.jpg);
+    /* filter:alpha(opacity=90);-moz-opacity:0.9;opacity:0.9; -khtml-opacity: 0.9; */
+    -webkit-filter: blur(2px); Chrome, Opera
+       -moz-filter: blur(2px);
+        -ms-filter: blur(2px);    
+            filter: blur(2px); 
+            
+    -moz-background-size: 100% 100%; /*  Firefox 3.6 */
+    -o-background-size: 100% 100%;/* Opera 9.5 */
+    -webkit-background-size: 100% 100%;/* Safari 3.0 */
+    background-size: 100% 100%;/*  Firefox 4.0 and other CSS3-compliant browsers */
 }

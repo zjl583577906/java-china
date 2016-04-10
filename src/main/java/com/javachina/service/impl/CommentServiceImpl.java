@@ -14,8 +14,10 @@ import com.javachina.ImageTypes;
 import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.Utils;
 import com.javachina.model.Comment;
+import com.javachina.model.Topic;
 import com.javachina.model.User;
 import com.javachina.service.CommentService;
+import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
 import blade.kit.DateKit;
@@ -25,6 +27,9 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private TopicService topicService;
 	
 	@Override
 	public Comment getComment(Long cid) {
@@ -81,14 +86,17 @@ public class CommentServiceImpl implements CommentService {
 			
 			Long comment_uid = comment.getUid();
 			User comment_user = userService.getUser(comment_uid);
-			if(null == comment_user){
+			Topic topic = topicService.getTopic(comment.getTid());
+			if(null == comment_user || null == topic){
 				return map;
 			}
 
 			map.put("cid", comment.getCid());
+			map.put("tid", comment.getTid());
 			map.put("role_id", comment_user.getRole_id());
 			map.put("reply_name", comment_user.getLogin_name());
 			map.put("reply_avatar", Utils.getAvatar(comment_user.getAvatar(), ImageTypes.small));
+			map.put("title", topic.getTitle());
 			
 			String content = comment.getContent().replaceAll("\r\n", "<br/>");
 			String processed = Processor.process(content);
