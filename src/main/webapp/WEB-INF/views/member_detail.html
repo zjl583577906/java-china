@@ -1,4 +1,5 @@
 #include("./common/header.html", {title: profile.username})
+<link rel="stylesheet" type="text/css" href="${base}/assets/styles/twemoji-awesome.css" />
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -115,7 +116,7 @@ $(document).ready(function(){
 					'	</div>'+
 					'	<div class="widget-details">' +
 					'		<p style="color:#4F5052;"><a href="'+ data[i].html_url +'" target="_blank" style="color:#4F5052;font-size: 16px;">'+ data[i].name +'</a> / '+data[i].stargazers_count+' stars</p>'+
-					'		<p style="color:#778087;">'+ data[i].description +'</p>'+
+					'		<p style="color:#778087;">'+ emoji(data[i].description) +'</p>'+
 					'	</div>'+
 					'</div>';
 					

@@ -63,3 +63,13 @@ function dispatch() {
         return false;
     }
 }
+
+function emoji(content){
+	if(content){
+		if(content.indexOf(":") == -1){
+			return content;
+		}
+		return content.replace(/:([a-z\\-]{2,30}):/g, "<i class=\"twa twa-lg twa-$1\"></i>");
+	}
+	return "";
+}
