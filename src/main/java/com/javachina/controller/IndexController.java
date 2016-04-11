@@ -197,4 +197,20 @@ public class IndexController extends BaseController {
 		return this.getView("about");
 	}
 	
+	/**
+	 * faq页面
+	 */
+	@Route(value = "/faq", method = HttpMethod.GET)
+	public ModelAndView faq(Request request, Response response){
+		return this.getView("faq");
+	}
+	
+	/**
+	 * donate页面
+	 */
+	@Route(value = "/donate", method = HttpMethod.GET)
+	public ModelAndView donate(Request request, Response response){
+		return this.getView("donate");
+	}
+	
 }
