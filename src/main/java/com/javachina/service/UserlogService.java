@@ -9,6 +9,6 @@ public interface UserlogService {
 	
 	List<Userlog> getUserlogList(QueryParam queryParam);
 	
-	boolean save(Integer uid, String action, String content);
+	void save(Long uid, String action, String content);
 	
 }

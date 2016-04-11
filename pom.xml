@@ -12,7 +12,7 @@
 		<dependency>
 			<groupId>com.bladejava</groupId>
 			<artifactId>blade-core</artifactId>
-			<version>1.6.1M1</version>
+			<version>1.6.1M2</version>
 		</dependency>
 		<!-- 邮件发送 -->
 		<dependency>

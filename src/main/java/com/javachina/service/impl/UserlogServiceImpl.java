@@ -2,9 +2,11 @@ package com.javachina.service.impl;
 
 import java.util.List;
 
+import com.blade.context.BladeWebContext;
 import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.QueryParam;
+import com.javachina.kit.Utils;
 import com.javachina.model.Userlog;
 import com.javachina.service.UserlogService;
 
@@ -22,15 +24,20 @@ public class UserlogServiceImpl implements UserlogService {
 	}
 	
 	@Override
-	public boolean save(Integer uid, String action, String content) {
-		try {
-			AR.update("insert into t_userlog(uid, action, content, create_time) values(?, ?, ?, ?)",
-					uid, action, content, DateKit.getCurrentUnixTime()).executeUpdate();
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return false;
+	public void save(final Long uid, final String action, final String content) {
+		final String ip = Utils.getIpAddr(BladeWebContext.request());
+		Runnable t = new Runnable() {
+			@Override
+			public void run() {
+				try {
+					AR.update("insert into t_userlog(uid, action, content, ip, create_time) values(?, ?, ?, ?, ?)",
+							uid, action, content, ip, DateKit.getCurrentUnixTime()).executeUpdate();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		Utils.run(t);
 	}
 	
 }

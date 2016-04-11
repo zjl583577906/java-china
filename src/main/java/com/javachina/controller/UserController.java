@@ -17,6 +17,7 @@ import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.Actions;
 import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.kit.SessionKit;
@@ -31,6 +32,7 @@ import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
+import com.javachina.service.UserlogService;
 
 import blade.kit.DateKit;
 import blade.kit.EncrypKit;
@@ -64,6 +66,9 @@ public class UserController extends BaseController {
 	
 	@Inject
 	private TopicService topicService;
+	
+	@Inject
+	private UserlogService userlogService;
 
 	/**
 	 * 获取验证码
@@ -109,6 +114,8 @@ public class UserController extends BaseController {
 		if(StringKit.isNotBlank(rememberme) && rememberme.equals("on")){
 			SessionKit.setCookie(response, Constant.USER_IN_COOKIE, loginUser.getUid());
 		}
+		
+		userlogService.save(user.getUid(), Actions.SIGNIN, "");
 		
 		String val = SessionKit.getCookie(request, Constant.JC_REFERRER_COOKIE);
 		if(StringKit.isNotBlank(val)){
@@ -207,6 +214,7 @@ public class UserController extends BaseController {
 		
 		User user_ = userService.signup(login_name, pass_word, email);
 		if(null != user_){
+			userlogService.save(user_.getUid(), Actions.SIGNUP, login_name + ":" + email);
 			request.attribute(this.INFO, "注册成功，已经向您的邮箱 " + email + " 发送了一封激活申请，请注意查收！");
 		} else {
 			request.attribute(this.ERROR, "注册发生异常");
@@ -446,6 +454,7 @@ public class UserController extends BaseController {
 			
 			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
 			SessionKit.setLoginUser(request.session(), loginUserTemp);
+			
 			response.text(this.SUCCESS);
 			return null;
 		}
@@ -497,6 +506,9 @@ public class UserController extends BaseController {
 			SessionKit.setLoginUser(request.session(), loginUserTemp);
 			
 			request.attribute(this.INFO, "密码修改成功");
+			
+			userlogService.save(loginUser.getUid(), Actions.UPDATE_PWD, new_pwd);
+			
 			return this.getView("settings");
 		}
 		return null;

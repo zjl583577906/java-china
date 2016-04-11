@@ -17,9 +17,6 @@ public class Node implements Serializable {
 	//父节点id
 	private Long pid;
 	
-	//发布人id
-	private Long uid;
-	
 	//节点名称
 	private String title;
 	
@@ -116,14 +113,6 @@ public class Node implements Serializable {
 
 	public void setPic(String pic) {
 		this.pic = pic;
-	}
-
-	public Long getUid() {
-		return uid;
-	}
-
-	public void setUid(Long uid) {
-		this.uid = uid;
 	}
 
 	public Long getUpdate_time() {

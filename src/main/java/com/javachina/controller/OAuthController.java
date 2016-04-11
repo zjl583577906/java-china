@@ -23,7 +23,7 @@ import com.javachina.service.UserService;
 
 import blade.kit.StringKit;
 import blade.kit.http.HttpRequest;
-import blade.kit.json.JSON;
+import blade.kit.json.JSONKit;
 import blade.kit.json.JSONObject;
 import blade.kit.logging.Logger;
 import blade.kit.logging.LoggerFactory;
@@ -63,15 +63,15 @@ public class OAuthController extends BaseController {
 		
 		LOGGER.info("body = {}", body);
 		
-		JSONObject result = JSON.parse(body).asObject();
+		JSONObject result = JSONKit.parseObject(body);
 	 	String access_token = result.getString("access_token");
 	 	
 	 	String body_ = HttpRequest.get("https://api.github.com/user?access_token=" + access_token).body();
 	 	
 	 	System.out.println("body = " + body_);
 	 	
-	 	JSONObject user = JSON.parse(body_).asObject();
-	 	Long open_id = user.getLong("id", 0);
+	 	JSONObject user = JSONKit.parseObject(body_);
+	 	Long open_id = user.getLong("id");
 	 	String login = user.getString("login");
 	 	
 	 	// 判断用户是否已经绑定

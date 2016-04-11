@@ -12,12 +12,30 @@ import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.blade.web.http.Request;
 import com.javachina.ImageTypes;
 
 import blade.kit.StringKit;
 
 public class Utils {
 
+	public static String getIpAddr(Request request) {
+		if (null == request) {
+			return "0.0.0.0";
+		}
+		String ip = request.header("x-forwarded-for");
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.header("Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.header("WL-Proxy-Client-IP");
+		}
+		if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
+			ip = request.address();
+		}
+		return ip;
+	}
+	
 	public static Set<String> getAtUsers(String str){
 		Set<String> users = new HashSet<String>();
 		if(StringKit.isNotBlank(str)){

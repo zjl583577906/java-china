@@ -14,6 +14,7 @@ import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.Actions;
 import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.kit.SessionKit;
@@ -24,6 +25,7 @@ import com.javachina.service.FavoriteService;
 import com.javachina.service.NodeService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
+import com.javachina.service.UserlogService;
 
 import blade.kit.StringKit;
 
@@ -44,6 +46,9 @@ public class TopicController extends BaseController {
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private UserlogService userlogService;
 	
 	/**
 	 * 发布帖子页面
@@ -91,6 +96,7 @@ public class TopicController extends BaseController {
 		// 发布帖子
 		Long tid = topicService.save(user.getUid(), nid, title, content, 0);
 		if(null != tid){
+			userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
 			response.go("/topic/" + tid);
 			return null;
 		} else {
@@ -199,6 +205,7 @@ public class TopicController extends BaseController {
 		// 评论帖子
 		boolean flag = topicService.comment(uid, topic.getUid(), tid, content);
 		if(flag){
+			userlogService.save(user.getUid(), Actions.ADD_COMMENT, content);
 			response.go("/topic/" + tid);
 			return null;
 		} else {
@@ -238,6 +245,9 @@ public class TopicController extends BaseController {
 			Integer count = topic.getIs_essence() == 1 ? -1 : 1;
 			boolean updateTime = count > 0;
 			topicService.updateCount(tid, Types.is_essence.toString(), count, updateTime);
+			
+			userlogService.save(user.getUid(), Actions.ESSENCE, tid+":" + count);
+			
 			response.text(this.SUCCESS);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -20,6 +20,8 @@ public class Userlog implements Serializable {
 	
 	private String content;
 	
+	private String ip_addr;
+	
 	private Long create_time;
 	
 	public Userlog(){}
@@ -62,6 +64,14 @@ public class Userlog implements Serializable {
 
 	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
+	}
+
+	public String getIp_addr() {
+		return ip_addr;
+	}
+
+	public void setIp_addr(String ip_addr) {
+		this.ip_addr = ip_addr;
 	}
 	
 }

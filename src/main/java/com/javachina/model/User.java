@@ -110,4 +110,11 @@ public class User implements Serializable {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "User [uid=" + uid + ", login_name=" + login_name + ", pass_word=" + pass_word + ", avatar=" + avatar
+				+ ", email=" + email + ", create_time=" + create_time + ", update_time=" + update_time + ", role_id="
+				+ role_id + ", status=" + status + "]";
+	}
+
 }
