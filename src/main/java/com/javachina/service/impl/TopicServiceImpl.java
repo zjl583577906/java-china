@@ -13,7 +13,6 @@ import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.javachina.ImageTypes;
 import com.javachina.Types;
-import com.javachina.ext.markdown.Processor;
 import com.javachina.kit.DateKit;
 import com.javachina.kit.Utils;
 import com.javachina.model.Comment;
@@ -123,7 +122,7 @@ public class TopicServiceImpl implements TopicService {
 				if(CollectionKit.isNotEmpty(atUsers)){
 					for(String user_name : atUsers){
 						User user = userService.getUser(user_name);
-						if(null != user){
+						if(null != user && !user.getUid().equals(uid)){
 							noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
 						}
 					}
@@ -189,9 +188,8 @@ public class TopicServiceImpl implements TopicService {
 		}
 		
 		if(isDetail){
-			String content = topic.getContent().replaceAll("\r\n", "<br/>");
-			String processed = Processor.process(content);
-			map.put("content", processed);
+			String content = Utils.markdown2html(topic.getContent());
+			map.put("content", content);
 		}
 		return map;
 	}
@@ -236,7 +234,7 @@ public class TopicServiceImpl implements TopicService {
 				if(CollectionKit.isNotEmpty(atUsers)){
 					for(String user_name : atUsers){
 						User user = userService.getUser(user_name);
-						if(null != user){
+						if(null != user && !user.getUid().equals(uid)){
 							noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
 						}
 					}
@@ -244,7 +242,6 @@ public class TopicServiceImpl implements TopicService {
 				
 				// 更新总评论数
 				settingsService.updateCount(Types.comment_count.toString(), +1);
-				userService.updateCount(to_uid, Types.notices.toString(), +1);
 			}
 			return true;
 		}

@@ -30,7 +30,7 @@ public class UserlogServiceImpl implements UserlogService {
 			@Override
 			public void run() {
 				try {
-					AR.update("insert into t_userlog(uid, action, content, ip, create_time) values(?, ?, ?, ?, ?)",
+					AR.update("insert into t_userlog(uid, action, content, ip_addr, create_time) values(?, ?, ?, ?, ?)",
 							uid, action, content, ip, DateKit.getCurrentUnixTime()).executeUpdate();
 				} catch (Exception e) {
 					e.printStackTrace();

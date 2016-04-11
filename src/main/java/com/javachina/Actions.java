@@ -8,5 +8,6 @@ public interface Actions {
 	String SIGNIN = "signin";
 	String SIGNUP = "signup";
 	String UPDATE_PWD = "update_pwd";
+	String SEND_MAIL = "send_mail";
 	
 }

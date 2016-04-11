@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-9">
             <div class="panel panel-default topic-detail-heading">
-                <div class="panel-heading">
+                <div class="panel-heading pb0">
                     <div class="pull-right">
                     	<a href="${base_url('/member/') + topic.user_name}" title="${topic.user_name}">
                     		<img class="avatar avatar-sm img-circle" src="${topic.avatar}" alt="${topic.user_name}">
@@ -12,13 +12,15 @@
                     </div>
                     <p><a href="${base_url('/')}">首页</a> / <a href="${base_url('/go/') + topic.node_slug}">$!{topic.node_name}</a></p>
                     <h1 class="panel-title">$!{topic.title}</h1>
+                    <p class="mt5">
                     <small class="text-muted">
-                        <span>By <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
+                        <span>by <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
                         <span>${fmtdate(topic.create_time)}</span>
                         #if(null!=login_user && topic.uid == login_user.uid)
                         &nbsp;•&nbsp;&nbsp;<span><a href="${base_url('/topic/edit/') + topic.tid}">编辑</a></span>
                         #end
                     </small>
+                    </p>
                 </div>
                 <div class="panel-body topic-detail">
                     ${emoji(topic.content)}
@@ -45,12 +47,15 @@
 	                	#else
 						<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">加入收藏</small></a>	                	
 	                	#end
+	                	<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">忽略帖子</small></a>
+	                	
 	                	#if(null!=login_user && login_user.role_id < 3)
-	                	#if(topic.is_essence == 0)
-	                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">加精</small></a>
-	                	#else
-	                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">取消加精</small></a>
-	                	#end
+		                	#if(topic.is_essence == 0)
+		                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">加精</small></a>
+		                	#else
+		                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">取消加精</small></a>
+		                	#end
+		                	<a class="deltopic" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">删帖</small></a>
 	                	#end
                 	</div>
                 </div>
@@ -60,7 +65,7 @@
             #if(topic.comments > 0)
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h3 class="panel-title"><small>$!{topic.comment} 回复 | 直到${today("yyyy-MM-dd HH:mm")}</small><a href="#Reply" class="pull-right"><small class="text-muted">添加回复</small></a></h3>
+                    <span>$!{topic.comment} 回复 | 直到${today("yyyy-MM-dd HH:mm")}</span>
                 </div>
                 <div class="panel-body">
                     <ul class="media-list">
@@ -91,7 +96,10 @@
             
             <div class="panel panel-default" id="Reply">
                 <div class="panel-heading">
-                    <h3 class="panel-title">添加一条新回复</h3>
+                    <span>添加一条新回复</span>
+                    <p class="pull-right mr5">
+                    	<span><a href="#">回到顶部 <i class="fa fa-level-up"></i></a></span>
+                    </p>
                 </div>
                 <div class="panel-body">
                 	#if(null != login_user)
@@ -183,8 +191,15 @@ $(document).ready(function(){
 	
 	$('body').on("click",'.at-user',function(){
 		var user_name = $(this).attr('alt');
-		var html = $('#content').html() + '@' + user_name + ' ';
-		$('#content').html(html);
+		var text = $('#content').val();
+		var at = '@' + user_name + ' ';
+		if(text == at){
+			$('#content').val('');		
+		} else{
+			var br = text ? '\r\n' : '';
+			$('#content').val(text + br + at);
+		}
+		$('#content').focus();
 	});
 	
 });

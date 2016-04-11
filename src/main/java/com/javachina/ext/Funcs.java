@@ -127,16 +127,4 @@ public class Funcs {
 		return r;
 	}
 	
-	/*
-	 * markdown转html
-	 */
-	public static String mdTohtml(String md){
-		if(StringKit.isNotBlank(md)){
-			String member = base_url("/member/");
-			//@功能的发送回复提醒
-			md = md.replaceAll("@([a-z0-9]{3,12}\\s)", "@<a href='"+ member +"$1' target='_blank'>$1</a>&nbsp;");
-			return md;
-		}
-		return "";
-	}
 }

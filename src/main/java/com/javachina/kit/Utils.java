@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
 
 import com.blade.web.http.Request;
 import com.javachina.ImageTypes;
+import com.javachina.ext.Funcs;
+import com.javachina.ext.markdown.Processor;
 
 import blade.kit.StringKit;
 
@@ -95,6 +97,19 @@ public class Utils {
 	
 	public static void run(Runnable t){
 		Executors.newSingleThreadExecutor().submit(t);
+	}
+
+	public static String markdown2html(String content) {
+		if(StringKit.isBlank(content)){
+			return content;
+		}
+		
+		String member = Funcs.base_url("/member/");
+		String content_ = content.replaceAll("\r\n", "<br/>")
+				.replaceAll("@([a-zA-Z_0-9-]+)\\s", "<a href='"+ member +"$1'>@$1</a>&nbsp;");
+		
+		String processed = Processor.process(content_);
+		return processed;
 	}
 	
 }

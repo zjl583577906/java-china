@@ -7,8 +7,11 @@ import java.util.Map;
 import javax.mail.MessagingException;
 
 import com.blade.ioc.annotation.Component;
+import com.blade.ioc.annotation.Inject;
+import com.javachina.Actions;
 import com.javachina.Constant;
 import com.javachina.service.SendMailService;
+import com.javachina.service.UserlogService;
 import com.jmail.MailMessage;
 import com.jmail.MailSender;
 import com.jmail.MailSenderImpl;
@@ -22,6 +25,9 @@ import jetbrick.template.JetTemplate;
 public class SendMailServiceImpl implements SendMailService {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SendMailServiceImpl.class);
+	
+	@Inject
+	private UserlogService userlogService;
 	
 	private MailSender mailSender = new MailSenderImpl();
 	private MailMessage mailMessage = new MailMessage();
@@ -58,6 +64,8 @@ public class SendMailServiceImpl implements SendMailService {
 			mailSender.host(Constant.MAIL_HOST).username(Constant.MAIL_USER).password(Constant.MAIL_PASS);
 			
 			mailSender.send(mailMessage, true);
+			
+			userlogService.save(0L, Actions.SEND_MAIL, email + ":" + code + ":" + "signup");
 			
 			LOGGER.info("user {} signup, send mail [{}] success, code = [{}]", username, email, code);
 		} catch (MessagingException e) {
@@ -96,6 +104,8 @@ public class SendMailServiceImpl implements SendMailService {
 			mailSender.host(Constant.MAIL_HOST).username(Constant.MAIL_USER).password(Constant.MAIL_PASS);
 			
 			mailSender.send(mailMessage, true);
+			
+			userlogService.save(0L, Actions.SEND_MAIL, email + ":" + code + ":" + "forgot");
 			
 			LOGGER.info("user {} signup, send mail [{}] success, code = [{}]", username, email, code);
 		} catch (MessagingException e) {

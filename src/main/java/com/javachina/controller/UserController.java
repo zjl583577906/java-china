@@ -102,9 +102,22 @@ public class UserController extends BaseController {
 			return this.getView("signin");
 		}
 		
+		boolean hasUser = userService.hasUser(login_name);
+		if(!hasUser){
+			request.attribute(this.ERROR, "该用户不存在");
+			request.attribute("login_name", login_name);
+			return this.getView("signin");
+		}
+		
 		User user = userService.signin(login_name, pass_word);
 		if(null == user){
 			request.attribute(this.ERROR, "用户名或密码错误");
+			request.attribute("login_name", login_name);
+			return this.getView("signin");
+		}
+		
+		if(user.getStatus() == 0){
+			request.attribute(this.ERROR, "该用户尚未激活，请登录邮箱激活帐号后登录");
 			request.attribute("login_name", login_name);
 			return this.getView("signin");
 		}
@@ -115,7 +128,7 @@ public class UserController extends BaseController {
 			SessionKit.setCookie(response, Constant.USER_IN_COOKIE, loginUser.getUid());
 		}
 		
-		userlogService.save(user.getUid(), Actions.SIGNIN, "");
+		userlogService.save(user.getUid(), Actions.SIGNIN, login_name);
 		
 		String val = SessionKit.getCookie(request, Constant.JC_REFERRER_COOKIE);
 		if(StringKit.isNotBlank(val)){
