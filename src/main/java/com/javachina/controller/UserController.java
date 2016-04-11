@@ -21,6 +21,7 @@ import com.javachina.Actions;
 import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.kit.SessionKit;
+import com.javachina.kit.Utils;
 import com.javachina.model.Activecode;
 import com.javachina.model.LoginUser;
 import com.javachina.model.User;
@@ -192,6 +193,27 @@ public class UserController extends BaseController {
 		
 		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word) || StringKit.isBlank(email)){
 			request.attribute(this.ERROR, "参数不能为空");
+			request.attribute("login_name", login_name);
+			request.attribute("email", email);
+			return this.getView("signup");
+		}
+		
+		if(login_name.length() > 16 || login_name.length() < 4){
+			request.attribute(this.ERROR, "请输入4-16位用户名");
+			request.attribute("login_name", login_name);
+			request.attribute("email", email);
+			return this.getView("signup");
+		}
+		
+		if(!PatternKit.isStudentNum(login_name)){
+			request.attribute(this.ERROR, "请输入只包含字母／数字／下划线的用户名");
+			request.attribute("login_name", login_name);
+			request.attribute("email", email);
+			return this.getView("signup");
+		}
+		
+		if(!Utils.isSignup(login_name)){
+			request.attribute(this.ERROR, "您的用户名中包含禁用字符，请修改后注册");
 			request.attribute("login_name", login_name);
 			request.attribute("email", email);
 			return this.getView("signup");

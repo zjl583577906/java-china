@@ -1,11 +1,4 @@
-import java.util.ArrayList;
-import java.util.List;
-
-import com.javachina.model.User;
-
-import blade.kit.json.JSONArray;
-import blade.kit.json.JSONKit;
-import blade.kit.json.JSONObject;
+import com.javachina.kit.Utils;
 
 public class TestMain {
 
@@ -21,9 +14,7 @@ public class TestMain {
 			System.out.println(matcher.group(1));
 		}*/
 		
-		String content_ = "hahah @biezhi hello".replaceAll("@([a-zA-Z_0-9-]+)\\s", "<a href='/$1' target='_blank'>$1</a>&nbsp;");
-
-		System.out.println(content_);
+		System.out.println(Utils.isSignup("hello"));
 		
 	}
 

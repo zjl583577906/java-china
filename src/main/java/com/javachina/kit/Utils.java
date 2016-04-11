@@ -57,6 +57,18 @@ public class Utils {
 		return QiniuKit.getUrl(avatar + '-' + imageTypes.toString());
 	}
 	
+	public static boolean isSignup(String user_name){
+		if(StringKit.isNotBlank(user_name)){
+			user_name = user_name.toLowerCase();
+			if(user_name.indexOf("admin") != -1 ||
+					user_name.indexOf("test") != -1 ||
+					user_name.indexOf("support") != -1){
+				return false;
+			}
+		}
+		return false;
+	}
+	
 	@SuppressWarnings("resource")
 	public static void copyFileUsingFileChannels(File source, File dest) throws IOException {    
         FileChannel inputChannel = null;    
