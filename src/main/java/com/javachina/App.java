@@ -49,6 +49,12 @@ public class App extends Bootstrap {
 		AES.setKey(blade.config().get("app.aes_salt"));
 		Constant.CDN_URL = blade.config().get("qiniu.cdn");
 		
+		// csrf 防御
+		/*CSRFConfig conf = new CSRFConfig();
+		conf.setSecret(blade.config().get("app.aes_salt"));
+		conf.setSetHeader(true);
+		CSRFTokenManager.config(conf);*/
+		
 		// 配置邮箱
 		Constant.MAIL_HOST = blade.config().get("app.mail.host");
 		Constant.MAIL_NICK = blade.config().get("app.mail.nick");
