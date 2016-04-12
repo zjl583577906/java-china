@@ -172,24 +172,7 @@ public class UserServiceImpl implements UserService {
 	public boolean updateStatus(Long uid, Integer status) {
 		if(null != uid && null != status){
 			try {
-				AR.update("update t_user set status = ? where uid = ?", status, uid).executeUpdate();
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public boolean updateCount(Long uid, String type, int count) {
-		if(null != uid && StringKit.isNotBlank(type)){
-			try {
-				String sql = String.format("update t_user set %s = (%s + ?) where uid = ?", type, type) ;
-				if(count == -999){
-					sql = "update t_user set %s = 0 where uid = ?";
-				}
-				AR.update(sql, count, uid).executeUpdate();
+				AR.update("update t_user set status = ? where uid = ?", status, uid).executeUpdate(true);
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

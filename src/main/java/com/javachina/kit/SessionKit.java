@@ -7,6 +7,7 @@ import com.blade.web.http.wrapper.Session;
 import com.javachina.Constant;
 import com.javachina.model.LoginUser;
 
+import blade.kit.AES;
 import blade.kit.StringKit;
 
 public class SessionKit {

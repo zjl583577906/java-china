@@ -120,7 +120,7 @@ public class NodeServiceImpl implements NodeService {
 	@Override
 	public boolean delete(Long nid) {
 		if(null != nid){
-			AR.update("delete from t_node where nid = ?", nid).executeUpdate();
+			AR.update("update t_node set is_del = 1 where nid = ?", nid).executeUpdate(true);
 			return true;
 		}
 		return false;

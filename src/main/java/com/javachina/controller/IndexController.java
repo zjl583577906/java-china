@@ -202,6 +202,8 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "/faq", method = HttpMethod.GET)
 	public ModelAndView faq(Request request, Response response){
+		String qa = request.query("aaa");
+		System.out.println(qa);
 		return this.getView("faq");
 	}
 	

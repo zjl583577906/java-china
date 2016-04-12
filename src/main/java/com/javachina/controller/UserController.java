@@ -173,7 +173,6 @@ public class UserController extends BaseController {
 		
 		// 清空我的通知
 		if(null != notices && notices.size() > 0){
-			userService.updateCount(user.getUid(), Types.notices.toString(), -999);
 			noticeService.read(user.getUid());
 		}
 		

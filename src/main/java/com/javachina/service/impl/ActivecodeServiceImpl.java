@@ -68,7 +68,7 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 			return false;
 		}
 		try {
-			AR.update("update t_activecode set is_use = ? where id = ?", 1, id).executeUpdate();
+			AR.update("update t_activecode set is_use = ? where id = ?", 1, id).executeUpdate(true);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

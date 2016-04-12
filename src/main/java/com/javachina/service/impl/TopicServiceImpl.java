@@ -107,11 +107,8 @@ public class TopicServiceImpl implements TopicService {
 					.update("insert into t_topic(uid, nid, title, content, is_top, create_time, update_time, status) values(?, ?, ?, ?, ?, ?, ?, ?)",
 							uid, nid, title, content, isTop, time, time, 1).key();
 			
-			// 更新我的发帖数
-			nodeService.updateCount(nid, Types.topics.toString(), +1);
-			
 			// 更新节点下的帖子数
-			userService.updateCount(uid, Types.topics.toString(), +1);
+			nodeService.updateCount(nid, Types.topics.toString(), +1);
 			
 			// 更新总贴数
 			settingsService.updateCount(Types.topic_count.toString(), +1);
@@ -138,7 +135,7 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public boolean delete(Long tid) {
 		if(null != tid){
-			AR.update("delete from t_topic where tid = ?", tid).executeUpdate();
+			AR.update("update t_topic set status = 2 where tid = ?", tid).executeUpdate(true);
 			return true;
 		}
 		return false;

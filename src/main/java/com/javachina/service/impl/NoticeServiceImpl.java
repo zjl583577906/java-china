@@ -79,7 +79,7 @@ public class NoticeServiceImpl implements NoticeService {
 		if(null != to_uid){
 			// 删除
 			try {
-				AR.update("update t_notice set is_read = 1 where to_uid = ?", to_uid).executeUpdate();
+				AR.update("update t_notice set is_read = 1 where to_uid = ?", to_uid).executeUpdate(true);
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

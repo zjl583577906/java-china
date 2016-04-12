@@ -121,8 +121,9 @@ public class Utils {
 		String content_ = content.replaceAll("\r\n", "<br/>")
 				.replaceAll("@([a-zA-Z_0-9-]+)\\s", "<a href='"+ member +"$1'>@$1</a>&nbsp;");
 		
-		String processed = Processor.process(content_);
+		String processed = Processor.process(content_, true);
 		return processed;
 	}
+	
 	
 }
