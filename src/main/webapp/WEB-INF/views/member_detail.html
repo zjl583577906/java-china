@@ -104,7 +104,8 @@
 #include("./common/footer.html")
 <script>
 $(document).ready(function(){
-	if($('#github-panel')){
+	var github_user = '${profile.github}';
+	if(github_user && github_user != ''){
 		var url = 'https://api.github.com/users/${profile.github}/repos?sort=updated&direction=desc';
 	    $.get(url,{}, function(data){
 	    	if(data){
