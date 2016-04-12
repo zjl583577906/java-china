@@ -5,7 +5,7 @@
         <div class="col-md-9">
             <div class="panel panel-default bg-dark-light">
             	<div class="profile-bg" style="background-image:url(${base}/assets/images/profile/bg${random(3)}.jpg);">&nbsp;</div>
-                <div class="panel-body">
+                <div class="panel-body profile">
                     <div class="col-md-2">
                         <img class="avatar avatar-md img-circle" src="${profile.avatar}" alt="${profile.username}">
                     </div>
@@ -104,7 +104,6 @@
 #include("./common/footer.html")
 <script>
 $(document).ready(function(){
-	
 	if($('#github-panel')){
 		var url = 'https://api.github.com/users/${profile.github}/repos?sort=updated&direction=desc';
 	    $.get(url,{}, function(data){
@@ -125,21 +124,6 @@ $(document).ready(function(){
 	    	}
 	    });
 	}
-	
-	$('body').on("click",'.following',function(){
-		var uid = $(this).attr("uid");
-		var _this = $(this);
-		$.post("${base_url('/favorite')}", {type:'following', event_id : uid}, function(data){
-			if(data && data != ''){
-				 if(data == 'signin'){
-					 go_signin();
-				 } else{
-					window.location.reload();	
-				 }
-			}
-		});
-	});
-	
 });
 </script>  
 </body>

@@ -3,6 +3,7 @@ package com.javachina;
 public interface Actions {
 
 	String ADD_TOPIC = "add_topic";
+	String UPDATE_TOPIC = "update_topic";
 	String ADD_COMMENT = "add_comment";
 	String ESSENCE = "essence";
 	String SIGNIN = "signin";

@@ -70,11 +70,11 @@
                     <h3 class="panel-title">更换头像</h3>
                 </div>
                 <div class="panel-body">
-                	<form role="form" id="avatar_form">
+                	<form role="form" id="avatar_form" onsubmit="return user.update_avatar();">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">当前头像</label>
                             <div class="col-sm-10">
-                            	<input type="hidden" name="avatar" id="user_avatar" value=""/>
+                            	<input type="hidden" id="user_avatar" value=""/>
                                 <img id="upload_img" alt="${profile.username}" src="${profile.avatar}" width="73" height="73" onclick="doUpload()" style="cursor: pointer;" class="img-circle"/>
                                 <input type="file" name="fileUpload" class="fileUpload" accept="image/png,image/jpg,image/jpeg" style="display: none;"/>
                             </div>
@@ -82,7 +82,7 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                             	<br/>
-                                <button type="button" class="btn btn-primary btn-sm submit">更换头像</button>
+                                <button type="submit" class="btn btn-primary btn-sm submit">更换头像</button>
                             </div>
                         </div>
                     </form>
@@ -96,7 +96,7 @@
                 <div class="panel-body">
                 	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
                 	#if(null!=info)<div class="alert alert-danger">${info}</div>#end
-                	<form id="pwd_form" action="${base_url('/settings?type=pwd')}" class="form-horizontal" role="form" method="post">
+                	<form id="pwd_form" class="form-horizontal" role="form" method="post" onsubmit="return user.update_pwd();">
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">当前密码</label>
                             <div class="col-sm-10">
@@ -131,43 +131,6 @@
 <script type="text/javascript" src="${cdn}/assets/scripts/jquery.liteuploader.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function(){
-	
-	var p1 = {};
-	$("#info_form :input").change(function (){
-		var key = $(this).attr('name');
-		p1[key] = $(this).val();
-	});
-	
-	$("#info_form .submit").on('click', function(){
-		$.post("${base_url('/settings?type=info')}", p1, function(data){
-			p1 = {};
-			if(data){
-				if(data == 'signin'){
-					go_signin();
-				} else if(data == 'success'){
-					alertOk('保存成功!');
-				}
-			}
-		});
-	});
-	
-	$("#avatar_form .submit").on('click', function(){
-		var avatar = $("#avatar_form #user_avatar").val();
-		if(avatar && avatar != ''){
-			$.post("${base_url('/settings')}", {type:'avatar', avatar : avatar}, function(data){
-				if(data){
-					if(data == 'signin'){
-						go_signin();
-					} else if(data == 'success'){
-						alertOk("头像更换成功!");
-					} else if(data == 'failure'){
-						alertError("头像更换失败!");
-					}
-				}
-			});
-		}
-	});
-	
 	$(".fileUpload").liteUploader({
 	    script: "${base_url('/uploadimg')}",
 	    params: {type:'avatar'},
@@ -188,9 +151,7 @@ $(document).ready(function(){
 	$(".fileUpload").change(function () {
 	    $(this).data("liteUploader").startUpload();
 	});
-	
 });
-  
 //上传方法
 function doUpload() {
 	$(".fileUpload").click();

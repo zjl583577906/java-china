@@ -17,6 +17,7 @@ import com.blade.web.http.Response;
 import com.javachina.Actions;
 import com.javachina.Constant;
 import com.javachina.Types;
+import com.javachina.kit.DateKit;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.LoginUser;
 import com.javachina.model.Topic;
@@ -55,56 +56,155 @@ public class TopicController extends BaseController {
 	 */
 	@Route(value = "/topic/add", method = HttpMethod.GET)
 	public ModelAndView show_add_topic(Request request, Response response){
-		putData(request);
+		this.putData(request);
+		Long pid = request.queryAsLong("pid");
+		request.attribute("pid", pid);
 		return this.getView("topic_add");
+	}
+	
+	/**
+	 * 编辑帖子页面
+	 */
+	@Route(value = "/topic/edit/:tid", method = HttpMethod.GET)
+	public ModelAndView show_ediot_topic(@PathVariable("tid") Long tid, Request request, Response response){
+		
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.go("/");
+			return null;
+		}
+		
+		Topic topic = topicService.getTopic(tid);
+		if(null == topic){
+			request.attribute(this.ERROR, "不存在该帖子");
+			return this.getView("info");
+		}
+		
+		if(!topic.getUid().equals(user.getUid())){
+			request.attribute(this.ERROR, "您无权限编辑该帖");
+			return this.getView("info");
+		}
+		
+		// 超过300秒
+		if( (DateKit.getCurrentUnixTime() - topic.getCreate_time()) > 300 ){
+			request.attribute(this.ERROR, "发帖已经超过300秒，不允许编辑");
+			return this.getView("info");
+		}
+		
+		this.putData(request);
+		request.attribute("topic", topic);
+		
+		return this.getView("topic_edit");
+	}
+	
+	/**
+	 * 编辑帖子操作
+	 */
+	@Route(value = "/topic/edit", method = HttpMethod.POST)
+	public void edit_topic(Request request, Response response){
+		Long tid = request.queryAsLong("tid");
+		String title = request.query("title");
+		String content = request.query("content");
+		Long nid = request.queryAsLong("nid");
+		
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			this.nosignin(response);
+			return;
+		}
+		
+		if(null == tid){
+			this.error(response, "不存在该帖子");
+			return;
+		}
+		
+		// 不存在该帖子
+		Topic topic = topicService.getTopic(tid);
+		if(null == topic){
+			this.error(response, "不存在该帖子");
+			return;
+		}
+		
+		// 无权限操作
+		if(!topic.getUid().equals(user.getUid())){
+			this.error(response, "无权限操作该帖");
+			return;
+		}
+		
+		// 超过300秒
+		if( (DateKit.getCurrentUnixTime() - topic.getCreate_time()) > 300 ){
+			this.error(response, "超过300秒禁止编辑");
+			return;
+		}
+		
+		if(StringKit.isBlank(title) || StringKit.isBlank(content) || null == nid){
+			this.error(response, "部分内容未输入");
+			return;
+		}
+		
+		if(title.length() > 40){
+			this.error(response, "标题太长了，试试少写点儿");
+			return;
+		}
+		
+		if(content.length() > 5000){
+			this.error(response, "内容太长了，试试少吐点口水");
+			return;
+		}
+		
+		try {
+			// 编辑帖子
+			topicService.update(tid, nid, title, content);
+			userlogService.save(user.getUid(), Actions.UPDATE_TOPIC, content);
+			
+			this.success(response, "帖子编辑成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.error(response, "帖子编辑失败");
+			return;
+		}
 	}
 	
 	/**
 	 * 发布帖子操作
 	 */
 	@Route(value = "/topic/add", method = HttpMethod.POST)
-	public ModelAndView add_topic(Request request, Response response){
+	public void add_topic(Request request, Response response){
+		
 		String title = request.query("title");
 		String content = request.query("content");
 		Long nid = request.queryAsLong("nid");
 		
 		LoginUser user = SessionKit.getLoginUser();
 		
-		putData(request);
+		if(null == user){
+			this.nosignin(response);
+			return;
+		}
 		
 		if(StringKit.isBlank(title) || StringKit.isBlank(content) || null == nid){
-			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");
-			request.attribute("title", title);
-			request.attribute("content", content);
-			return this.getView("topic_add");
+			this.error(response, "部分内容未输入");
+			return;
 		}
 		
 		if(title.length() > 40){
-			request.attribute(this.ERROR, "标题太长了，试试少写点儿～");
-			request.attribute("title", title);
-			request.attribute("content", content);
-			return this.getView("topic_add");
+			this.error(response, "标题太长了，试试少写点儿");
+			return;
 		}
 		
 		if(content.length() > 5000){
-			request.attribute(this.ERROR, "内容太长了，试试少吐点口水。。。");
-			request.attribute("title", title);
-			request.attribute("content", content);
-			return this.getView("topic_add");
+			this.error(response, "内容太长了，试试少吐点口水");
+			return;
 		}
 		
 		// 发布帖子
 		Long tid = topicService.save(user.getUid(), nid, title, content, 0);
 		if(null != tid){
 			userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
-			response.go("/topic/" + tid);
-			return null;
+			this.success(response, "帖子发布成功");
 		} else {
-			request.attribute("title", title);
-			request.attribute("content", content);
-			request.attribute(this.ERROR, "帖子发布失败。。。");
+			this.error(response, "帖子发布失败");
 		}
-		return this.getView("topic_add");
 	}
 	
 	private void putData(Request request){

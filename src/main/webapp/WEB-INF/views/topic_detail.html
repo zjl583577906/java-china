@@ -29,9 +29,9 @@
                 <div class="panel-footer topic-footer">
                 	<div class="pull-left left">
                 		#if(is_love)
-	                	<div class="heart heartRed" id="like_topic" tid="${topic.tid}" rel="unlike"></div>
+	                	<div class="heart heartRed" id="like_topic" tid="${topic.tid}" rel="unlike" onclick="topic.heart();"></div>
 	                	#else
-	                	<div class="heart " id="like_topic" tid="${topic.tid}" rel="like"></div>
+	                	<div class="heart " id="like_topic" tid="${topic.tid}" rel="like" onclick="topic.heart();"></div>
 	                	#end
 	                	<span class="likeCount" id="likeCount">${topic.loves}</span>
 	                	&nbsp;&nbsp;&nbsp;&nbsp;
@@ -68,7 +68,7 @@
                     <span>$!{topic.comment} 回复 | 直到${today("yyyy-MM-dd HH:mm")}</span>
                 </div>
                 <div class="panel-body">
-                    <ul class="media-list">
+                    <ul class="media-list comment-list">
                     	#for(comment : commentPage.results)
                     	<li class="media" id="Reply${comment.cid}">
                             <a href="javascript:void(0);" alt="${comment.reply_name}" class="pull-right text-muted at-user">
@@ -104,7 +104,7 @@
                 <div class="panel-body">
                 	#if(null != login_user)
                 	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
-               		<form action="${base_url('/comment/add')}" class="form-horizontal" role="form" method="post">
+               		<form id="comment-form" action="${base_url('/comment/add')}" class="form-horizontal" role="form" method="post">
                			<input type="hidden" name="tid" value="${topic.tid}">
                         <input type="hidden" name="tuid" value="${topic.uid}">
                         <p class="emoji-picker-container">
@@ -127,82 +127,5 @@
     </div>
 </div>
 #include("./common/footer.html")
-<script>
-$(document).ready(function(){
-
-	$('body').on("click",'.heart',function(){
-		var A=$(this).attr("id");
-		var B=A.split("like");
-		var messageID=B[1];
-		var C=parseInt($("#likeCount").text());
-		$(this).css("background-position","")
-		var D = $("#likeCount");
-	    
-		var _this = $(this);
-		var tid = $(this).attr('tid');
-		$.post("${base_url('/favorite')}", {type:'love',event_id : tid}, function(data){
-			if(data && data != ''){
-				if(data == 'signin'){
-					go_signin();
-				} else if(data.count == '1'){
-					D.text(C+1);
-					_this.addClass("heartAnimation").attr("rel","unlike");
-				}else if(data.count == '-1'){
-					D.text(C-1);
-					_this.removeClass("heartAnimation").attr("rel","like");
-					_this.css("background-position","left");
-				}
-			}
-		});
-	});
-	
-	$('body').on("click",'.follow',function(){
-		var tid = $(this).attr("tid");
-		var _this = $(this);
-		$.post("${base_url('/favorite')}", {type:'topic', event_id : tid}, function(data){
-			if(data && data != ''){
-				 if(data == 'signin'){
-					 go_signin();
-				 } else{
-					window.location.reload();	
-				 }
-			}
-		});
-	});
-	
-	$('body').on("click",'.essence',function(){
-		var tid = $(this).attr("tid");
-		var _this = $(this);
-		$.post("${base_url('/essence')}", {tid : tid}, function(data){
-			if(data && data != ''){
-				 if(data == 'signin'){
-					 go_signin();
-				 } else if(data == 'success'){
-					window.location.reload();	
-				}
-			}
-		});
-	});
-	
-	$('body').on("click",'.share-weibo',function(){
-		var share_url = 'http://service.weibo.com/share/share.php?url=' + window.location.href + '&title=' + $('.topic-detail-heading .panel-title').text();
-		openWindow(share_url, '', 550, 422);
-	});
-	
-	$('body').on("click",'.at-user',function(){
-		var user_name = $(this).attr('alt');
-		var text = $('#content').val();
-		var at = '@' + user_name + ' ';
-		if(text == at){
-			$('#content').val('');		
-		} else{
-			var br = text ? '\r\n' : '';
-			$('#content').val(text + br + at);
-		}
-		$('#content').focus();
-	});
-	
-});
-</script>  
 </body>
 </html>

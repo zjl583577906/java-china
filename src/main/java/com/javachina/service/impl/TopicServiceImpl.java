@@ -255,5 +255,11 @@ public class TopicServiceImpl implements TopicService {
 		}
 		return 0L;
 	}
+
+	@Override
+	public Long update(Long tid, Long nid, String title, String content) {
+		
+		return null;
+	}
 	
 }

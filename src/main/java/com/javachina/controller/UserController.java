@@ -39,7 +39,6 @@ import blade.kit.DateKit;
 import blade.kit.EncrypKit;
 import blade.kit.PatternKit;
 import blade.kit.StringKit;
-import blade.kit.json.JSONObject;
 
 @Path("/")
 public class UserController extends BaseController {
@@ -425,7 +424,7 @@ public class UserController extends BaseController {
 	public void favorite(Request request, Response response){
 		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
-			response.text(this.SIGNIN);
+			this.nosignin(response);
 			return;
 		}
 		
@@ -442,9 +441,7 @@ public class UserController extends BaseController {
 		LoginUser loginUser = userService.getLoginUser(null, user.getUid());
 		SessionKit.setLoginUser(request.session(), loginUser);
 		
-		JSONObject res = new JSONObject();
-		res.put("count", count);
-		response.json(res.toString());
+		this.success(response, count);
 	}
 	
 	/**
@@ -467,17 +464,17 @@ public class UserController extends BaseController {
 	 * 个人设置
 	 */
 	@Route(value = "settings", method = HttpMethod.POST)
-	public ModelAndView settings(Request request, Response response){
+	public void settings(Request request, Response response){
 		
 		LoginUser loginUser = SessionKit.getLoginUser();
 		if(null == loginUser){
-			response.text(this.SIGNIN);
-			return null;
+			this.nosignin(response);
+			return;
 		}
 		
 		String type = request.query("type");
 		if(StringKit.isBlank(type)){
-			return null;
+			return;
 		}
 		
 		String avatar = request.query("avatar");
@@ -490,8 +487,8 @@ public class UserController extends BaseController {
 			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
 			SessionKit.setLoginUser(request.session(), loginUserTemp);
 			
-			response.text(this.SUCCESS);
-			return null;
+			this.success(response, "");
+			return;
 		}
 		
 		// 修改基本信息
@@ -508,11 +505,11 @@ public class UserController extends BaseController {
 			if(flag){
 				LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
 				SessionKit.setLoginUser(request.session(), loginUserTemp);
-				response.text(this.SUCCESS);
+				this.success(response, "");
 			} else {
-				response.text(this.FAILURE);
+				this.error(response, "修改失败");
 			}
-			return null;
+			return;
 		}
 				
 		// 修改密码
@@ -525,13 +522,13 @@ public class UserController extends BaseController {
 			String newpwd = request.query("newpwd");
 			
 			if(StringKit.isBlank(curpwd) || StringKit.isBlank(newpwd)){
-				request.attribute(this.ERROR, "参数不能为空!");
-				return this.getView("settings");
+				this.error(response, "参数不能为空");
+				return;
 			}
 			
 			if(!EncrypKit.md5(loginUser.getUser_name() + curpwd).equals(loginUser.getPass_word())){
-				request.attribute(this.ERROR, "旧密码输入错误");
-				return this.getView("settings");
+				this.error(response, "旧密码输入错误");
+				return;
 			}
 			
 			String new_pwd = EncrypKit.md5(loginUser.getUser_name() + newpwd);
@@ -539,14 +536,10 @@ public class UserController extends BaseController {
 			
 			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
 			SessionKit.setLoginUser(request.session(), loginUserTemp);
-			
-			request.attribute(this.INFO, "密码修改成功");
-			
 			userlogService.save(loginUser.getUid(), Actions.UPDATE_PWD, new_pwd);
 			
-			return this.getView("settings");
+			this.success(response, "");
 		}
-		return null;
 		
 	}
 	
