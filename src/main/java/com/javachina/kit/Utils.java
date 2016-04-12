@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.regex.Matcher;
@@ -15,6 +16,8 @@ import java.util.regex.Pattern;
 import com.blade.web.http.Request;
 import com.javachina.ImageTypes;
 import com.javachina.ext.Funcs;
+import com.javachina.ext.markdown.BlockEmitter;
+import com.javachina.ext.markdown.Configuration;
 import com.javachina.ext.markdown.Processor;
 
 import blade.kit.StringKit;
@@ -112,16 +115,76 @@ public class Utils {
 		Executors.newSingleThreadExecutor().submit(t);
 	}
 
+	final static Configuration config = Configuration.builder()
+			.setSafeMode(true)
+            .setCodeBlockEmitter(new CodeBlockEmitter())
+            // Fenced code blocks are only available in 'extended mode'
+            .forceExtentedProfile()
+            .build();
+	
+	public static class CodeBlockEmitter implements BlockEmitter
+    {
+        @Override
+        public void emitBlock(final StringBuilder out, final List<String> lines, final String meta)
+        {
+            out.append("<pre");
+            if (meta != null && !meta.isEmpty())
+            {
+                out.append(" class=\"language-");
+                out.append(meta);
+                out.append('"');
+            }
+            out.append('>');
+            for (final String l : lines)
+            {
+                escapedAdd(out, l);
+                out.append('\n');
+            }
+            out.append("</pre>");
+        }
+    }
+	
+	public static void escapedAdd(final StringBuilder sb, final String str) {
+		for (int i = 0; i < str.length(); i++) {
+			final char ch = str.charAt(i);
+			if (ch < 33 || Character.isWhitespace(ch) || Character.isSpaceChar(ch)) {
+				sb.append(' ');
+			} else {
+				switch (ch) {
+				case '"':
+					sb.append("&quot;");
+					break;
+				case '\'':
+					sb.append("&apos;");
+					break;
+				case '<':
+					sb.append("&lt;");
+					break;
+				case '>':
+					sb.append("&gt;");
+					break;
+				case '&':
+					sb.append("&amp;");
+					break;
+				default:
+					sb.append(ch);
+					break;
+				}
+			}
+		}
+	}
+	
 	public static String markdown2html(String content) {
 		if(StringKit.isBlank(content)){
 			return content;
 		}
 		
 		String member = Funcs.base_url("/member/");
-		String content_ = content.replaceAll("\r\n", "<br/>")
-				.replaceAll("@([a-zA-Z_0-9-]+)\\s", "<a href='"+ member +"$1'>@$1</a>&nbsp;");
+		String content_ = content.replaceAll("@([a-zA-Z_0-9-]+)\\s", "<a href='"+ member +"$1'>@$1</a>&nbsp;");
 		
-		String processed = Processor.process(content_, true);
+		
+		
+		String processed = Processor.process(content_, config);
 		return processed;
 	}
 	

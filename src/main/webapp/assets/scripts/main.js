@@ -92,7 +92,7 @@ topic.add = function(){
 	var formData = $('#topic-add').serialize();
 	$.post(BASE + '/topic/add', formData, function(response){
 		if(response){
-			 if(response.status == 200){
+			if(response.status == 200){
 				 window.location.href = BASE + '/topic/' + response.data;
 			 } else if(response.status == 401){
 				 go_signin();	
@@ -101,6 +101,7 @@ topic.add = function(){
 			 }
 		}
 	});
+	return false;
 };
 
 //编辑帖子
@@ -117,6 +118,7 @@ topic.edit = function(){
 			 }
 		}
 	});
+	return false;
 };
 
 //帖子点赞
@@ -172,7 +174,7 @@ $('.topic-footer .follow').on('click', function(){
 $('.topic-footer .essence').on('click', function(){
 	var tid = $(this).attr("tid");
 	var _this = $(this);
-	$.post(BASE + '/essence', {tid : tid}, function(data){
+	$.post(BASE + '/essence', {tid : tid}, function(response){
 		if(response){
 			if(response.status == 200){
 				window.location.reload();	
@@ -300,8 +302,9 @@ github.signup = function(){
 			} if(data == 'exist_email'){
 				alertError("邮箱已存在，请绑定已有帐号!");
 			} else if(data == 'success'){
-				$('.box-tab').hide();
-				$('#result').show().html('注册成功，已经向您的邮箱 ' + $('#signup_form #email').val() + ' 发送了一封激活申请，请注意查收！');
+				$('#github-bind-tab').hide();
+				$('#github-tab-content').hide();
+				$('.col-md-8 #result').show().html('注册成功，已经向您的邮箱 ' + $('#github_signup_form #email').val() + ' 发送了一封激活申请，请注意查收！');
 			} else if(data == 'failure'){
 				alertError("绑定失败!");
 			}

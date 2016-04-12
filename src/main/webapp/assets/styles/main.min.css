@@ -104,6 +104,7 @@ b, optgroup, strong {
 
 .topic-detail img{
 	max-width: 100%;
+	vertical-align: middle;
 }
 
 .topic-detail strong{
@@ -16886,7 +16887,7 @@ pre {
 	padding: 10px;
 	color: #616161;
 	white-space: nowrap;
-	font-size: 11px;
+	font-size: 14px;
 	-webkit-border-radius: 0;
 	-moz-border-radius: 0;
 	border-radius: 0

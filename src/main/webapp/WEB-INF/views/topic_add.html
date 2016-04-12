@@ -23,7 +23,7 @@
 			                    		#if(null != node.items)
 				                    		<optgroup label="${node.node_name}">
 					                     	#for(item : node.items)
-					                     	<option #if(null != pid && pid = item.nid)selected="selected"#end value="${item.nid}">${item.node_name}</option>
+					                     	<option #if(null != pid && pid == item.nid)selected="selected"#end value="${item.nid}">${item.node_name}</option>
 					                     	#end
 				                     	#else
 				                     		<option value="${node.nid}">${node.node_name}</option>
@@ -32,7 +32,7 @@
 			                    #end
                             </select>
                         </div>
-                        #end
+                        
                         <div class="form-group">
                             <label for="nid">主题内容</label>
 	                        <div class="form-group">

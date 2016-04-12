@@ -9,14 +9,14 @@
 							<div class="row no-margin col-md-8">
 								<ul id="github-bind-tab" class="nav nav-tabs" role="tablist">
 							      <li role="presentation" class="active">
-							      	<a href="#home" id="home-tab" role="tab" data-toggle="tab" aria-controls="home" aria-expanded="true">绑定新账号</a>
+							      	<a href="#signup" id="signup-tab" role="tab" data-toggle="tab" aria-controls="signup" aria-expanded="true">绑定新账号</a>
 							      </li>
 							      <li role="presentation" class="">
-							      	<a href="#profile" role="tab" id="profile-tab" data-toggle="tab" aria-controls="profile" aria-expanded="false">绑定已有帐号</a>
+							      	<a href="#signin" role="tab" id="signin-tab" data-toggle="tab" aria-controls="signin" aria-expanded="false">绑定已有帐号</a>
 							      </li>
 							    </ul>
-							    <div id="myTabContent" class="tab-content">
-							      <div role="tabpanel" class="tab-pane fade active in" id="home" aria-labelledby="home-tab">
+							    <div id="github-tab-content" class="tab-content">
+							      <div role="tabpanel" class="tab-pane fade active in" id="signup" aria-labelledby="signup-tab">
 							        <form id="github_signup_form" role="form" class="form-layout" method="post" onsubmit="return github.signup();">
 										<div class=form-inputs>
 											<div class="input-group mb15">
@@ -38,7 +38,7 @@
 										</p>
 									</form>
 							      </div>
-							      <div role="tabpanel" class="tab-pane fade" id="profile" aria-labelledby="profile-tab">
+							      <div role="tabpanel" class="tab-pane fade" id="signin" aria-labelledby="signin-tab">
 							        <form id="github_signin_form" role="form" class="form-layout" method="post" onsubmit="return github.signin();" />
 										<div class=form-inputs>
 											<input type="hidden" name="open_id" value="${open_id}" />

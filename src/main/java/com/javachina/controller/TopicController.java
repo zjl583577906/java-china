@@ -147,7 +147,7 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		if(content.length() > 5000){
+		if(content.length() > 10000){
 			this.error(response, "内容太长了，试试少吐点口水");
 			return;
 		}
@@ -192,7 +192,7 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		if(content.length() > 5000){
+		if(content.length() > 10000){
 			this.error(response, "内容太长了，试试少吐点口水");
 			return;
 		}
@@ -201,10 +201,11 @@ public class TopicController extends BaseController {
 		Long tid = topicService.save(user.getUid(), nid, title, content, 0);
 		if(null != tid){
 			userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
-			this.success(response, "帖子发布成功");
+			this.success(response, tid);
 		} else {
 			this.error(response, "帖子发布失败");
 		}
+		return;
 	}
 	
 	private void putData(Request request){
@@ -319,26 +320,28 @@ public class TopicController extends BaseController {
 	 * 加精和取消加精
 	 */
 	@Route(value = "/essence", method = HttpMethod.POST)
-	public String essence(Request request, Response response){
+	public void essence(Request request, Response response){
 		
 		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
-			response.text(this.SIGNIN);
-			return null;
+			this.nosignin(response);
+			return;
 		}
 		
 		if(user.getRole_id() > 3){
-			return null;
+			this.error(response, "您无权限操作");
+			return;
 		}
 		
 		Long tid = request.queryAsLong("tid");
 		if(null == tid || tid == 0){
-			return null;
+			return;
 		}
 		
 		Topic topic = topicService.getTopic(tid);
 		if(null == topic){
-			return null;
+			this.error(response, "不存在该帖子");
+			return;
 		}
 		
 		try {
@@ -348,11 +351,10 @@ public class TopicController extends BaseController {
 			
 			userlogService.save(user.getUid(), Actions.ESSENCE, tid+":" + count);
 			
-			response.text(this.SUCCESS);
+			this.success(response, tid);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
 	}
 	
 	/**
