@@ -13,7 +13,13 @@
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane active" id="home">
+								#if(null == topicPage.results || topicPage.results.size() == 0)
+								<div class="alert alert-info alert-dismissable">
+									该节点下暂时还木有帖子呢 <i class="twa twa-lg twa-sparkles"></i>
+								</div>
+								#else
 								<section class="widget bg-white post-comments">
+									
 									#for(topic : topicPage.results)
 									<div class="media">
 										<a class="pull-left" href="${base_url('/member/') + topic.user_name}"> 
@@ -41,7 +47,8 @@
 									</div>
 									<hr/>
 									#end
-								</section>
+								</section>								
+								#end
 								
 								#if(topicPage.totalPage > 1)
 								<ul class="pager">

@@ -1,27 +1,30 @@
-#include("./common/header.html")
+#include("./common/header.html", {title : node.node_name})
 <div class="container">
     <div class="row">
         <div class="col-md-9">
-        	
         	<div class="panel panel-default">
         		<div class="panel-heading" style="height: 100px;">
                 	<div class="pull-left">
 	                	#if(null != node.pic)
 	                	<img width="73" height="73" src="${node.pic}" class="img-circle"/>
 	                	#end
-	                	&nbsp;&nbsp;&nbsp;&nbsp;
 	                	<span>Java China  ›  ${node.node_name}</span>
 	                	<span>${node.content}</span>
                  	</div>
-                	<div class="pull-right">
+                	<div class="pull-right mr10">
                 		<span>主题总数 ${node.topics}</span>
-                		<p class="mt20"><a class="btn btn-primary btn-sm">创建新主题</a></p>
+                		<p class="mt20"><a href="${base_url('/topic/add?pid=') + node.nid}" class="btn btn-primary btn-sm">创建新主题</a></p>
                 	</div>
                 </div>
                 <div class="panel-body home-panel">
 					<div class="box-tab">
 						<div class="tab-content">
 							<div class="tab-pane active" id="home">
+								#if(null == topicPage.results || topicPage.results.size() == 0)
+								<div class="alert alert-info alert-dismissable">
+									该节点下暂时还木有帖子呢 <i class="twa twa-lg twa-sparkles"></i>
+								</div>
+								#else
 								<section class="widget bg-white post-comments">
 									#for(topic : topicPage.results)
 									<div class="media">
@@ -51,6 +54,7 @@
 									<hr/>
 									#end
 								</section>
+								#end
 								
 								#if(topicPage.totalPage > 1)
 								<ul class="pager">
