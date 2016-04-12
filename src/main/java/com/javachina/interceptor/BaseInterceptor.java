@@ -5,6 +5,7 @@ import com.blade.interceptor.annotation.Intercept;
 import com.blade.ioc.annotation.Inject;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.blade.web.verify.CSRFTokenManager;
 import com.javachina.Constant;
 import com.javachina.kit.SessionKit;
 import com.javachina.kit.Utils;
@@ -50,6 +51,19 @@ public class BaseInterceptor implements Interceptor {
 				return false;
 			}
 		}
+		
+		if(request.method().equals("POST")){
+			String referer = request.header("Referer");
+			if(StringKit.isBlank(referer) || !referer.startsWith(Constant.SITE_URL)){
+				response.go("/");
+				return false;
+			}
+			/*if(request.isAjax() && !CSRFTokenManager.verify(request, response)){
+				response.text("CSRF ERROR");
+	            return false;
+	        }*/
+		}
+		CSRFTokenManager.createNewToken(request, response);
 		
 		return true;
 	}

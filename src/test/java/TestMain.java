@@ -1,3 +1,7 @@
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
+import com.javachina.Constant;
 import com.javachina.kit.Utils;
 
 public class TestMain {
@@ -14,8 +18,15 @@ public class TestMain {
 			System.out.println(matcher.group(1));
 		}*/
 		
-		System.out.println(Utils.isSignup("hello"));
+		System.out.println(Utils.isSignup("jelly_8090"));
 		
+		try {
+			String url = "https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s";
+			String redirect_uri = URLEncoder.encode("http://beta.java-china.org/oauth/github/call", "utf-8");
+			System.out.println(String.format(url, "5dae", redirect_uri));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

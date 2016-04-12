@@ -8,6 +8,8 @@ import com.blade.context.BladeWebContext;
 import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.DB;
 import com.blade.jdbc.cache.memory.FIFOCache;
+import com.blade.web.verify.CSRFConfig;
+import com.blade.web.verify.CSRFTokenManager;
 import com.bladejava.view.template.JetbrickTemplateEngine;
 import com.javachina.ext.Funcs;
 import com.javachina.ext.Methods;
@@ -50,10 +52,10 @@ public class App extends Bootstrap {
 		Constant.CDN_URL = blade.config().get("qiniu.cdn");
 		
 		// csrf 防御
-		/*CSRFConfig conf = new CSRFConfig();
+		CSRFConfig conf = new CSRFConfig();
 		conf.setSecret(blade.config().get("app.aes_salt"));
 		conf.setSetHeader(true);
-		CSRFTokenManager.config(conf);*/
+		CSRFTokenManager.config(conf);
 		
 		// 配置邮箱
 		Constant.MAIL_HOST = blade.config().get("app.mail.host");

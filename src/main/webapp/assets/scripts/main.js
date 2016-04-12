@@ -1,14 +1,3 @@
-Object.prototype.count = (
-    Object.prototype.hasOwnProperty('__count__')
-) ? function () {
-    return this.__count__;
-} : function () {
-    var count = 0;
-    for (var i in this) if (this.hasOwnProperty(i)) {
-      count ++;
-    }
-    return count;
-};
 
 function go_signin(){
 	swal({
@@ -27,6 +16,16 @@ function go_signin(){
 		}
 	});
 }
+
+function len(o){  
+   var n, count = 0;  
+   for(n in o){  
+      if(o.hasOwnProperty(n)){  
+         count++;  
+      }  
+   }  
+   return count;
+}  
 
 /* 
 弹出窗口居中 
@@ -234,7 +233,7 @@ $("#info_form :input").change(function (){
 
 // 修改个人基本信息
 $("#info_form .submit").on('click', function(){
-	if(info_data.count() > 0){
+	if(len(info_data) > 0){
 		$.post(BASE+'/settings?type=info', info_data, function(response){
 			info_data = {};
 			if(response){
@@ -285,3 +284,50 @@ user.update_pwd = function(){
 }
 
 ////////////////////个人设置:END//////////////////////
+
+////////////////////Github绑定:START////////////////////
+var github = {};
+github.signup = function(){
+	$.post(BASE + '/oauth/user/bind', {
+		type : 'signup',
+		login_name : $('#github_signup_form #login_name').val(),
+		email : $('#github_signup_form #email').val(),
+		pass_word : $('#github_signup_form #pass_word').val()
+	}, function(data){
+		if(data){
+			if(data == 'exist_login'){
+				alertError("用户已存在，请绑定已有帐号!");
+			} if(data == 'exist_email'){
+				alertError("邮箱已存在，请绑定已有帐号!");
+			} else if(data == 'success'){
+				$('.box-tab').hide();
+				$('#result').show().html('注册成功，已经向您的邮箱 ' + $('#signup_form #email').val() + ' 发送了一封激活申请，请注意查收！');
+			} else if(data == 'failure'){
+				alertError("绑定失败!");
+			}
+		}
+	});
+	return false;
+};
+
+github.signin = function(){
+	$.post(BASE + '/oauth/user/bind', {
+		type : 'signin',
+		login_name : $('#"github_signin_form" #login_name').val(),
+		pass_word : $('#"github_signin_form" #pass_word').val()
+	}, function(data){
+		if(data){
+			if(data == 'no_user'){
+				alertError("不存在该用户!");
+			} else if(data == 'pwd_error'){
+				alertError("用户名或密码错误!");
+			} else if(data == 'no_active'){
+				alertError("该用户未激活，请激活后进行绑定!");
+			} else if(data == 'success'){
+				window.location.href = BASE;
+			}
+		}
+	});
+	return false;
+};
+////////////////////Github绑定:END//////////////////////

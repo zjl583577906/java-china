@@ -65,6 +65,7 @@ public class Utils {
 					user_name.indexOf("support") != -1){
 				return false;
 			}
+			return true;
 		}
 		return false;
 	}

@@ -1,5 +1,7 @@
 package com.javachina.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,12 +42,17 @@ public class OAuthController extends BaseController {
 	private OpenIdService openIdService;
 	
 	/**
-	 * github授权
+	 * github回调
 	 */
 	@Route(value = "/github")
 	public void github(Request request, Response response){
-		String url = "https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s";
-		response.redirect(String.format(url, Constant.GITHUB_CLIENT_ID, Constant.GITHUB_REDIRECT_URL));
+		try {
+			String url = "https://github.com/login/oauth/authorize?client_id=%s&redirect_uri=%s&state=%s";
+			String redirect_uri = URLEncoder.encode(Constant.GITHUB_REDIRECT_URL, "utf-8");
+			response.redirect(String.format(url, Constant.GITHUB_CLIENT_ID, redirect_uri, StringKit.getRandomNumber(15)));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -53,54 +60,63 @@ public class OAuthController extends BaseController {
 	 */
 	@Route(value = "/github/call")
 	public ModelAndView githubCall(Request request, Response response){
+		
 		String code = request.query("code");
-		String body = HttpRequest.post("https://github.com/login/oauth/access_token", true,
-				"client_id" , Constant.GITHUB_CLIENT_ID,
-				"client_secret" , Constant.GITHUB_CLIENT_SECRET,
-				"code", code)
-				.accept("application/json")
-				.trustAllCerts().trustAllHosts().body();
 		
-		LOGGER.info("body = {}", body);
-		
-		JSONObject result = JSONKit.parseObject(body);
-	 	String access_token = result.getString("access_token");
-	 	
-	 	String body_ = HttpRequest.get("https://api.github.com/user?access_token=" + access_token).body();
-	 	
-	 	System.out.println("body = " + body_);
-	 	
-	 	JSONObject user = JSONKit.parseObject(body_);
-	 	Long open_id = user.getLong("id");
-	 	String login = user.getString("login");
-	 	
-	 	// 判断用户是否已经绑定
-	 	Openid openid = openIdService.getOpenid(Types.github.toString(), open_id);
-	 	if(null == openid){
-	 		Map<String, String> githubInfo = new HashMap<String, String>(3);
-	 		githubInfo.put("login_name", login);
-	 		githubInfo.put("open_id", open_id.toString());
-	 		
-	 		SessionKit.set(request.session(), Types.github.toString(), githubInfo);
-	 		
-	 		response.go("/oauth/user/bind");
-	 	} else {
-	 		User user_ = userService.getUser(openid.getUid());
-	 		if(null == user_){
-	 			request.attribute(this.INFO, "不存在该用户");
-	 			return this.getView("info");
-	 		}
-	 		if(user_.getStatus() == 0){
-	 			request.attribute(this.INFO, "该用户未激活，无法登录");
-	 			return this.getView("info");
-	 		}
-	 		
-	 		LoginUser loginUser = userService.getLoginUser(null, openid.getUid());
-			SessionKit.setLoginUser(request.session(), loginUser);
-			response.go("/");
-			return null;
+		if(StringKit.isNotBlank(code)){
+			LOGGER.info("code = {}", code);
+			
+			String body = HttpRequest.post("https://github.com/login/oauth/access_token", true,
+					"client_id" , Constant.GITHUB_CLIENT_ID,
+					"client_secret" , Constant.GITHUB_CLIENT_SECRET,
+					"code", code)
+					.accept("application/json")
+					.trustAllCerts().trustAllHosts().body();
+			
+			LOGGER.info("body = {}", body);
+			
+			JSONObject result = JSONKit.parseObject(body);
+		 	String access_token = result.getString("access_token");
+		 	
+		 	String body_ = HttpRequest.get("https://api.github.com/user?access_token=" + access_token).body();
+		 	
+		 	System.out.println("body = " + body_);
+		 	
+		 	JSONObject user = JSONKit.parseObject(body_);
+		 	Long open_id = user.getLong("id");
+		 	String login = user.getString("login");
+		 	
+		 	// 判断用户是否已经绑定
+		 	Openid openid = openIdService.getOpenid(Types.github.toString(), open_id);
+		 	if(null == openid){
+		 		Map<String, String> githubInfo = new HashMap<String, String>(3);
+		 		githubInfo.put("login_name", login);
+		 		githubInfo.put("open_id", open_id.toString());
+		 		
+		 		SessionKit.set(request.session(), Types.github.toString(), githubInfo);
+		 		
+		 		response.go("/oauth/user/bind");
+		 	} else {
+		 		User user_ = userService.getUser(openid.getUid());
+		 		if(null == user_){
+		 			request.attribute(this.INFO, "不存在该用户");
+		 			return this.getView("info");
+		 		}
+		 		
+		 		if(user_.getStatus() == 0){
+		 			request.attribute(this.INFO, "该用户未激活，无法登录");
+		 			return this.getView("info");
+		 		}
+		 		
+		 		LoginUser loginUser = userService.getLoginUser(null, openid.getUid());
+				SessionKit.setLoginUser(request.session(), loginUser);
+				response.go("/");
+			}
+		} else {
+			request.attribute(this.ERROR, "请求发生异常");
+			return this.getView("info");
 		}
-	 	return getView("github");
+	 	return null;
 	}
 	
 	@Route(value = "/user/bind", method = HttpMethod.GET)
@@ -118,11 +134,13 @@ public class OAuthController extends BaseController {
 	 */
 	@Route(value = "/user/bind", method = HttpMethod.POST)
 	public void bindCheck(Request request, Response response){
+		
 		Map<String, String> githubInfo = request.session().attribute(Types.github.toString());
 		if(null == githubInfo){
 			response.go("/");
 			return;
 		}
+		
 		String type = request.query("type");
 		String login_name = request.query("login_name");
 		String pass_word = request.query("pass_word");
@@ -134,6 +152,7 @@ public class OAuthController extends BaseController {
 		}
 		
 		if(type.equals("signin")){
+			
 			boolean hasUser = userService.hasUser(login_name);
 			if(!hasUser){
 				response.text("no_user");
