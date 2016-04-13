@@ -304,7 +304,7 @@ github.signup = function(){
 			} else if(data == 'success'){
 				$('#github-bind-tab').hide();
 				$('#github-tab-content').hide();
-				$('.col-md-9 #result').show().html('注册成功，已经向您的邮箱 ' + $('#github_signup_form #email').val() + ' 发送了一封激活申请，请注意查收！');
+				$('.col-md-9 #result').removeClass('hide').html('注册成功，已经向您的邮箱 ' + $('#github_signup_form #email').val() + ' 发送了一封激活申请，请注意查收！');
 			} else if(data == 'failure'){
 				alertError("绑定失败!");
 			}
