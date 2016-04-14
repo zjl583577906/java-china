@@ -24,6 +24,7 @@ import com.javachina.model.Topic;
 import com.javachina.service.CommentService;
 import com.javachina.service.FavoriteService;
 import com.javachina.service.NodeService;
+import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserlogService;
@@ -41,6 +42,9 @@ public class TopicController extends BaseController {
 	
 	@Inject
 	private CommentService commentService;
+	
+	@Inject
+	private SettingsService settingsService;
 	
 	@Inject
 	private FavoriteService favoriteService;
@@ -200,6 +204,7 @@ public class TopicController extends BaseController {
 		// 发布帖子
 		Long tid = topicService.save(user.getUid(), nid, title, content, 0);
 		if(null != tid){
+			Constant.VIEW_CONTEXT.set(Map.class, "sys_info", settingsService.getSystemInfo());
 			userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
 			this.success(response, tid);
 		} else {
@@ -307,6 +312,7 @@ public class TopicController extends BaseController {
 		boolean flag = topicService.comment(uid, topic.getUid(), tid, content);
 		if(flag){
 			userlogService.save(user.getUid(), Actions.ADD_COMMENT, content);
+			Constant.VIEW_CONTEXT.set(Map.class, "sys_info", settingsService.getSystemInfo());
 			response.go("/topic/" + tid);
 			return null;
 		} else {

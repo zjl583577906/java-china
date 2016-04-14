@@ -280,6 +280,7 @@ public class UserController extends BaseController {
 		} else {
 			request.attribute(this.INFO, "激活成功，您可以凭密码登陆");
 			settingsService.updateCount(Types.user_count.toString(), +1);
+			Constant.VIEW_CONTEXT.set(Map.class, "sys_info", settingsService.getSystemInfo());
 		}
 		return this.getView("active");
 	}
