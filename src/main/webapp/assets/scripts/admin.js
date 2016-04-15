@@ -34,7 +34,7 @@ function len(o){
 // 激活用户
 $('.user-table .activeAccount').on('click', function(){
 	var uid = $(this).attr("uid");
-	$.post(BASE + '/admin/status', {uid:uid, type:'active'}, function(response){
+	$.post(BASE + '/admin/status', {uid:uid, type:'activeAccount'}, function(response){
 		if(response){
 			if(response.status == 200){
 				window.location.reload();	
