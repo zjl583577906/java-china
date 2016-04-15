@@ -25,11 +25,9 @@
 			<ul class=nav>
 				<li class="#if(active=='home')open#end"><a href="${base_url('/admin')}"> <i class="fa fa-flask"></i> <span>仪表盘</span></a></li>
 				<li class="#if(active=='nodes')open#end"><a href="${base_url('/admin/nodes')}"> <i class="fa fa-leaf"></i> <span>节点管理</span></a></li>
-				<li class="#if(active=='topics')open#end"><a href="${base_url('/admin/topics')}"> <i class="fa fa-forumbee"></i> <span>帖子管理</span></a></li>
 				<li class="#if(active=='users')open#end"><a href="${base_url('/admin/users')}"> <i class="fa fa-user"></i> <span>用户管理</span></a></li>
 				<li class="#if(active=='settings')open#end"><a href="${base_url('/admin/settings')}"> <i class="fa fa-gears"></i> <span>系统设置</span></a></li>
-				<li><a href="#"><i class="fa fa-sliders"></i> <span>站务管理</span>
-				</a></li>
+				<li class="#if(active=='tools')open#end"><a href="${base_url('/admin/tools')}"> <i class="fa fa-paw"></i> <span>系统工具</span></a></li>
 			</ul>
 		</nav>
 	</div>

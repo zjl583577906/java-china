@@ -6,10 +6,12 @@
 			<div class="table-responsive">
 				<div class="row">
 					<div class="pull-left pl10">
-						<label>
-							<input type="search" class="form-control" placeholder="搜索...">
-						</label>
-						<a class="btn btn-icon-icon btn-sm btn-google-plus btn-round"><i class="fa fa-search"></i></a>
+						<form action="${base_url('/admin/users')}" method="post">
+							<label>
+								<input type="search" class="form-control" name="email" placeholder="搜索..." value="${email}"/>
+							</label>
+							<button type="submit" class="btn btn-icon-icon btn-sm btn-google-plus btn-round"><i class="fa fa-search"></i></button>
+						</form>
 					</div>
 				</div>
 				<table class="table table-bordered table-striped mb0">
@@ -59,10 +61,6 @@
 				</table>
 			</div>
 			<div class="datatable-bottom pt10">
-				<div class="pull-left">
-					<div class="dataTables_info" id="DataTables_Table_0_info"
-						role="status" aria-live="polite">Showing 1 to 5 of 5 entries</div>
-				</div>
 				<div class="pull-right">
 					#if(userPage.totalPage > 1)
 					<ul class="pager">

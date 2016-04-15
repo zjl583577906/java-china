@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.blade.ioc.annotation.Inject;
+import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.blade.route.annotation.Path;
@@ -183,14 +184,6 @@ public class IndexController extends BaseController {
 	}
 	
 	/**
-	 * 帖子列表页面
-	 */
-	@Route(value = "topics")
-	public ModelAndView show_topics(Request request, Response response){
-		return this.getAdminView("topics");
-	}
-	
-	/**
 	 * 用户列表页面
 	 */
 	@Route(value = "users")
@@ -203,19 +196,12 @@ public class IndexController extends BaseController {
 		QueryParam up = QueryParam.me();
 		if(StringKit.isNotBlank(email)){
 			up.eq("email", email);
+			request.attribute("email", email);
 		}
 		up.orderby("update_time desc").page(page, 15);
 		Page<User> userPage = userService.getPageList(up);
 		request.attribute("userPage", userPage);
 		return this.getAdminView("users");
-	}
-	
-	/**
-	 * 友链页面
-	 */
-	@Route(value = "links")
-	public ModelAndView show_links(Request request, Response response){
-		return this.getAdminView("links");
 	}
 	
 	/**
@@ -281,6 +267,34 @@ public class IndexController extends BaseController {
 			userService.updateRole(uid, role_id);
 		}
 		this.success(response, "");
+	}
+	
+	/**
+	 * 系统工具
+	 */
+	@Route(value = "tools")
+	public ModelAndView show_tools(Request request, Response response){
+		return this.getAdminView("tools");
+	}
+	
+	/**
+	 * 执行系统工具
+	 */
+	@Route(value = "tools", method = HttpMethod.POST)
+	public ModelAndView save_tools(Request request, Response response){
+		String type = request.query("type");
+		if(StringKit.isBlank(type)){
+			request.attribute(this.ERROR, "请选择执行的操作");
+			return this.getAdminView("tools");
+		}
+		
+		if(type.equals("clean_cache")){
+			AR.cleanCache();
+			request.attribute(this.INFO, "执行成功");
+			return this.getAdminView("tools");
+		}
+		
+		return this.getAdminView("tools");
 	}
 	
 }
