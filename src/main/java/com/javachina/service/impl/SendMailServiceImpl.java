@@ -30,7 +30,6 @@ public class SendMailServiceImpl implements SendMailService {
 	private UserlogService userlogService;
 	
 	private MailSender mailSender = new MailSenderImpl();
-	private MailMessage mailMessage = new MailMessage();
 	
 	@Override
 	public void signup(String username, String email, String code) {
@@ -55,6 +54,7 @@ public class SendMailServiceImpl implements SendMailService {
 			
 //			System.out.println(output);
 			
+			MailMessage mailMessage = new MailMessage();
 			mailMessage
 			.subject("注册激活邮件")
 			.from(Constant.MAIL_NICK, Constant.MAIL_USER)
@@ -95,6 +95,7 @@ public class SendMailServiceImpl implements SendMailService {
 			
 //			System.out.println(output);
 			
+			MailMessage mailMessage = new MailMessage();
 			mailMessage
 			.subject("找回密码邮件")
 			.from(Constant.MAIL_NICK, Constant.MAIL_USER)
@@ -107,7 +108,7 @@ public class SendMailServiceImpl implements SendMailService {
 			
 			userlogService.save(0L, Actions.SEND_MAIL, email + ":" + code + ":" + "forgot");
 			
-			LOGGER.info("user {} signup, send mail [{}] success, code = [{}]", username, email, code);
+			LOGGER.info("user {} forgot, send mail [{}] success, code = [{}]", username, email, code);
 		} catch (MessagingException e) {
 			e.printStackTrace();
 		}
