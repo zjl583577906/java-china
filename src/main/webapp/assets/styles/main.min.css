@@ -17606,8 +17606,6 @@ a.list-group-item-danger.active, a.list-group-item-danger.active:focus,
 	background-color: #fff;
 	-webkit-transform: perspective(900px) rotate3d(1, 0, 0, 0deg);
 	transform: perspective(900px) rotate3d(1, 0, 0, 0deg);
-	border-top-left-radius: 2px;
-	border-top-right-radius: 2px
 }
 
 .box-tab .nav-tabs.nav-justified>.active>a, .box-tab .nav-tabs.nav-justified>.active>a:focus,
@@ -27288,6 +27286,21 @@ transform
 .comment a{
 	color: #778087;
 	font-size: 16px;
+}
+.comment-meta .badge-comment{
+	color: #73757B;
+	border-radius: 10px;
+    display: inline-block;
+    font-size: 12px;
+    min-width: 10px;
+    padding: 2px 9px;
+    background-color: #e2e2e2;
+    line-height: 15px;
+}
+
+.comment-meta .badge-comment:hover{
+	color: #73757B;
+    background-color: #BCC1CD;
 }
 
 .comment a:hover{
