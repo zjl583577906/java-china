@@ -317,8 +317,8 @@ github.signup = function(){
 github.signin = function(){
 	$.post(BASE + '/oauth/user/bind', {
 		type : 'signin',
-		login_name : $('#"github_signin_form" #login_name').val(),
-		pass_word : $('#"github_signin_form" #pass_word').val()
+		login_name : $('#github_signin_form #login_name').val(),
+		pass_word : $('#github_signin_form #pass_word').val()
 	}, function(data){
 		if(data){
 			if(data == 'no_user'){
