@@ -41,5 +41,7 @@ public interface UserService {
 	boolean updateAvatar(Long uid, String avatar_path);
 
 	boolean updatePwd(Long uid, String new_pwd);
+
+	boolean updateRole(Long uid, Integer role_id);
 	
 }

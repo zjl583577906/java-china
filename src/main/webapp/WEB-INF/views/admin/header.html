@@ -6,6 +6,7 @@
 <meta name=description content="">
 <meta name=viewport content="width=device-width">
 <link rel="shortcut icon" href="${base}/assets/favicon.ico"/>
+<link type="text/css" rel="stylesheet" href="${cdn}/assets/lib/sweet-alert/sweetalert.min.css?ver=${version}" />
 <link type="text/css" rel=stylesheet href="${base}/assets/styles/admin.css" />
 <body>
 <div class="app layout-fixed-header">
@@ -26,7 +27,6 @@
 				<li class="#if(active=='nodes')open#end"><a href="${base_url('/admin/nodes')}"> <i class="fa fa-leaf"></i> <span>节点管理</span></a></li>
 				<li class="#if(active=='topics')open#end"><a href="${base_url('/admin/topics')}"> <i class="fa fa-forumbee"></i> <span>帖子管理</span></a></li>
 				<li class="#if(active=='users')open#end"><a href="${base_url('/admin/users')}"> <i class="fa fa-user"></i> <span>用户管理</span></a></li>
-				<li class="#if(active=='links')open#end"><a href="${base_url('/admin/links')}"> <i class="fa fa-link"></i> <span>友链管理</span></a></li>
 				<li class="#if(active=='settings')open#end"><a href="${base_url('/admin/settings')}"> <i class="fa fa-gears"></i> <span>系统设置</span></a></li>
 				<li><a href="#"><i class="fa fa-sliders"></i> <span>站务管理</span>
 				</a></li>
@@ -55,15 +55,15 @@
 			</ul>
 			<ul class="nav navbar-nav navbar-right hidden-xs">
 				<li>
-					<a href="javascript:void(0);" data-toggle="dropdown">
-						<img src="${avatar_url(login_user.avatar)}"
-							class="header-avatar img-circle ml10" alt="${login_user.login_name}" title="${login_user.login_name}">
-							<span class=pull-left>管理员：${login_user.login_name}</span>
+					<a href="javascript:void(0);" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<img src="${login_user.avatar}"
+							class="header-avatar img-circle ml10" alt="${login_user.user_name}" title="${login_user.user_name}">
+							<span class=pull-left>管理员：${login_user.user_name}</span>
 					</a>
-					<ul class=dropdown-menu>
-						<li><a href="/">回到主页</a></li>
-						<li><a href="/admin/settings">系统设置</a></li>
-						<li><a href="/signout">注销</a></li>
+					<ul class="dropdown-menu">
+						<li><a href="${base_url('/')}">回到主页</a></li>
+						<li><a href="${base_url('/admin/settings')}">系统设置</a></li>
+						<li><a href="${base_url('/logout')}">注销</a></li>
 					</ul>
 				</li>
 			</ul>

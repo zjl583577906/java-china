@@ -204,7 +204,9 @@ public class TopicController extends BaseController {
 		// 发布帖子
 		Long tid = topicService.save(user.getUid(), nid, title, content, 0);
 		if(null != tid){
-			Constant.VIEW_CONTEXT.set(Map.class, "sys_info", settingsService.getSystemInfo());
+			Constant.SYS_INFO = settingsService.getSystemInfo();
+			Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
+			
 			userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
 			this.success(response, tid);
 		} else {
@@ -311,8 +313,10 @@ public class TopicController extends BaseController {
 		// 评论帖子
 		boolean flag = topicService.comment(uid, topic.getUid(), tid, content);
 		if(flag){
+			Constant.SYS_INFO = settingsService.getSystemInfo();
+			Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
+			
 			userlogService.save(user.getUid(), Actions.ADD_COMMENT, content);
-			Constant.VIEW_CONTEXT.set(Map.class, "sys_info", settingsService.getSystemInfo());
 			response.go("/topic/" + tid);
 			return null;
 		} else {

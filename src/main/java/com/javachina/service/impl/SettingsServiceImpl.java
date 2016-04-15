@@ -48,7 +48,7 @@ public class SettingsServiceImpl implements SettingsService {
 	}
 
 	@Override
-	public void updateCount(String skey, int count) {
+	public boolean updateCount(String skey, int count) {
 		try {
 			if (StringKit.isNotBlank(skey) && count != 0) {
 				Settings settings = AR.findById(Settings.class, skey);
@@ -57,16 +57,18 @@ public class SettingsServiceImpl implements SettingsService {
 						Long cur_count = Long.valueOf(settings.getSvalue().trim());
 						String val = (cur_count + count) + "";
 						AR.update("update t_settings set svalue = ? where skey = ?", val, skey).executeUpdate();
+						return true;
 					}
 				}
 			} 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 
 	@Override
-	public void refreshCount() {
+	public boolean refreshCount() {
 		Long comments = AR.find("select count(1) from t_comment").first(Long.class);
 		Long users = AR.find("select count(1) from t_user where status = 1").first(Long.class);
 		Long topics = AR.find("select count(1) from t_topic where status = 1").first(Long.class);
@@ -74,6 +76,34 @@ public class SettingsServiceImpl implements SettingsService {
 		AR.update("update t_settings set svalue = ? where skey = ?", users, Types.user_count.toString()).executeUpdate();
 		AR.update("update t_settings set svalue = ? where skey = ?", comments, Types.comment_count.toString()).executeUpdate();
 		AR.update("update t_settings set svalue = ? where skey = ?", topics, Types.topic_count.toString()).executeUpdate();
+		
+		return true;
+	}
+	
+	@Override
+	public boolean update(String site_title, String site_keywords, String site_description, String allow_signup) {
+		try {
+			if (StringKit.isNotBlank(site_title)) {
+				AR.update("update t_settings set svalue = ? where skey = ?", site_title, "site_title")
+						.executeUpdate(true);
+			}
+			if (StringKit.isNotBlank(site_keywords)) {
+				AR.update("update t_settings set svalue = ? where skey = ?", site_keywords, "site_keywords")
+						.executeUpdate(true);
+			}
+			if (StringKit.isNotBlank(site_description)) {
+				AR.update("update t_settings set svalue = ? where skey = ?", site_description, "site_description")
+						.executeUpdate(true);
+			}
+			if (StringKit.isNotBlank(allow_signup)) {
+				AR.update("update t_settings set svalue = ? where skey = ?", allow_signup, "allow_signup")
+						.executeUpdate(true);
+			} 
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 		
 }

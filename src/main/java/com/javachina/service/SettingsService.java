@@ -14,8 +14,10 @@ public interface SettingsService {
 	
 	boolean delete(String skey);
 
-	void updateCount(String skey, int count);
+	boolean updateCount(String skey, int count);
 	
-	void refreshCount();
+	boolean refreshCount();
+
+	boolean update(String site_title, String site_keywords, String site_description, String allow_signup);
 	
 }

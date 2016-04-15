@@ -137,6 +137,9 @@ public class UserServiceImpl implements UserService {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if(null != uid){
 			User user = this.getUser(uid);
+			if(null == user){
+				return map;
+			}
 			map.put("username", user.getLogin_name());
 			map.put("uid", uid);
 			map.put("email", user.getEmail());
@@ -292,6 +295,20 @@ public class UserServiceImpl implements UserService {
 			return AR.find("select * from t_user where login_name = ? and status = 1", user_name).first(User.class);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean updateRole(Long uid, Integer role_id) {
+		try {
+			if(null == uid || null == role_id || role_id == 1){
+				return false;
+			}
+			AR.update("update t_user set role_id = ? where uid = ?", role_id, uid).executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 }

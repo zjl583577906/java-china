@@ -18,6 +18,12 @@ public enum Types {
 	topic_count, 
 	comment_count, 
 	github,
-	is_essence
+	is_essence, 
+	activeAccount, 
+	disable, 
+	removeAdmin, 
+	setAdmin, 
+	recoveryAccount, 
+	allow_signup
 	
 }

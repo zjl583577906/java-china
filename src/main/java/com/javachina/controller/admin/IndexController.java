@@ -13,12 +13,17 @@ import com.blade.view.ModelAndView;
 import com.blade.web.http.HttpMethod;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
+import com.javachina.Constant;
+import com.javachina.Types;
 import com.javachina.controller.BaseController;
 import com.javachina.kit.SessionKit;
 import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
+import com.javachina.model.User;
 import com.javachina.service.NodeService;
+import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
+import com.javachina.service.UserService;
 
 import blade.kit.StringKit;
 
@@ -30,6 +35,12 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private NodeService nodeService;
+	
+	@Inject
+	private UserService userService;
+	
+	@Inject
+	private SettingsService settingsService;
 	
 	/**
 	 * 首页
@@ -184,6 +195,18 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "users")
 	public ModelAndView show_users(Request request, Response response){
+		Integer page = request.queryAsInt("p");
+		String email = request.query("email");
+		if(null == page || page < 1){
+			page = 1;
+		}
+		QueryParam up = QueryParam.me();
+		if(StringKit.isNotBlank(email)){
+			up.eq("email", email);
+		}
+		up.orderby("update_time desc").page(page, 15);
+		Page<User> userPage = userService.getPageList(up);
+		request.attribute("userPage", userPage);
 		return this.getAdminView("users");
 	}
 	
@@ -200,7 +223,64 @@ public class IndexController extends BaseController {
 	 */
 	@Route(value = "settings")
 	public ModelAndView show_settings(Request request, Response response){
+		Map<String, Object> settings = settingsService.getSystemInfo();
+		request.attribute("settings", settings);
 		return this.getAdminView("settings");
+	}
+	
+	/**
+	 * 保存系统设置
+	 */
+	@Route(value = "settings", method = HttpMethod.POST)
+	public void save_settings(Request request, Response response){
+		String site_title = request.query("site_title");
+		String site_keywords = request.query("site_keywords");
+		String site_description = request.query("site_description");
+		String allow_signup = request.query("allow_signup");
+		settingsService.update(site_title, site_keywords, site_description, allow_signup);
+		Constant.SYS_INFO = settingsService.getSystemInfo();
+		Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
+		this.success(response, "");
+	}
+	
+	/**
+	 * 修改用户状态
+	 */
+	@Route(value = "status", method = HttpMethod.POST)
+	public void updateStatus(Request request, Response response){
+		String type = request.query("type");
+		Long uid = request.queryAsLong("uid");
+		if(StringKit.isBlank(type) || null == uid){
+			this.error(response, "缺少参数");
+			return;
+		}
+		Integer status = null;
+		Integer role_id = null;
+		if(type.equals(Types.activeAccount.toString()) || 
+				type.equals(Types.recoveryAccount.toString())){
+			status = 1;
+		}
+		
+		if(type.equals(Types.disable.toString())){
+			status = 2;
+		}
+		
+		if(type.equals(Types.removeAdmin.toString())){
+			role_id = 5;
+		}
+		
+		if(type.equals(Types.setAdmin.toString())){
+			role_id = 3;
+		}
+		
+		if(null != status){
+			userService.updateStatus(uid, status);
+		}
+		
+		if(null != role_id){
+			userService.updateRole(uid, role_id);
+		}
+		this.success(response, "");
 	}
 	
 }

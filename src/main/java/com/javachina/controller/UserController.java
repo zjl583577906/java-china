@@ -144,6 +144,10 @@ public class UserController extends BaseController {
 	 */
 	@Route(value = "/signup", method = HttpMethod.GET)
 	public ModelAndView show_signup(Request request, Response response){
+		Object allow_signup = Constant.SYS_INFO.get(Types.allow_signup.toString());
+		if(null != allow_signup && allow_signup.toString().equals("false")){
+			request.attribute(this.INFO, "暂时停止注册");
+		}
 		return this.getView("signup");
 	}
 	
@@ -280,7 +284,8 @@ public class UserController extends BaseController {
 		} else {
 			request.attribute(this.INFO, "激活成功，您可以凭密码登陆");
 			settingsService.updateCount(Types.user_count.toString(), +1);
-			Constant.VIEW_CONTEXT.set(Map.class, "sys_info", settingsService.getSystemInfo());
+			Constant.SYS_INFO = settingsService.getSystemInfo();
+			Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
 		}
 		return this.getView("active");
 	}

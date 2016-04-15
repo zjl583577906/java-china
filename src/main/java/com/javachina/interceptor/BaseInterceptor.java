@@ -39,14 +39,14 @@ public class BaseInterceptor implements Interceptor {
 			String val = SessionKit.getCookie(request, Constant.USER_IN_COOKIE);
 			if(null != val && StringKit.isNumber(val)){
 				Long uid = Long.valueOf(val);
-				LoginUser loginUser = userService.getLoginUser(null, uid);
-				SessionKit.setLoginUser(request.session(), loginUser);
+				user = userService.getLoginUser(null, uid);
+				SessionKit.setLoginUser(request.session(), user);
 			}
 		}
 		
 		String uri = request.uri();
 		if(uri.indexOf("/admin/") != -1){
-			if(null == user){
+			if(null == user || user.getRole_id() != 1){
 				response.go("/signin");
 				return false;
 			}

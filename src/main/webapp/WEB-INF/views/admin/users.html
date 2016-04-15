@@ -15,176 +15,46 @@
 				<table class="table table-bordered table-striped mb0">
 					<thead>
 						<tr>
-							<th>用户名</th>
-							<th>用户昵称</th>
-							<th>发布帖子数</th>
-							<th>注册日期</th>
-							<th width="20%" align="center">操作</th>
+							<th width="20%">用户名</th>
+							<th width="20%">用户邮箱</th>
+							<th width="20%">注册日期</th>
+							<th width="20%">用户状态</th>
+							<th  align="center">操作</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody class="user-table">
+						#for(user : userPage.results)
 						<tr>
 							<td>
-								<a href="" class="" target="_blank">Martox</a>
+								<a href="${base_url('/member/') + user.login_name}" target="_blank">${user.login_name}</a>
+							</td>
+							<td>${user.email}</td>
+							<td>${fmtdate(user.create_time, 'yyyy-MM-dd HH:mm')}</td>
+							<td>
+								#if(user.status == 0)
+								未激活
+								#elseif(user.status == 1)
+								正常
+								#elseif(user.status == 2)
+								已拉黑
+								#end
 							</td>
 							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">设置管理员</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
+								#if(user.status == 0)
+									<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm activeAccount">激活账户</a>
+								#elseif(user.status == 1)
+									<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm disable">拉黑</a>
+									#if(user.role_id == 3)
+										<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm removeAdmin">取消管理员</a>
+									#else
+										<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm setAdmin">设置管理员</a>
+									#end
+								#elseif(user.status == 2)
+									<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm recoveryAccount">恢复账户</a>
+								#end
 							</td>
 						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">取消管理员</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
-						<tr>
-							<td>
-								<a href="" class="" target="_blank">Martox</a>
-							</td>
-							<td>
-								王二蛋
-							</td>
-							<td>
-								20
-							</td>
-							<td>2016-05-03</td>
-							<td>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">拉黑</a>
-								<a href="javascript:;" class="btn btn-danger btn-outline btn-sm">删除</a>
-							</td>
-						</tr>
+						#end
 					</tbody>
 				</table>
 			</div>
@@ -194,17 +64,16 @@
 						role="status" aria-live="polite">Showing 1 to 5 of 5 entries</div>
 				</div>
 				<div class="pull-right">
-					<div class="dataTables_paginate paging_bootstrap"
-						id="DataTables_Table_0_paginate">
-						<ul class="pagination no-margin">
-							<li class="prev disabled"><a href="#" title="Previous">←</a></li>
-							<li class="active"><a href="#">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li class="next"><a href="#" title="Next">→</a></li>
-						</ul>
-					</div>
+					#if(userPage.totalPage > 1)
+					<ul class="pager">
+						#if(userPage.page > 1)
+						<li class="pull-left"><a href="${base_url('/admin/users?p=') + userPage.prev_page}">上一页</a></li>
+						#end
+						#if(userPage.totalPage > 1 && userPage.page != userPage.totalPage)
+						<li class="pull-right"><a href="${base_url('/admin/users?p=') + userPage.next_page}">下一页</a></li>
+						#end
+					</ul>
+					#end
 				</div>
 			</div>
 		</div>
