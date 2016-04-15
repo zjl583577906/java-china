@@ -125,6 +125,10 @@ public class UserServiceImpl implements UserService {
 		String pwd = EncrypKit.md5(loginName + passWord);
 	    User user = AR.find("select * from t_user where login_name = ? and pass_word = ? and status in (0, 1)",
 				loginName, pwd).first(User.class);
+	    if(null == user){
+	    	user = AR.find("select * from t_user where email = ? and pass_word = ? and status in (0, 1)",
+					loginName, pwd).first(User.class);
+	    }
 		return user;
 	}
 
