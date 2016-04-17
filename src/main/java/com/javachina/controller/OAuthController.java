@@ -122,7 +122,8 @@ public class OAuthController extends BaseController {
 	@Route(value = "/user/bind", method = HttpMethod.GET)
 	public ModelAndView bindPage(Request request, Response response){
 		Map<String, String> githubInfo = request.session().attribute(Types.github.toString());
-		if(null == githubInfo){
+		LoginUser loginUser = SessionKit.getLoginUser();
+		if(null == githubInfo || null != loginUser){
 			response.go("/");
 			return null;
 		}
