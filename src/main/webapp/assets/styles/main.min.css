@@ -12166,7 +12166,7 @@ ol.list-style-none, ul.list-style-none {
 
 blockquote {
 	display: block;
-	float: left;
+	/* float: left; */
 	margin: 15px 0;
 	padding: 15px;
 	border: 0;
