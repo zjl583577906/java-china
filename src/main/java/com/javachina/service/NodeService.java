@@ -22,11 +22,11 @@ public interface NodeService {
 	
 	Page<Map<String, Object>> getPageList(QueryParam queryParam);
 	
-	boolean save(Long pid, Long uid, String title, String description, String slug, String node_pic);
+	boolean save(Long pid, String title, String description, String slug, String node_pic);
 	
 	boolean delete(Long nid);
 	
 	boolean updateCount(Long nid, String type, int count);
 
-	boolean update(Long nid, Long pid, Long uid, String title, String description, String node_slug, String node_pic);
+	boolean update(Long nid, Long pid, String title, String description, String node_slug, String node_pic);
 }

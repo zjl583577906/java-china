@@ -78,12 +78,13 @@
                                 <img class="avatar avatar-sm img-circle" src="${comment.reply_avatar}" alt="${comment.reply_name}">
                             </a>
                             <div class="media-body">
-                                <h4 class="media-heading topic-list-heading"><a href="${base_url('/member/') + comment.reply_name}">${comment.reply_name}</a>
+                                <h4 class="media-heading topic-list-heading">
+                                <a href="${base_url('/member/') + comment.reply_name}">${comment.reply_name}</a>
                                 #if(comment.role_id < 3)
                                 
                                 #end
                                 &nbsp;&nbsp;
-                                <small>${timespan(comment.replytime)}</small></h4>
+                                <small>${timespan(comment.reply_time)}</small></h4>
                                 ${comment.content}
                             </div>
                         </li>

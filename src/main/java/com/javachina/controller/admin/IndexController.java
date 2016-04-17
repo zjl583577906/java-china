@@ -112,7 +112,7 @@ public class IndexController extends BaseController {
 			return this.getAdminView("add_node");
 		}
 		
-		boolean flag = nodeService.save(pid, user.getUid(), title, description, node_slug, node_pic);
+		boolean flag = nodeService.save(pid, title, description, node_slug, node_pic);
 		if(flag){
 			response.go("/admin/nodes");
 			return null;
@@ -169,7 +169,7 @@ public class IndexController extends BaseController {
 			return this.getAdminView("add_node");
 		}
 		
-		boolean flag = nodeService.update(nid, pid, user.getUid(), title, description, node_slug, node_pic);
+		boolean flag = nodeService.update(nid, pid, title, description, node_slug, node_pic);
 		if(flag){
 			request.attribute(this.INFO, "修改成功");
 			request.attribute("node_name", title);

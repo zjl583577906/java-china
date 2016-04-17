@@ -105,11 +105,11 @@ public class NodeServiceImpl implements NodeService {
 	}
 	
 	@Override
-	public boolean save(Long pid, Long uid, String title, String description, String slug, String node_pic) {
+	public boolean save(Long pid, String title, String description, String slug, String node_pic) {
 		try {
 			Integer time = DateKit.getCurrentUnixTime();
-			AR.update("insert into t_node(pid, uid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?, ?, ?)",
-					pid, uid, title, description, slug, node_pic, time, time).executeUpdate();
+			AR.update("insert into t_node(pid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?, ?, ?)",
+					pid, title, description, slug, node_pic, time, time).executeUpdate();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -177,14 +177,14 @@ public class NodeServiceImpl implements NodeService {
 	}
 
 	@Override
-	public boolean update(Long nid, Long pid, Long uid, String title, String description, String node_slug,
+	public boolean update(Long nid, Long pid, String title, String description, String node_slug,
 			String node_pic) {
 		try {
 			if(null == nid){
 				return false;
 			}
-			AR.update("update t_node set pid = ?, uid = ?, title = ?, description = ?, slug = ?, pic = ?, update_time = ? where nid = ?",
-					pid, uid, title, description, node_slug, node_pic, DateKit.getCurrentUnixTime(), nid)
+			AR.update("update t_node set pid = ?, title = ?, description = ?, slug = ?, pic = ?, update_time = ? where nid = ?",
+					pid, title, description, node_slug, node_pic, DateKit.getCurrentUnixTime(), nid)
 					.executeUpdate();
 			return true;
 		} catch (Exception e) {

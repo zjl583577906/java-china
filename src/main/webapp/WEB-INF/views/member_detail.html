@@ -24,6 +24,8 @@
                         <h4 style="color: #fff;">${profile.username}</h4>
                         #if(null != profile.signature && profile.signature != "")
                         <p style="color: #fff;">${profile.signature}</p>
+                        #else
+                        <p>&nbsp;</p>
                         #end
                     </div>
                     <div class="col-md-9 mt20">

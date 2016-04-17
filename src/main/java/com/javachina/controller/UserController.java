@@ -504,8 +504,7 @@ public class UserController extends BaseController {
 			String github = request.query("github");
 			String signature = request.query("signature");
 			String instructions = request.query("instructions");
-			userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, signature, instructions);
-			boolean flag = userService.updateAvatar(loginUser.getUid(), avatar);
+			boolean flag = userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, signature, instructions);
 			
 			if(flag){
 				LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());

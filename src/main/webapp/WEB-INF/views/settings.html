@@ -23,37 +23,38 @@
                         <div class="form-group">
                             <label for="location" class="col-sm-2 control-label">职业</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control input-sm" id="jobs" name="jobs" value="${profile.jobs}">
+                                <input type="text" class="form-control input-sm" id="jobs" name="jobs" value="${profile.jobs}" placeholder="你的职业，比如Web开发者"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="location" class="col-sm-2 control-label">所在地</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control input-sm" id="location" name="location" value="${profile.location}">
+                                <input type="text" class="form-control input-sm" id="location" name="location" value="${profile.location}" placeholder="输入你当前的坐标"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="homepage" class="col-sm-2 control-label">个人主页</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control input-sm" id="web_site" name="web_site" value="${profile.web_site}">
+                                <input type="text" class="form-control input-sm" placeholder="请输入你的站点地址" 
+                                id="web_site" name="web_site" value="${profile.web_site}">
                             </div>
                         </div>
                          <div class="form-group">
                             <label for="homepage" class="col-sm-2 control-label">Github帐号</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control input-sm" id="github" name="github" value="${profile.github}">
+                                <input type="text" class="form-control input-sm" id="github" name="github" value="${profile.github}" placeholder="请输入你的github帐号(不是地址)"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="signature" class="col-sm-2 control-label">签名</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control input-sm" id="signature" name="signature" value="${profile.signature}">
+                                <input type="text" class="form-control input-sm" id="signature" name="signature" value="${profile.signature}" placeholder="你的签名"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="introduction" class="col-sm-2 control-label">个人简介</label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" id="introduction" name="introduction" rows="3">${profile.introduction}</textarea>
+                                <textarea class="form-control" id="introduction" name="introduction" rows="3" placeholder="来介绍下自己？">${profile.introduction}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
