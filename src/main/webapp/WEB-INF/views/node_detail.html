@@ -4,18 +4,25 @@
         <div class="col-md-9">
         	<div class="panel panel-default">
         		<div class="panel-heading" style="height: 100px;">
-                	<div class="pull-left">
-	                	#if(null != node.pic)
-	                	<img width="73" height="73" src="${node.pic}" class="img-circle"/>
-	                	#end
-                 	</div>
-                 	<div>
-                 		<span>Java China  ›  ${node.node_name}</span>
-	                	<span>${node.content}</span>
-                 	</div>
-                	<div class="pull-right mr10">
+					<div>
+						#if(null != node.pic && node.pic != '')
+						<div class="pull-left mr10">
+							<img width="73" height="73" src="${node.pic}" class="img-circle" />
+						</div>
+						#end
+						<div class="pull-left">
+							<span>Java China › ${node.node_name}</span>
+							<span>${node.content}</span>
+							<p class="mt10 mb10">${node.description ?! ''}</p>
+						</div>
+					</div>
+					<div class="pull-right text-right mr10">
                 		<span>主题总数 ${node.topics}</span>
-                		<p class="mt20"><a href="${base_url('/topic/add?pid=') + node.nid}" class="btn btn-primary btn-sm">创建新主题</a></p>
+                		#if(null != login_user)
+						<p class="mt20">
+							<a href="${base_url('/topic/add?pid=') + node.nid}" class="btn btn-primary btn-sm">创建新主题</a>
+						</p>
+						#end
                 	</div>
                 </div>
                 <div class="panel-body home-panel">

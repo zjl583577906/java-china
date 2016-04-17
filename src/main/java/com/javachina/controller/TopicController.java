@@ -202,14 +202,19 @@ public class TopicController extends BaseController {
 		}
 		
 		// 发布帖子
-		Long tid = topicService.save(user.getUid(), nid, title, content, 0);
-		if(null != tid){
-			Constant.SYS_INFO = settingsService.getSystemInfo();
-			Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
-			
-			userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
-			this.success(response, tid);
-		} else {
+		try {
+			Long tid = topicService.save(user.getUid(), nid, title, content, 0);
+			if(null != tid){
+				Constant.SYS_INFO = settingsService.getSystemInfo();
+				Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
+				
+				userlogService.save(user.getUid(), Actions.ADD_TOPIC, content);
+				this.success(response, tid);
+			} else {
+				this.error(response, "帖子发布失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 			this.error(response, "帖子发布失败");
 		}
 		return;

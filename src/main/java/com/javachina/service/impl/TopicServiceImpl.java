@@ -107,20 +107,22 @@ public class TopicServiceImpl implements TopicService {
 					.update("insert into t_topic(uid, nid, title, content, is_top, create_time, update_time, status) values(?, ?, ?, ?, ?, ?, ?, ?)",
 							uid, nid, title, content, isTop, time, time, 1).key();
 			
-			// 更新节点下的帖子数
-			nodeService.updateCount(nid, Types.topics.toString(), +1);
-			
-			// 更新总贴数
-			settingsService.updateCount(Types.topic_count.toString(), +1);
-			
-			// 通知@的人
 			if(null != tid){
-				Set<String> atUsers = Utils.getAtUsers(content);
-				if(CollectionKit.isNotEmpty(atUsers)){
-					for(String user_name : atUsers){
-						User user = userService.getUser(user_name);
-						if(null != user && !user.getUid().equals(uid)){
-							noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+				// 更新节点下的帖子数
+				nodeService.updateCount(nid, Types.topics.toString(), +1);
+				
+				// 更新总贴数
+				settingsService.updateCount(Types.topic_count.toString(), +1);
+				
+				// 通知@的人
+				if(null != tid){
+					Set<String> atUsers = Utils.getAtUsers(content);
+					if(CollectionKit.isNotEmpty(atUsers)){
+						for(String user_name : atUsers){
+							User user = userService.getUser(user_name);
+							if(null != user && !user.getUid().equals(uid)){
+								noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+							}
 						}
 					}
 				}
