@@ -31,8 +31,10 @@
 												<div class="comment-meta small">
 													<a href="${base_url('/topic/') + topic.tid + '#Reply' + topic.comments}" class="badge-comment">${topic.comments}</a>
 												</div>
-												#end
 												<a href="${base_url('/topic/') + topic.tid + '#Reply' + topic.comments}">${topic.title}</a>
+												#else
+												<a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
+												#end
 											</div>
 											<div class="comment-bt">
 												<span class="label label-default"><a href="${base_url('/go/') + topic.node_slug}">${topic.node_name}</a></span> &nbsp;•&nbsp; 

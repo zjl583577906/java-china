@@ -95,6 +95,7 @@ public class CommentServiceImpl implements CommentService {
 			map.put("role_id", comment_user.getRole_id());
 			map.put("reply_name", comment_user.getLogin_name());
 			map.put("reply_time", comment.getCreate_time());
+			map.put("device", comment.getDevice());
 			map.put("reply_avatar", Utils.getAvatar(comment_user.getAvatar(), ImageTypes.small));
 			map.put("title", topic.getTitle());
 			

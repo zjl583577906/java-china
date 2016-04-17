@@ -189,7 +189,9 @@ $('.topic-footer .essence').on('click', function(){
 
 //分享到微博
 $('.topic-footer .share-weibo').on('click', function(){
-	var share_url = 'http://service.weibo.com/share/share.php?url=' + window.location.href + '&title=' + $('.topic-detail-heading .panel-title').text();
+	var title = $('.topic-detail-heading .panel-title').text();
+	var href = window.location.href;
+	var share_url = 'http://service.weibo.com/share/share.php?url=' + href + '&title=' + encodeURI(title);
 	openWindow(share_url, '', 550, 422);
 });
 

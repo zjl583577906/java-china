@@ -26,6 +26,9 @@ public class Comment implements Serializable {
 	//评论内容
 	private String content;
 	
+	//设备
+	private String device;
+	
 	//评论时间
 	private Long create_time;
 	
@@ -77,6 +80,14 @@ public class Comment implements Serializable {
 
 	public void setCreate_time(Long create_time) {
 		this.create_time = create_time;
+	}
+
+	public String getDevice() {
+		return device;
+	}
+
+	public void setDevice(String device) {
+		this.device = device;
 	}
 	
 }

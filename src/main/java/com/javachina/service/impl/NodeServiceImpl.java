@@ -108,7 +108,7 @@ public class NodeServiceImpl implements NodeService {
 	public boolean save(Long pid, String title, String description, String slug, String node_pic) {
 		try {
 			Integer time = DateKit.getCurrentUnixTime();
-			AR.update("insert into t_node(pid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?, ?, ?)",
+			AR.update("insert into t_node(pid, title, description, slug, pic, create_time, update_time) values (?, ?, ?, ?, ?, ?, ?)",
 					pid, title, description, slug, node_pic, time, time).executeUpdate();
 			return true;
 		} catch (Exception e) {
