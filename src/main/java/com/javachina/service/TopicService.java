@@ -21,7 +21,7 @@ public interface TopicService {
 	
 	Long update(Long tid, Long nid, String title, String content);
 	
-	boolean comment(Long uid, Long to_uid, Long tid, String content);
+	boolean comment(Long uid, Long to_uid, Long tid, String content, String ua);
 	
 	boolean delete(Long tid);
 	

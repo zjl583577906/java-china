@@ -310,8 +310,10 @@ public class TopicController extends BaseController {
 			return this.getView("topic_detail");
 		}
 		
+		String ua = request.userAgent();
+		
 		// 评论帖子
-		boolean flag = topicService.comment(uid, topic.getUid(), tid, content);
+		boolean flag = topicService.comment(uid, topic.getUid(), tid, content, ua);
 		if(flag){
 			Constant.SYS_INFO = settingsService.getSystemInfo();
 			Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);

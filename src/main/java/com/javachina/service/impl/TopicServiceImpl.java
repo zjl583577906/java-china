@@ -218,8 +218,8 @@ public class TopicServiceImpl implements TopicService {
 	 * @return
 	 */
 	@Override
-	public boolean comment(Long uid, Long to_uid, Long tid, String content) {
-		boolean flag = commentService.save(uid, to_uid, tid, content);
+	public boolean comment(Long uid, Long to_uid, Long tid, String content, String ua) {
+		boolean flag = commentService.save(uid, to_uid, tid, content, ua);
 		if(flag){
 			this.updateCount(tid, Types.comments.toString(), +1, true);
 			// 通知
