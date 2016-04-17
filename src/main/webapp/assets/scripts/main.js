@@ -242,7 +242,7 @@ $("#info_form .submit").on('click', function(){
 			info_data = {};
 			if(response){
 				if(response.status == 200){
-					window.location.reload();	
+					alertOk("修改成功！");
 				} else if(response.status == 401){
 					go_signin();
 				} else{

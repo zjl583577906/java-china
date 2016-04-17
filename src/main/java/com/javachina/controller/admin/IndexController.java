@@ -1,8 +1,10 @@
 package com.javachina.controller.admin;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
+import com.blade.Blade;
 import com.blade.ioc.annotation.Inject;
 import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
@@ -17,8 +19,6 @@ import com.blade.web.http.Response;
 import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.controller.BaseController;
-import com.javachina.kit.SessionKit;
-import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.NodeService;
@@ -90,15 +90,6 @@ public class IndexController extends BaseController {
 	@Route(value = "nodes/add", method = HttpMethod.POST)
 	public ModelAndView add_node(Request request, Response response){
 		
-		LoginUser user = SessionKit.getLoginUser();
-		if(null == user){
-			return null;
-		}
-		
-		if(user.getRole_id() > 3){
-			return null;
-		}
-		
 		String title = request.query("node_name");
 		String description = request.query("description");
 		String node_slug = request.query("node_slug");
@@ -140,16 +131,7 @@ public class IndexController extends BaseController {
 	 * 编辑节点
 	 */
 	@Route(value = "nodes/edit", method = HttpMethod.POST)
-	public ModelAndView edit_node(Request request, Response response){
-		
-		LoginUser user = SessionKit.getLoginUser();
-		if(null == user){
-			return null;
-		}
-		
-		if(user.getRole_id() > 3){
-			return null;
-		}
+	public void edit_node(Request request, Response response){
 		
 		Long nid = request.queryAsLong("nid");
 		String title = request.query("node_name");
@@ -158,29 +140,17 @@ public class IndexController extends BaseController {
 		Long pid = request.queryAsLong("pid");
 		String node_pic = request.query("node_pic");
 		
-		Map<String, Object> nodeMap = nodeService.getNodeDetail(null, nid);
-		request.attribute("node", nodeMap);
-		putData(request);
-		
-		if(StringKit.isBlank(title) || StringKit.isBlank(node_slug) || null == pid){
-			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");
-			request.attribute("node_name", title);
-			request.attribute("node_slug", node_slug);
-			return this.getAdminView("add_node");
+		if(StringKit.isNotBlank(node_pic)){
+			node_pic = Blade.me().webRoot() + File.separator + node_pic;
 		}
 		
 		boolean flag = nodeService.update(nid, pid, title, description, node_slug, node_pic);
 		if(flag){
-			request.attribute(this.INFO, "修改成功");
-			request.attribute("node_name", title);
-			request.attribute("node_slug", node_slug);
-			return this.getAdminView("edit_node");
+			this.success(response, "");
 		} else {
-			request.attribute(this.ERROR, "节点添加失败");
-			request.attribute("node_name", title);
-			request.attribute("node_slug", node_slug);
-			return this.getAdminView("edit_node");
+			this.error(response, "节点修改失败");
 		}
+		
 	}
 	
 	/**

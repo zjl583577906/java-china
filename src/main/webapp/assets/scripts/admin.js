@@ -116,6 +116,7 @@ $("#setting_form :input").change(function (){
 function save_settings(){
 	if(len(setting_data) > 0){
 		$.post(BASE + '/admin/settings', setting_data, function(response){
+			setting_data = {};
 			if(response){
 				if(response.status == 200){
 					alertOk("保存成功！");
@@ -127,3 +128,20 @@ function save_settings(){
 	}
 	return false;
 }
+
+// 修改节点
+function update_node(){
+	var formData = $('#editnode_form').serialize();
+	$.post(BASE + '/admin/nodes/edit', formData, function(response){
+		setting_data = {};
+		if(response){
+			 if(response.status == 200){
+				 alertOk("修改成功！");
+			 } else {
+				 alertError(response.msg);
+			 }
+		}
+	});
+	return false;
+}
+	

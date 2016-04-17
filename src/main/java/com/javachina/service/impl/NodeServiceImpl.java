@@ -1,5 +1,6 @@
 package com.javachina.service.impl;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,12 +11,14 @@ import com.blade.jdbc.AR;
 import com.blade.jdbc.Page;
 import com.blade.jdbc.QueryParam;
 import com.javachina.ImageTypes;
+import com.javachina.kit.QiniuKit;
 import com.javachina.kit.Utils;
 import com.javachina.model.Node;
 import com.javachina.service.NodeService;
 
 import blade.kit.CollectionKit;
 import blade.kit.DateKit;
+import blade.kit.FileKit;
 import blade.kit.StringKit;
 
 @Service
@@ -183,9 +186,49 @@ public class NodeServiceImpl implements NodeService {
 			if(null == nid){
 				return false;
 			}
-			AR.update("update t_node set pid = ?, title = ?, description = ?, slug = ?, pic = ?, update_time = ? where nid = ?",
-					pid, title, description, node_slug, node_pic, DateKit.getCurrentUnixTime(), nid)
-					.executeUpdate();
+			
+			StringBuffer updateSql = new StringBuffer("update t_node set update_time = ? ");
+			List<Object> params = new ArrayList<Object>();
+			params.add(DateKit.getCurrentUnixTime());
+			
+			if(null != pid){
+				updateSql.append(", pid = ?");
+				params.add(pid);
+			}
+			if(null != title){
+				updateSql.append(", title = ?");
+				params.add(title);
+			}
+			if(null != description){
+				updateSql.append(", description = ?");
+				params.add(description);
+			}
+			if(null != node_slug){
+				updateSql.append(", slug = ?");
+				params.add(node_slug);
+			}
+			
+			File file = new File(node_pic);
+			if(file.exists()){
+				String ext = FileKit.getExtension(file.getName());
+				if(StringKit.isBlank(ext)){
+					ext = "png";
+				}
+				
+				String key = "node/" + node_slug + "/" + StringKit.getRandomChar(4) + "/" + StringKit.getRandomNumber(4) + "." + ext;
+				
+				boolean flag = QiniuKit.upload(file, key);
+				if(flag){
+					updateSql.append(", pic = ?");
+					params.add(key);
+				}
+			}
+			
+			updateSql.append(" where nid = ?");
+			params.add(nid);
+			
+			AR.update(updateSql.toString(), params.toArray()).executeUpdate();
+			
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
