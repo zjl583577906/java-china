@@ -193,6 +193,9 @@ public class UserController extends BaseController {
 		String email = request.query("email");
 		String pass_word = request.query("pass_word");
 		
+		request.attribute("login_name", login_name);
+		request.attribute("email", email);
+		
 		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word) || StringKit.isBlank(email)){
 			request.attribute(this.ERROR, "参数不能为空");
 			request.attribute("login_name", login_name);
@@ -209,22 +212,21 @@ public class UserController extends BaseController {
 		
 		if(!PatternKit.isStudentNum(login_name)){
 			request.attribute(this.ERROR, "请输入只包含字母／数字／下划线的用户名");
-			request.attribute("login_name", login_name);
-			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
 		if(!Utils.isSignup(login_name)){
 			request.attribute(this.ERROR, "您的用户名中包含禁用字符，请修改后注册");
-			request.attribute("login_name", login_name);
-			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
 		if(!PatternKit.isEmail(email)){
 			request.attribute(this.ERROR, "请输入正确的邮箱");
-			request.attribute("login_name", login_name);
-			request.attribute("email", email);
+			return this.getView("signup");
+		}
+		
+		if(pass_word.length() > 20 || pass_word.length() < 6){
+			request.attribute(this.ERROR, "请输入6-20位字符的密码");
 			return this.getView("signup");
 		}
 		
@@ -234,7 +236,6 @@ public class UserController extends BaseController {
 		User user = userService.getUser(queryParam);
 		if(null != user){
 			request.attribute(this.ERROR, "该用户名已经被占用，请更换用户名");
-			request.attribute("login_name", login_name);
 			return this.getView("signup");
 		}
 		
@@ -244,8 +245,6 @@ public class UserController extends BaseController {
 		user = userService.getUser(queryParam);
 		if(null != user){
 			request.attribute(this.ERROR, "该邮箱已经被注册，请直接登录");
-			request.attribute("login_name", login_name);
-			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
@@ -264,22 +263,32 @@ public class UserController extends BaseController {
 	 */
 	@Route(value = "/active/:code", method = HttpMethod.GET)
 	public ModelAndView activeAccount(@PathVariable("code") String code, Request request, Response response){
-		Activecode activecode = activecodeService.getActivecode(code, "signup");
+		Activecode activecode = activecodeService.getActivecode(code);
 		if(null == activecode){
 			request.attribute(this.ERROR, "无效的激活码");
-			return this.getView("active");
+			return this.getView("info");
 		}
+		
 		Long expries = activecode.getExpires_time();
 		if(expries < DateKit.getCurrentUnixTime()){
 			request.attribute(this.ERROR, "该激活码已经过期，请重新发送");
-			return this.getView("active");
+			return this.getView("info");
 		}
+		
 		if(activecode.getIs_use() == 1){
-			request.attribute(this.ERROR, "您已经激活成功，不可重复激活");
-			return this.getView("active");
+			request.attribute(this.ERROR, "激活码已经被使用");
+			return this.getView("info");
 		}
-		boolean flag = userService.active(activecode.getId(), activecode.getUid());
+		
+		// 找回密码
+		if(activecode.getType().equals(Types.forgot.toString())){
+			request.attribute("code", code);
+			return this.getView("reset_pwd");
+		}
+		
+		boolean flag = userService.updateStatus(activecode.getUid(), 1);
 		if(!flag){
+			activecodeService.useCode(code);
 			request.attribute(this.ERROR, "激活失败");
 		} else {
 			request.attribute(this.INFO, "激活成功，您可以凭密码登陆");
@@ -334,6 +343,65 @@ public class UserController extends BaseController {
 		}
 		
 		return this.getView("forgot");
+	}
+	
+	/**
+	 * 修改新密码
+	 */
+	@Route(value = "/reset_pwd", method = HttpMethod.POST)
+	public ModelAndView reset_pwd(Request request, Response response){
+		String code = request.query("code");
+		String password = request.query("pass_word");
+		String re_password = request.query("re_pass_word");
+		
+		if(StringKit.isBlank(code) || StringKit.isBlank(password) || StringKit.isBlank(re_password)){
+			return null;
+		}
+		
+		request.attribute("code", code);
+		
+		if(!password.equals(re_password)){
+			request.attribute(this.ERROR, "两次密码不一致，请确认后提交");
+			return this.getView("reset_pwd");
+		}
+		
+		if(password.length() > 20 || password.length() < 6){
+			request.attribute(this.ERROR, "请输入6-20位字符的密码");
+			return this.getView("reset_pwd");
+		}
+		
+		Activecode activecode = activecodeService.getActivecode(code);
+		if(null == activecode || !activecode.getType().equals(Types.forgot.toString())){
+			request.attribute(this.ERROR, "无效的激活码");
+			return this.getView("reset_pwd");
+		}
+		
+		Long expries = activecode.getExpires_time();
+		if(expries < DateKit.getCurrentUnixTime()){
+			request.attribute(this.ERROR, "该激活码已经过期，请重新发送");
+			return this.getView("reset_pwd");
+		}
+		
+		if(activecode.getIs_use() == 1){
+			request.attribute(this.ERROR, "激活码已经被使用");
+			return this.getView("reset_pwd");
+		}
+		
+		User user = userService.getUser(activecode.getUid());
+		if(null == user){
+			request.attribute(this.ERROR, "激活码已经被使用");
+			return this.getView("reset_pwd");
+		}
+		
+		String new_pwd = EncrypKit.md5(user.getLogin_name() + password);
+		boolean flag = userService.updatePwd(user.getUid(), new_pwd);
+		if(flag){
+			activecodeService.useCode(code);
+			request.attribute(this.INFO, "密码修改成功，您可以直接登录！");
+		} else {
+			request.attribute(this.ERROR, "密码修改失败");
+		}
+		return this.getView("reset_pwd");
 	}
 	
 	/**

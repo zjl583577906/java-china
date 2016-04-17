@@ -24,6 +24,7 @@ public enum Types {
 	removeAdmin, 
 	setAdmin, 
 	recoveryAccount, 
-	allow_signup
+	allow_signup,
+	forgot
 	
 }

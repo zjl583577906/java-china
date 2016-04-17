@@ -5,10 +5,10 @@ import com.javachina.model.User;
 
 public interface ActivecodeService {
 	
-	Activecode getActivecode(String code, String type);
+	Activecode getActivecode(String code);
 	
 	String save(User user, String type);
 	
-	boolean useCode(Long code, String type);
+	boolean useCode(String code);
 	
 }

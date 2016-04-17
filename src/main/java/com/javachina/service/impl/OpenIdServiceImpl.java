@@ -23,8 +23,12 @@ public class OpenIdServiceImpl implements OpenIdService {
 	public boolean save(String type, Long open_id, Long uid) {
 		if(StringKit.isNotBlank(type) && null != open_id && null != uid){
 			try {
-				AR.update("insert into t_openid(type, open_id, uid, create_time) values(?, ?, ?, ?)", type, open_id,
-						uid, DateKit.getCurrentUnixTime()).executeUpdate();
+				
+				Long count = AR.find("select count(1) from t_openid where open_id = ? and type = ? and uid = ?", open_id, type, uid).first(Long.class);
+				if(count == 0){
+					AR.update("insert into t_openid(type, open_id, uid, create_time) values(?, ?, ?, ?)", type, open_id,
+							uid, DateKit.getCurrentUnixTime()).executeUpdate();
+				}
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();

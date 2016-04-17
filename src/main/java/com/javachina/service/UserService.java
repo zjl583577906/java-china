@@ -36,8 +36,6 @@ public interface UserService {
 	
 	boolean resetPwd(String email);
 
-	boolean active(Long id, Long uid);
-	
 	boolean updateAvatar(Long uid, String avatar_path);
 
 	boolean updatePwd(Long uid, String new_pwd);

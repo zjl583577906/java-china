@@ -22,11 +22,12 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	private UserinfoService userinfoService;
 	
 	@Override
-	public Activecode getActivecode(String code, String type) {
-		if(StringKit.isBlank(code) || StringKit.isBlank(type)){
+	public Activecode getActivecode(String code) {
+		if(StringKit.isBlank(code)){
 			return null;
 		}
-		return AR.find("select * from t_activecode where type = ? and code = ?", type, code).first(Activecode.class);
+		
+		return AR.find("select * from t_activecode where code = ?", code).first(Activecode.class);
 	}
 	
 	public Activecode getActivecodeById(Integer id) {
@@ -69,12 +70,12 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	}
 
 	@Override
-	public boolean useCode(Long id, String type) {
-		if(null == id || StringKit.isBlank(type)){
+	public boolean useCode(String code) {
+		if(StringKit.isBlank(code)){
 			return false;
 		}
 		try {
-			AR.update("update t_activecode set is_use = ? where id = ?", 1, id).executeUpdate(true);
+			AR.update("update t_activecode set is_use = ? where code = ?", 1, code).executeUpdate(true);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

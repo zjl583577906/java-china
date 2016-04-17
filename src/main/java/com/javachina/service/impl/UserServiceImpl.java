@@ -160,21 +160,7 @@ public class UserServiceImpl implements UserService {
 		}
 		return map;
 	}
-
-	@Override
-	public boolean active(Long id, Long uid) {
-		if (null != id && null != uid) {
-			try {
-				activecodeService.useCode(id, Types.signup.toString());
-				this.updateStatus(uid, 1);
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
-
+	
 	@Override
 	public boolean updateStatus(Long uid, Integer status) {
 		if(null != uid && null != status){
