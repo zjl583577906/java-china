@@ -13,7 +13,6 @@ import com.blade.web.verify.CSRFTokenManager;
 import com.bladejava.view.template.JetbrickTemplateEngine;
 import com.javachina.ext.Funcs;
 import com.javachina.ext.Methods;
-import com.javachina.kit.XssImpl;
 import com.javachina.service.SettingsService;
 
 import blade.kit.AES;
@@ -51,9 +50,6 @@ public class App extends Bootstrap {
 		Constant.APP_VERSION = blade.config().get("app.version");
 		AES.setKey(blade.config().get("app.aes_salt"));
 		Constant.CDN_URL = blade.config().get("qiniu.cdn");
-		
-		// xss 防御
-		blade.xss(new XssImpl());
 		
 		// csrf 防御
 		CSRFConfig conf = new CSRFConfig();

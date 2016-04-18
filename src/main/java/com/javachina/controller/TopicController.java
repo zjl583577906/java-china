@@ -280,7 +280,7 @@ public class TopicController extends BaseController {
 		request.attribute("is_love", is_love);
 		
 		QueryParam cp = QueryParam.me();
-		cp.eq("tid", tid).orderby("cid asc").page(page, 10);
+		cp.eq("tid", tid).orderby("cid asc").page(page, 20);
 		Page<Map<String, Object>> commentPage = commentService.getPageListMap(cp);
 		request.attribute("commentPage", commentPage);
 	}
