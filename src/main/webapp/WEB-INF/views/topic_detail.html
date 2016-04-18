@@ -1,5 +1,8 @@
 #include("./common/header.html",{title:topic.title ?! ''})
 <link rel="stylesheet" type="text/css" href="${cdn}/assets/styles/prism.css" />
+<script>
+var comment_members = [];
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -94,6 +97,7 @@
                             </div>
                         </li>
                         <hr class="smallhr">
+                        <script>comment_members.push('${comment.reply_name}');</script>
                     	#end
                     </ul>
                 </div>
@@ -112,14 +116,15 @@
                		<form id="comment-form" onsubmit="return topic.comment();" class="form-horizontal" role="form" method="post">
                			<input type="hidden" name="tid" value="${topic.tid}">
                         <input type="hidden" name="tuid" value="${topic.uid}">
-                        <p class="emoji-picker-container">
-                        <textarea id="content" data-emojiable="true" class="form-control textarea-control-comment" 
-                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
-                        </p>
+                        <div>
+	                        <textarea id="content" class="inputor form-control textarea-control-comment" 
+	                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
+                        </div>
                         <div class="pull-right">
                         	<button type="submit" class="btn btn-success">回复</button>
                         </div>
 	                </form>
+	                #include("./common/emoji.html")
 		           	#else
 	                <div class="well text-center">
                     	<a href="${base_url('/signup')}">注册</a> 参与讨论 or <a href="${base_url('/signin')}">登录</a>
