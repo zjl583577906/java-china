@@ -221,28 +221,32 @@ public class TopicServiceImpl implements TopicService {
 	 */
 	@Override
 	public boolean comment(Long uid, Long to_uid, Long tid, String content, String ua) {
-		boolean flag = commentService.save(uid, to_uid, tid, content, ua);
-		if(flag){
-			this.updateCount(tid, Types.comments.toString(), +1, true);
-			// 通知
-			if(!uid.equals(to_uid)){
-				noticeService.save(Types.comment.toString(), uid, to_uid, tid);
-				
-				// 通知@的用户
-				Set<String> atUsers = Utils.getAtUsers(content);
-				if(CollectionKit.isNotEmpty(atUsers)){
-					for(String user_name : atUsers){
-						User user = userService.getUser(user_name);
-						if(null != user && !user.getUid().equals(uid)){
-							noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+		try {
+			boolean flag = commentService.save(uid, to_uid, tid, content, ua);
+			if(flag){
+				this.updateCount(tid, Types.comments.toString(), +1, true);
+				// 通知
+				if(!uid.equals(to_uid)){
+					noticeService.save(Types.comment.toString(), uid, to_uid, tid);
+					
+					// 通知@的用户
+					Set<String> atUsers = Utils.getAtUsers(content);
+					if(CollectionKit.isNotEmpty(atUsers)){
+						for(String user_name : atUsers){
+							User user = userService.getUser(user_name);
+							if(null != user && !user.getUid().equals(uid)){
+								noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+							}
 						}
 					}
+					
+					// 更新总评论数
+					settingsService.updateCount(Types.comment_count.toString(), +1);
 				}
-				
-				// 更新总评论数
-				settingsService.updateCount(Types.comment_count.toString(), +1);
+				return true;
 			}
-			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return false;
 	}
@@ -257,8 +261,24 @@ public class TopicServiceImpl implements TopicService {
 
 	@Override
 	public Long update(Long tid, Long nid, String title, String content) {
-		
+		if(null != tid && null != nid && StringKit.isNotBlank(title) && StringKit.isNotBlank(content)){
+			try {
+				AR.update("update t_topic set nid = ?, title = ?, content = ?, update_time = ? where tid = ?",
+						nid, title, content, DateKit.getCurrentUnixTime(), tid).executeUpdate(true);
+				return tid;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		return null;
+	}
+
+	@Override
+	public Long getLastTime(Long uid) {
+		if(null == uid){
+			return null;
+		}
+		return AR.find("select update_time from t_topic where uid = ? order by update_time desc", uid).first(Long.class);
 	}
 	
 }

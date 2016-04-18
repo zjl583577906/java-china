@@ -121,6 +121,23 @@ topic.edit = function(){
 	return false;
 };
 
+//评论帖子
+topic.comment = function(){
+	var formData = $('#comment-form').serialize();
+	$.post(BASE + '/comment/add', formData, function(response){
+		if(response){
+			 if(response.status == 200){
+				 window.location.reload();
+			 } else if(response.status == 401){
+				 go_signin();	
+			 } else {
+				 alertError(response.msg);
+			 }
+		}
+	});
+	return false;
+};
+
 //帖子点赞
 $('.topic-footer .heart').on('click', function(){
 	var A = $(this).attr("id");

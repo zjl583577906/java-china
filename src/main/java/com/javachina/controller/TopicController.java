@@ -201,6 +201,12 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
+		Long last_time = topicService.getLastTime(user.getUid());
+		if( (DateKit.getCurrentUnixTime() - last_time) < 10 ){
+			this.error(response, "您操作频率太快，过一会儿操作吧！");
+			return;
+		}
+		
 		// 发布帖子
 		try {
 			Long tid = topicService.save(user.getUid(), nid, title, content, 0);
@@ -283,12 +289,12 @@ public class TopicController extends BaseController {
 	 * 评论帖子操作
 	 */
 	@Route(value = "/comment/add", method = HttpMethod.POST)
-	public ModelAndView add_comment(Request request, Response response){
+	public void add_comment(Request request, Response response){
 		
 		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
-			response.go("/");
-			return null;
+			this.nosignin(response);
+			return;
 		}
 		
 		Long uid = user.getUid();
@@ -298,39 +304,43 @@ public class TopicController extends BaseController {
 		Topic topic = topicService.getTopic(tid);
 		if(null == topic){
 			response.go("/");
-			return null;
+			return;
 		}
 		
 		if(null == tid || StringKit.isBlank(content)){
-			request.attribute(this.ERROR, "骚年，有些东西木有填哎！！");
-			this.putDetail(request, response, uid, tid);
-			request.attribute("content", content);
-			return this.getView("topic_detail");
+			this.error(response, "骚年，有些东西木有填哎！");
+			return;
 		}
 		
 		if(content.length() > 5000){
-			request.attribute(this.ERROR, "内容太长了，试试少吐点口水。。。");
-			this.putDetail(request, response, uid, tid);
-			request.attribute("content", content);
-			return this.getView("topic_detail");
+			this.error(response, "内容太长了，试试少吐点口水。");
+			return;
+		}
+		
+		Long last_time = topicService.getLastTime(user.getUid());
+		if( (DateKit.getCurrentUnixTime() - last_time) < 10 ){
+			this.error(response, "您操作频率太快，过一会儿操作吧！");
+			return;
 		}
 		
 		String ua = request.userAgent();
-		
 		// 评论帖子
-		boolean flag = topicService.comment(uid, topic.getUid(), tid, content, ua);
-		if(flag){
-			Constant.SYS_INFO = settingsService.getSystemInfo();
-			Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
-			
-			userlogService.save(user.getUid(), Actions.ADD_COMMENT, content);
-			response.go("/topic/" + tid);
-			return null;
-		} else {
-			request.attribute(this.ERROR, "帖子评论失败。。。");
+		try {
+			boolean flag = topicService.comment(uid, topic.getUid(), tid, content, ua);
+			if(flag){
+				Constant.SYS_INFO = settingsService.getSystemInfo();
+				Constant.VIEW_CONTEXT.set("sys_info", Constant.SYS_INFO);
+				
+				userlogService.save(user.getUid(), Actions.ADD_COMMENT, content);
+				
+				this.success(response, "");
+			} else {
+				this.error(response, "帖子评论失败");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.error(response, "帖子评论失败");
 		}
-		
-		return this.getView("topic_detail");
 	}
 	
 	/**

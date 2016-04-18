@@ -28,5 +28,7 @@ public interface TopicService {
 	boolean updateCount(Long tid, String type, long count, boolean updateCount);
 
 	Long getTopics(Long uid);
+
+	Long getLastTime(Long uid);
 	
 }

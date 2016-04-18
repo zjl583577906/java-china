@@ -109,8 +109,7 @@
                 </div>
                 <div class="panel-body">
                 	#if(null != login_user)
-                	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
-               		<form id="comment-form" action="${base_url('/comment/add')}" class="form-horizontal" role="form" method="post">
+               		<form id="comment-form" onsubmit="return topic.comment();" class="form-horizontal" role="form" method="post">
                			<input type="hidden" name="tid" value="${topic.tid}">
                         <input type="hidden" name="tuid" value="${topic.uid}">
                         <p class="emoji-picker-container">

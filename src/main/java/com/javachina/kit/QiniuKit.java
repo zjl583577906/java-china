@@ -12,6 +12,8 @@ import com.qiniu.storage.UploadManager;
 import com.qiniu.util.Auth;
 import com.qiniu.util.StringMap;
 
+import blade.kit.StringKit;
+
 public class QiniuKit {
 
 	private static final Random R = new Random();
@@ -30,7 +32,10 @@ public class QiniuKit {
 		BUCKET_NAME = Blade.me().config().get("qiniu.BUCKET_NAME");
 		
 		CDN = Blade.me().config().get("qiniu.cdn").split(",");
-		AUTH = Auth.create(ACCESS_KEY, SECRET_KEY);
+		
+		if(StringKit.isNotBlank(ACCESS_KEY) && StringKit.isNotBlank(SECRET_KEY)){
+			AUTH = Auth.create(ACCESS_KEY, SECRET_KEY);
+		}
 	}
 
 	public static String getUrl(String key) {
