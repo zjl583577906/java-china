@@ -50,6 +50,7 @@ public class App extends Bootstrap {
 		Constant.APP_VERSION = blade.config().get("app.version");
 		AES.setKey(blade.config().get("app.aes_salt"));
 		Constant.CDN_URL = blade.config().get("qiniu.cdn");
+		Constant.FAMOUS_KEY = blade.config().get("famous.key");
 		
 		// csrf 防御
 		CSRFConfig conf = new CSRFConfig();
