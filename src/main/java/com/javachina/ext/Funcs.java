@@ -40,7 +40,7 @@ public class Funcs {
 			if(content.indexOf(":") == -1){
 				return content;
 			}
-			return content.replaceAll(":([a-z\\-]{2,30}):", "<img src='"+Constant.SITE_URL+"/assets/emojis/$1.png'  height='20' width='20' />");
+			return content.replaceAll(":([a-z_-]{2,30}):", "<img src='"+Constant.SITE_URL+"/assets/emojis/$1.png'  height='20' width='20' />");
 		}
 		return "";
 	}

@@ -26,7 +26,7 @@ var comment_members = [];
                     </p>
                 </div>
                 <div class="panel-body topic-detail">
-                    ${emoji(topic.content)}
+                    ${topic.content}
                 </div>
                 #if(null != login_user)
                 <div class="panel-footer topic-footer">
@@ -93,7 +93,7 @@ var comment_members = [];
 	                                	${timespan(comment.reply_time)}
 	                                </span>
                                 </h4>
-                                ${emoji(comment.content)}
+                                ${comment.content}
                             </div>
                         </li>
                         <hr class="smallhr">
@@ -116,7 +116,7 @@ var comment_members = [];
                		<form id="comment-form" onsubmit="return topic.comment();" class="form-horizontal" role="form" method="post">
                			<input type="hidden" name="tid" value="${topic.tid}">
                         <input type="hidden" name="tuid" value="${topic.uid}">
-                        <div>
+                        <div class="mb10">
 	                        <textarea id="content" class="inputor form-control textarea-control-comment" 
 	                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
                         </div>

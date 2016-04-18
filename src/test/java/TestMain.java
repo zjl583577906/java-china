@@ -1,20 +1,17 @@
-import com.javachina.kit.Utils;
+import java.io.File;
+
+import blade.kit.FileKit;
 
 public class TestMain {
 
 	public static void main(String[] args) {
-		String aaa = "```html\n"
-				+ "<script>alert('xss test');</script>\n"
-				+ "```";
-		
-		System.out.println(aaa);
-		
-		System.out.println("==================================");
-		
-		String html = Utils.markdown2html(aaa);
-		System.out.println(html);
-		
-		System.out.println("==================================");
+		File[] files = FileKit.listDirSuffixFiles("/Users/Anne/workspace/java/java-china/src/main/webapp/assets/emojis", "png");
+		StringBuffer sBuffer = new StringBuffer();
+		for(File file : files){
+			String name = file.getName();
+			sBuffer.append("\""+name.substring(0, name.length() - 4)+"\", ");
+		}
+		System.out.println(sBuffer.toString());
 	}
 
 }

@@ -178,13 +178,9 @@ public class Utils {
 		String member = Funcs.base_url("/member/");
 		String content_ = content.replaceAll("@([a-zA-Z_0-9-]+)\\s", "<a href='"+ member +"$1'>@$1</a>&nbsp;");
 		
-		
-		
 		String processed = Processor.process(content_, config);
 		
-		
-		
-		return processed;
+		return Funcs.emoji(processed);
 	}
 	
 	
