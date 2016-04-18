@@ -29,6 +29,8 @@ import blade.kit.DateKit;
 import blade.kit.FileKit;
 import blade.kit.PatternKit;
 import blade.kit.StringKit;
+import blade.kit.http.HttpRequest;
+import blade.kit.json.JSONKit;
 import blade.kit.json.JSONObject;
 
 @Path("/")
@@ -97,6 +99,21 @@ public class IndexController extends BaseController {
 		// 读取节点列表
 		List<Map<String, Object>> nodes = nodeService.getNodeList();
 		request.attribute("nodes", nodes);
+		
+		// 放置名人名言
+		if(StringKit.isNotBlank(Constant.FAMOUS_KEY)){
+			
+			// yyyy-MM-dd
+			String today = DateKit.getToday("yyyy-MM-dd");
+			
+			String body = HttpRequest.get("http://api.avatardata.cn/MingRenMingYan/Random?key=" + Constant.FAMOUS_KEY).body();
+			if(StringKit.isNotBlank(body)){
+				String famous_saying = JSONKit.parseObject(body).get("result").asJSONObject().getString("famous_saying");
+				String famous_name = JSONKit.parseObject(body).get("result").asJSONObject().getString("famous_name");
+				
+				
+			}
+		}
 	}
 	
 	/**
