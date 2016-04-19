@@ -69,7 +69,11 @@ public class SessionKit {
 		if(null != request && StringKit.isNotBlank(cookieName)){
 			String val = request.cookie(cookieName);
 			if(StringKit.isNotBlank(val)){
-				return AES.decrypt(val);
+				try {
+					return AES.decrypt(val);
+				} catch (Exception e) {
+				}
+				return "";
 			}
 		}
 		return null;
