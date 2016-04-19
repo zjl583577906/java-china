@@ -46,12 +46,14 @@ public class SessionKit {
 		return user;
 	}
 	
+	private static final int one_month = 30*24*60*60;
+	
 	public static void setCookie(Response response, String cookieName, Long uid) {
 		if(null != response && StringKit.isNotBlank(cookieName) && null != uid){
 			String val = AES.encrypt(uid+"");
 			boolean isSSL = Constant.SITE_URL.startsWith("https");
 			String path = BladeWebContext.servletContext().getContextPath() + "/";
-			response.cookie(path, cookieName, val, 604800, isSSL);
+			response.cookie(path, cookieName, val, one_month, isSSL);
 		}
 	}
 	

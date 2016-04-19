@@ -83,6 +83,15 @@ function unique(arr){
 	return uniqueArr;
 }
 
+function emoji(content){
+	if(content && content.indexOf(':') != -1){
+		return content.replace(/:([a-z-_]{2,30}):/g, "<img src='"+ CDN_URL + "/assets/emojis/$1.png'  height='20' width='20' />");
+	}
+	return content;
+}
+
+
+
 ////////////////////帖子操作:START//////////////////////
 var topic = {};
 // 发布帖子
