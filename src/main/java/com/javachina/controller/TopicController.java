@@ -146,8 +146,13 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		if(title.length() > 40){
-			this.error(response, "标题太长了，试试少写点儿");
+		if(title.length() < 4 || title.length() > 50){
+			this.error(response, "标题长度在4-50个字符哦");
+			return;
+		}
+		
+		if(content.length() < 5){
+			this.error(response, "您真是一字值千金啊。");
 			return;
 		}
 		
@@ -191,8 +196,13 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		if(title.length() > 40){
-			this.error(response, "标题太长了，试试少写点儿");
+		if(title.length() < 4 || title.length() > 50){
+			this.error(response, "标题长度在4-50个字符哦");
+			return;
+		}
+		
+		if(content.length() < 5){
+			this.error(response, "您真是一字值千金啊。");
 			return;
 		}
 		

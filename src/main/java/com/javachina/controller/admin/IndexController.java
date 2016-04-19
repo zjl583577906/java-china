@@ -19,6 +19,7 @@ import com.blade.web.http.Response;
 import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.controller.BaseController;
+import com.javachina.kit.CronKit;
 import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.NodeService;
@@ -261,6 +262,17 @@ public class IndexController extends BaseController {
 		if(type.equals("clean_cache")){
 			AR.cleanCache();
 			request.attribute(this.INFO, "执行成功");
+			return this.getAdminView("tools");
+		}
+		
+		if(type.equals("backupdb")){
+			try {
+				CronKit.backup();
+				request.attribute(this.INFO, "备份成功，数据库文件已经发送到指定邮箱");
+			} catch (Exception e) {
+				e.printStackTrace();
+				request.attribute(this.ERROR, "备份失败");
+			}
 			return this.getAdminView("tools");
 		}
 		

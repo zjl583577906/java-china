@@ -50,8 +50,7 @@ var comment_members = [];
 	                	#else
 						<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">加入收藏</small></a>	                	
 	                	#end
-	                	<a class="follow" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted">忽略帖子</small></a>
-	                	
+							                	
 	                	#if(null!=login_user && login_user.role_id < 3)
 		                	#if(topic.is_essence == 0)
 		                	<a class="essence" tid="${topic.tid}" role="button" href="javascript:void(0);">&nbsp;•&nbsp;<small class="text-muted ">加精</small></a>
