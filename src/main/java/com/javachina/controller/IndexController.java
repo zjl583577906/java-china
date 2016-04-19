@@ -25,6 +25,7 @@ import com.javachina.kit.Utils;
 import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
 import com.javachina.service.NodeService;
+import com.javachina.service.NoticeService;
 import com.javachina.service.TopicService;
 
 import blade.kit.DateKit;
@@ -41,6 +42,9 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private NodeService nodeService;
+	
+	@Inject
+	private NoticeService noticeService;
 	
 	/**
 	 * 首页
@@ -100,8 +104,16 @@ public class IndexController extends BaseController {
 		List<Map<String, Object>> nodes = nodeService.getNodeList();
 		request.attribute("nodes", nodes);
 		
+		// 每日格言
 		FamousDay famousDay = FamousKit.getTodayFamous();
 		Constant.VIEW_CONTEXT.set("famousDay", famousDay);
+		
+		// 未读提醒
+		LoginUser loginUser = SessionKit.getLoginUser();
+		if(null != loginUser){
+			Long notices = noticeService.getNotices(loginUser.getUid());
+			Constant.VIEW_CONTEXT.set("my_notices", notices);
+		}
 	}
 	
 	/**

@@ -42,9 +42,11 @@
 							</div>
                         </div>
                     </div>
-					<div class="panel-footer box">
-						<a href="${base_url('/notices')}">${login_user.notices} 条未读提醒</a>
+                    #if(null != my_notices)
+                    <div class="panel-footer box">
+						<a href="${base_url('/notices')}">${my_notices} 条未读提醒</a>
 					</div>
+                    #end
                 </div>
                 #else
                 <div class="panel panel-default">
