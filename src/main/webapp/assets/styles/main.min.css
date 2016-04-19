@@ -693,26 +693,33 @@ kbd kbd {
 	box-shadow: none
 }
 
-pre {
-	display: block;
-	margin: 0 0 10px;
-	word-break: break-all;
-	word-wrap: break-word;
-	background-color: #f5f5f5;
-	border: 1px solid #ccc
-}
-
 .container, .container-fluid {
 	margin-right: auto;
 	margin-left: auto
 }
-
-pre code {
-	padding: 0;
-	font-size: inherit;
+/* 代码高亮 */
+pre, code {
+	font-size: 14px;
 	color: inherit;
+	border: 0px;
+}
+
+code{
+	padding: 5px;
+}
+
+pre {
+	-webkit-overflow-scrolling: touch;
+	color: #616161;
+	white-space: nowrap;
+	font-size: 14px;
+	-webkit-border-radius: 0;
+	-moz-border-radius: 0;
+	border-radius: 5px;
+	display: block;
+	word-break: break-all;
+	word-wrap: break-word;
 	white-space: pre-wrap;
-	border-radius: 0
 }
 
 .form-group-sm .form-control, .input-sm {
@@ -15275,17 +15282,6 @@ footer.content-footer li a:active, footer.content-footer li a:hover,
 
 .btn.text-right {
 	text-align: right
-}
-
-pre {
-	-webkit-overflow-scrolling: touch;
-	padding: 10px;
-	color: #616161;
-	white-space: nowrap;
-	font-size: 14px;
-	-webkit-border-radius: 0;
-	-moz-border-radius: 0;
-	border-radius: 0
 }
 
 .dropdown-header, .dropdown-menu>li>a {

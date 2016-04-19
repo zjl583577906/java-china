@@ -125,9 +125,10 @@ public class Utils {
 	public static class CodeBlockEmitter implements BlockEmitter {
 		@Override
 		public void emitBlock(final StringBuilder out, final List<String> lines, final String meta) {
-			out.append("<pre");
+			out.append("<pre><code");
 			if (meta != null && !meta.isEmpty()) {
-				out.append(" class=\"language-");
+//				out.append(" class=\"language-");
+				out.append(" class=\"");
 				out.append(meta);
 				out.append('"');
 			}
@@ -136,7 +137,7 @@ public class Utils {
 				escapedAdd(out, l);
 				out.append('\n');
 			}
-			out.append("</pre>");
+			out.append("</code></pre>");
 		}
 	}
 	
