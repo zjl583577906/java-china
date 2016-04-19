@@ -704,10 +704,6 @@ pre, code {
 	border: 0px;
 }
 
-code{
-	padding: 5px;
-}
-
 pre {
 	-webkit-overflow-scrolling: touch;
 	color: #616161;
