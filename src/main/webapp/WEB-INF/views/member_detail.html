@@ -45,6 +45,11 @@
 								<i class="fa fa-github mr5"></i> ${profile.github}
 							</a>
 	                        #end
+	                        #if(null != profile.weibo && profile.weibo != '')
+	                        <a class="btn-round bg-default-light pl10 pr10 pt5 pb5 mr5" href="http://weibo.com/u/${profile.weibo}" target="_blank">
+								<i class="fa fa-weibo mr5"></i> ${profile.weibo}
+							</a>
+	                        #end
                         </p>
                     </div>
                     <div class="col-md-3">

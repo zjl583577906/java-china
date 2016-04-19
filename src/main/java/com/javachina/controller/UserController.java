@@ -554,13 +554,18 @@ public class UserController extends BaseController {
 		
 		// 修改头像
 		if(type.equals("avatar") && StringKit.isNotBlank(avatar)){
-			String avatar_path = Blade.me().webRoot() + File.separator + avatar;
-			userService.updateAvatar(loginUser.getUid(), avatar_path);
-			
-			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
-			SessionKit.setLoginUser(request.session(), loginUserTemp);
-			
-			this.success(response, "");
+			try {
+				String avatar_path = Blade.me().webRoot() + File.separator + avatar;
+				userService.updateAvatar(loginUser.getUid(), avatar_path);
+				
+				LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+				SessionKit.setLoginUser(request.session(), loginUserTemp);
+				
+				this.success(response, "");
+			} catch (Exception e) {
+				e.printStackTrace();
+				this.error(response, "头像更换失败");
+			}
 			return;
 		}
 		
@@ -570,15 +575,22 @@ public class UserController extends BaseController {
 			String jobs = request.query("jobs");
 			String webSite = request.query("web_site");
 			String github = request.query("github");
+			String weibo = request.query("weibo");
 			String signature = request.query("signature");
 			String instructions = request.query("instructions");
-			boolean flag = userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, signature, instructions);
 			
-			if(flag){
-				LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
-				SessionKit.setLoginUser(request.session(), loginUserTemp);
-				this.success(response, "");
-			} else {
+			try {
+				boolean flag = userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, weibo, signature, instructions);
+				
+				if(flag){
+					LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+					SessionKit.setLoginUser(request.session(), loginUserTemp);
+					this.success(response, "");
+				} else {
+					this.error(response, "修改失败");
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 				this.error(response, "修改失败");
 			}
 			return;
@@ -603,14 +615,20 @@ public class UserController extends BaseController {
 				return;
 			}
 			
-			String new_pwd = EncrypKit.md5(loginUser.getUser_name() + newpwd);
-			userService.updatePwd(loginUser.getUid(), new_pwd);
-			
-			LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
-			SessionKit.setLoginUser(request.session(), loginUserTemp);
-			userlogService.save(loginUser.getUid(), Actions.UPDATE_PWD, new_pwd);
-			
-			this.success(response, "");
+			try {
+				String new_pwd = EncrypKit.md5(loginUser.getUser_name() + newpwd);
+				userService.updatePwd(loginUser.getUid(), new_pwd);
+				
+				LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());
+				SessionKit.setLoginUser(request.session(), loginUserTemp);
+				userlogService.save(loginUser.getUid(), Actions.UPDATE_PWD, new_pwd);
+				
+				this.success(response, "");
+			} catch (Exception e) {
+				e.printStackTrace();
+				this.error(response, "密码修改失败");
+			}
+			return;
 		}
 		
 	}

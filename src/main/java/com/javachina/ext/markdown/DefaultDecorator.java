@@ -218,7 +218,7 @@ public class DefaultDecorator implements Decorator
     @Override
     public void openLink(final StringBuilder out)
     {
-        out.append("<a");
+        out.append("<a target=\"_blank\"");
     }
 
     /** @see com.github.rjeschke.txtmark.Decorator#closeLink(StringBuilder) */

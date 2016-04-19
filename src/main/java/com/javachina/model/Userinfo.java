@@ -24,6 +24,8 @@ public class Userinfo implements Serializable {
 	
 	private String github;
 	
+	private String weibo;
+	
 	private String signature;
 	
 	private String instructions;
@@ -92,6 +94,14 @@ public class Userinfo implements Serializable {
 
 	public void setLocation(String location) {
 		this.location = location;
+	}
+
+	public String getWeibo() {
+		return weibo;
+	}
+
+	public void setWeibo(String weibo) {
+		this.weibo = weibo;
 	}
 	
 }

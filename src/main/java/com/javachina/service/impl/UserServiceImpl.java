@@ -151,6 +151,7 @@ public class UserServiceImpl implements UserService {
 			if(null != userinfo){
 				map.put("jobs", userinfo.getJobs());
 				map.put("github", userinfo.getGithub());
+				map.put("weibo", userinfo.getWeibo());
 				map.put("nick_name", userinfo.getNick_name());
 				map.put("location", userinfo.getLocation());
 				map.put("signature", userinfo.getSignature());

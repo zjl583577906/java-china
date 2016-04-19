@@ -17,7 +17,7 @@ public interface UserinfoService {
 	
 	boolean save(Long uid);
 	
-	boolean update(Long uid, String nickName, String jobs, String webSite, String github, String signature, String instructions );
+	boolean update(Long uid, String nickName, String jobs, String webSite, String github, String weibo, String signature, String instructions );
 	
 	boolean delete(Long uid);
 		
