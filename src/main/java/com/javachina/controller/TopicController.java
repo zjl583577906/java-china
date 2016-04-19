@@ -202,7 +202,7 @@ public class TopicController extends BaseController {
 		}
 		
 		Long last_time = topicService.getLastTime(user.getUid());
-		if( (DateKit.getCurrentUnixTime() - last_time) < 10 ){
+		if(null != last_time && (DateKit.getCurrentUnixTime() - last_time) < 10 ){
 			this.error(response, "您操作频率太快，过一会儿操作吧！");
 			return;
 		}
@@ -318,7 +318,7 @@ public class TopicController extends BaseController {
 		}
 		
 		Long last_time = topicService.getLastTime(user.getUid());
-		if( (DateKit.getCurrentUnixTime() - last_time) < 10 ){
+		if(null != last_time && (DateKit.getCurrentUnixTime() - last_time) < 10 ){
 			this.error(response, "您操作频率太快，过一会儿操作吧！");
 			return;
 		}
