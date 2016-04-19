@@ -451,15 +451,15 @@ a:focus {
 }
 
 .h2, h2 {
-	font-size: 30px
+	font-size: 20px
 }
 
 .h3, h3 {
-	font-size: 24px
+	font-size: 18px
 }
 
 .h4, h4 {
-	font-size: 18px
+	font-size: 16px
 }
 
 .h5, h5 {
@@ -25790,7 +25790,7 @@ transform
 }
 ul, menu, dir {
     display: block;
-    list-style-type: disc;
+    list-style-type: square;
     -webkit-margin-before: 1em;
     -webkit-margin-after: 1em;
     -webkit-margin-start: 0px;

@@ -75,14 +75,12 @@ function dispatch() {
     }
 }
 
-function emoji(content){
-	if(content){
-		if(content.indexOf(":") == -1){
-			return content;
-		}
-		return content.replace(/:([a-z\\-]{2,30}):/g, "<i class=\"twa twa-lg twa-$1\"></i>");
-	}
-	return "";
+function unique(arr){
+	var uniqueArr = [];
+	$.each(arr, function(i, el){
+	    if($.inArray(el, uniqueArr) === -1) uniqueArr.push(el);
+	});
+	return uniqueArr;
 }
 
 ////////////////////帖子操作:START//////////////////////
