@@ -436,7 +436,7 @@ public class UserController extends BaseController {
 		
 		// 最新创建的主题
 		QueryParam tp = QueryParam.me();
-		tp.eq("status", 1).eq("uid", user.getUid()).orderby("update_time desc").page(1, 10);
+		tp.eq("status", 1).eq("uid", user.getUid()).orderby("create_time desc, update_time desc").page(1, 10);
 		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
 		request.attribute("topicPage", topicPage);
 		

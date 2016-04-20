@@ -408,7 +408,7 @@ public class TopicController extends BaseController {
 			page = 1;
 		}
 		
-		tp.eq("status", 1).eq("is_essence", 1).orderby("update_time desc").page(page, 15);
+		tp.eq("status", 1).eq("is_essence", 1).orderby("create_time desc, update_time desc").page(page, 15);
 		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
 		request.attribute("topicPage", topicPage);
 		

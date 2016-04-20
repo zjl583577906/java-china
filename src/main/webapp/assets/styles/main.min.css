@@ -115,6 +115,18 @@ b, optgroup, strong {
 	color:blank;
 }
 
+.topic-detail h2 {
+    padding-bottom: 0.3em;
+    font-size: 1.75em;
+    line-height: 1.225;
+    border-bottom: 1px solid #eee;
+}
+
+.topic-detail h3 {
+    font-size: 1.5em;
+    line-height: 1.43;
+}
+
 .topic-footer{
 	height:40px;
 	line-height: 18px;
@@ -672,12 +684,6 @@ code, kbd, pre, samp {
 	font-family: Menlo, Monaco, Consolas, "Courier New", monospace
 }
 
-code {
-	color: #c7254e;
-	background-color: #f9f2f4;
-	border-radius: 4px
-}
-
 kbd {
 	color: #fff;
 	background-color: #333;
@@ -697,11 +703,16 @@ kbd kbd {
 	margin-right: auto;
 	margin-left: auto
 }
+
 /* 代码高亮 */
 pre, code {
 	font-size: 14px;
 	color: inherit;
 	border: 0px;
+}
+
+pre, code span{
+	font-size: 14px;	
 }
 
 pre {
@@ -716,6 +727,13 @@ pre {
 	word-break: break-all;
 	word-wrap: break-word;
 	white-space: pre-wrap;
+}
+
+code {
+	color: #c7254e;
+	background-color: #f9f2f4;
+	border-radius: 5px;
+	margin-top: -22px;
 }
 
 .form-group-sm .form-control, .input-sm {

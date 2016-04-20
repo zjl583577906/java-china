@@ -96,7 +96,7 @@ public class IndexController extends BaseController {
 			page = 1;
 		}
 		
-		tp.eq("status", 1).orderby("update_time desc").page(page, 16);
+		tp.eq("status", 1).orderby("create_time desc, update_time desc").page(page, 16);
 		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
 		request.attribute("topicPage", topicPage);
 		
