@@ -285,7 +285,15 @@ public class TopicServiceImpl implements TopicService {
 	}
 
 	@Override
-	public Long getLastTime(Long uid) {
+	public Long getLastCreateTime(Long uid) {
+		if(null == uid){
+			return null;
+		}
+		return AR.find("select create_time from t_topic where uid = ? order by create_time desc", uid).first(Long.class);
+	}
+	
+	@Override
+	public Long getLastUpdateTime(Long uid) {
 		if(null == uid){
 			return null;
 		}

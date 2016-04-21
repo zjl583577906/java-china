@@ -33,7 +33,9 @@ public interface TopicService {
 	
 	Long getTopics(Long uid);
 
-	Long getLastTime(Long uid);
+	Long getLastCreateTime(Long uid);
+	
+	Long getLastUpdateTime(Long uid);
 
 	Page<Map<String, Object>> getHotTopic(Long nid, Integer page, Integer count);
 	

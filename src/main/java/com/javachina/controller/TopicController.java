@@ -161,6 +161,12 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
+		Long last_time = topicService.getLastUpdateTime(user.getUid());
+		if(null != last_time && (DateKit.getCurrentUnixTime() - last_time) < 10 ){
+			this.error(response, "您操作频率太快，过一会儿操作吧！");
+			return;
+		}
+		
 		try {
 			// 编辑帖子
 			topicService.update(tid, nid, title, content);
@@ -211,7 +217,7 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		Long last_time = topicService.getLastTime(user.getUid());
+		Long last_time = topicService.getLastCreateTime(user.getUid());
 		if(null != last_time && (DateKit.getCurrentUnixTime() - last_time) < 10 ){
 			this.error(response, "您操作频率太快，过一会儿操作吧！");
 			return;
@@ -327,7 +333,7 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		Long last_time = topicService.getLastTime(user.getUid());
+		Long last_time = topicService.getLastUpdateTime(user.getUid());
 		if(null != last_time && (DateKit.getCurrentUnixTime() - last_time) < 10 ){
 			this.error(response, "您操作频率太快，过一会儿操作吧！");
 			return;
