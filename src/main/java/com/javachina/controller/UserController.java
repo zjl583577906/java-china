@@ -580,11 +580,12 @@ public class UserController extends BaseController {
 			String webSite = request.query("web_site");
 			String github = request.query("github");
 			String weibo = request.query("weibo");
+			String location = request.query("location");
 			String signature = request.query("signature");
 			String instructions = request.query("instructions");
 			
 			try {
-				boolean flag = userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, weibo, signature, instructions);
+				boolean flag = userinfoService.update(loginUser.getUid(), nickName, jobs, webSite, github, weibo, location, signature, instructions);
 				
 				if(flag){
 					LoginUser loginUserTemp = userService.getLoginUser(null, loginUser.getUid());

@@ -7,7 +7,7 @@
 					<div class=center-wrapper>
 						<div class="center-content">
 							<div class="row no-margin col-md-8">
-								<form role="form" action="${base_url('/signin')}" class="form-layout" method="post"/>
+								<form id="signin_form" role="form" action="${base_url('/signin')}" class="form-layout" method="post"/>
 									<p class="text-center mb30">欢迎来到JavaChina, 请输入账号登录。</p>
 									#if(null != error)
 									<div class="alert alert-danger">${error}</div>
@@ -21,7 +21,9 @@
 											<span class="cb-inner"><i><input type="checkbox" name="rememberme" checked="checked"/></i></span>记住我
 										</label>
 									</div>
-									<button class="btn btn-success btn-block btn-lg mb15" type="submit">登&nbsp;录</button>
+									<button class="btn btn-success btn-block btn-lg mb15 ladda-button" data-style="zoom-out" type="submit">
+										<span class="ladda-label">登&nbsp;录</span>
+									</button>
 									<p>
 										<a href="${base_url('/signup')}">注册账号</a> ·
 										<a href="${base_url('/oauth/github')}">使用Github帐号登录</a> ·
@@ -38,5 +40,15 @@
     </div>
 </div>
 #include("./common/footer.html")
+<script>
+$('#signin_form .ladda-button').on('click', function(){
+	var form = $('#signin_form')[0];
+	if(form.checkValidity()) {
+		var obj = Ladda.create(this);
+		obj.start();
+	}
+	return true;
+});
+</script>
 </body>
 </html>

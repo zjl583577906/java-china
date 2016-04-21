@@ -51,7 +51,7 @@ public class UserinfoServiceImpl implements UserinfoService {
 	
 	@Override
 	public boolean update(Long uid, String nickName, String jobs, String webSite, 
-			String github, String weibo, String signature, String instructions) {
+			String github, String weibo, String location, String signature, String instructions) {
 		if(null != uid){
 			StringBuffer updateSql = new StringBuffer("update t_userinfo set ");
 			List<Object> params = new ArrayList<Object>();
@@ -78,6 +78,10 @@ public class UserinfoServiceImpl implements UserinfoService {
 					updateSql.append("weibo = ?, ");
 					params.add(weibo);
 				}
+			}
+			if(null != location){
+				updateSql.append("location = ?, ");
+				params.add(location);
 			}
 			if(null != signature){
 				updateSql.append("signature = ?, ");

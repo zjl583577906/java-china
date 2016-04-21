@@ -11,8 +11,7 @@
                     <h3 class="panel-title">发布新帖子</h3>
                 </div>
                 <div class="panel-body">
-                	#if(null!=error)<div class="alert alert-danger">${error}</div>#end
-                	<form id="topic-add" accept-charset="utf-8" role="form" onsubmit="return topic.add();">
+                	<form id="topic-add" role="form" method="post">
                         <div class="form-group">
                             <label for="title">标题</label>
                             <input type="text" class="form-control" id="title" name="title" placeholder="请输入帖子标题" 
@@ -46,7 +45,9 @@
                         </div>
                         <div>
                         	<button type="button" class="btn btn-default btn-small preview">预览帖子</button>
-							<button type="submit" class="btn btn-primary btn-small">发布帖子</button>                        	
+							<button type="submit" class="btn btn-primary btn-small ladda-button" data-style="zoom-out">
+								<span class="ladda-label">发布帖子</span>
+							</button>                        	
                         </div>
                     </form>
                 </div>
