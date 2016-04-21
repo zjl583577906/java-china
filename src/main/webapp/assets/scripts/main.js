@@ -145,6 +145,38 @@ topic.comment = function(){
 	return false;
 };
 
+//预览帖子
+$('#topic-add .preview').on('click', function(){
+	var content = $("#topic-add #content").val();
+	if(content){
+		$.post(BASE + '/markdown', {content : content}, function(response){
+			if(response){
+				$("#markdown_preview").html(response).removeClass('hide');
+				$('#markdown_preview pre code').each(function(i, block) {
+				    hljs.highlightBlock(block);
+				});
+			}
+		});
+	} else{
+		$("#markdown_preview").html('').addClass('hide');
+	}
+});
+$('#topic-edit .preview').on('click', function(){
+	var content = $("#topic-edit #content").val();
+	if(content){
+		$.post(BASE + '/markdown', {content : content}, function(response){
+			if(response){
+				$("#markdown_preview").html(response).removeClass('hide');
+				$('#markdown_preview pre code').each(function(i, block) {
+				    hljs.highlightBlock(block);
+				});
+			}
+		});
+	} else{
+		$("#markdown_preview").html('').addClass('hide');
+	}
+});
+
 //帖子点赞
 $('.topic-footer .heart').on('click', function(){
 	var A = $(this).attr("id");

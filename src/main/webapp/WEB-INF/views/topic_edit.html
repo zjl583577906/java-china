@@ -1,4 +1,8 @@
 #include("./common/header.html", {site_title:"编辑帖子"})
+<link rel="stylesheet" href="${base}/assets/lib/highlight/styles/default.css" />
+<link rel="stylesheet" href="${base}/assets/lib/highlight/styles/github.css" />
+<script src="${base}/assets/lib/highlight/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -41,9 +45,13 @@
 	                            	placeholder="撸下你要发射的内容!!!" name="content" rows="8" required="required">${topic.content}</textarea>
 	                        </div>
                         </div>
-                        <button type="submit" class="btn btn-primary btn-small">发布主题</button>
+                        <div>
+                        	<button type="button" class="btn btn-default btn-small preview">预览帖子</button>
+							<button type="submit" class="btn btn-primary btn-small">发布帖子</button>                        	
+                        </div>
                     </form>
                 </div>
+                <div id="markdown_preview" class="panel-footer hide"></div>
             </div>
         </div><!-- /.col-md-8 -->
         #include("./common/sidebar.html")

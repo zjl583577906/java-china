@@ -637,4 +637,18 @@ public class UserController extends BaseController {
 		
 	}
 	
+	/**
+	 * 显示markdown预览
+	 */
+	@Route(value = "markdown", method = HttpMethod.POST)
+	public void getMarkdown(Request request, Response response){
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.text("");
+			return;
+		}
+		String content = request.query("content");
+		response.text(Utils.markdown2html(content));
+	}
+	
 }
