@@ -1,10 +1,21 @@
 # java-china
 
-Java中国是一款开源免费的论坛程序，致力于打造一个简洁优质的Java程序员论坛，支持@用户，github登录，emoji表情。
+Java中国是一款开源免费的论坛程序，致力于打造一个简洁优质的Java程序员论坛。
 
 演示地址 [http://java-china.org](http://java-china.org)
 
 有任何问题可以发 [issues](https://github.com/junicorn/java-china/issues/new)
+
+## 特性
+
+- 界面简洁清爽，对移动端友好
+- 支持markdown语法
+- 支持Emoji表情输入
+- 支持Github账户登录
+- 支持@用户
+- 支持在线播放音乐(小彩蛋)
+- 每日励志名言
+- 更多功能还在开发...
 
 ## 使用
 
