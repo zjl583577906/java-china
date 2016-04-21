@@ -47,13 +47,74 @@ public class IndexController extends BaseController {
 	private NoticeService noticeService;
 	
 	/**
-	 * 首页
+	 * 首页热门
 	 */
 	@Route(value = "/", method = HttpMethod.GET)
 	public ModelAndView show_home(Request request, Response response){
 		
-		this.putData(request, null);
+		this.putData(request);
 		
+		// 帖子
+		String tab = request.query("tab");
+		Integer page = request.queryAsInt("p");
+		Long nid = null;
+		
+		if(StringKit.isNotBlank(tab)){
+			QueryParam np = QueryParam.me();
+			np.eq("is_del", 0).eq("slug", tab);
+			Node node = nodeService.getNode(np);
+			if(null != node){
+				nid = node.getNid();
+				request.attribute("tab", tab);
+				request.attribute("node_name", node.getTitle());
+			}
+		}
+		
+		Page<Map<String, Object>> topicPage = topicService.getHotTopic(nid, page, 20);
+		request.attribute("topicPage", topicPage);
+		
+		// 最热帖子
+		QueryParam hp = QueryParam.me();
+		hp.eq("status", 1)/*.between("update_time", start_time, end_time)*/.orderby("tid, comments, views desc").add("limit 10");
+		List<Map<String, Object>> hot_topics = topicService.getTopicList(hp);
+		request.attribute("hot_topics", hot_topics);
+		
+		// 最热门的8个节点
+		QueryParam np = QueryParam.me();
+		np.eq("is_del", 0).notEq("pid", 0).orderby("topics desc").add("limit 8");
+		List<Node> hot_nodes = nodeService.getNodeList(np);
+		request.attribute("hot_nodes", hot_nodes);
+		
+		return this.getView("home");
+	}
+	
+	/**
+	 * 最新
+	 */
+	@Route(value = "/recent", method = HttpMethod.GET)
+	public ModelAndView show_recent(Request request, Response response){
+		
+		this.putData(request);
+		
+		// 帖子
+		String tab = request.query("tab");
+		Integer page = request.queryAsInt("p");
+		Long nid = null;
+		
+		if(StringKit.isNotBlank(tab)){
+			QueryParam np = QueryParam.me();
+			np.eq("is_del", 0).eq("slug", tab);
+			Node node = nodeService.getNode(np);
+			if(null != node){
+				nid = node.getNid();
+				request.attribute("tab", tab);
+				request.attribute("node_name", node.getTitle());
+			}
+		}
+		
+		Page<Map<String, Object>> topicPage = topicService.getRecentTopic(nid, page, 15);
+		request.attribute("topicPage", topicPage);
+				
 		// 最热帖子
 		QueryParam hp = QueryParam.me();
 		hp.eq("status", 1)/*.between("update_time", start_time, end_time)*/.orderby("tid, comments, views desc").add("limit 10");
@@ -62,44 +123,14 @@ public class IndexController extends BaseController {
 		
 		// 最热门的10个节点
 		QueryParam np = QueryParam.me();
-		np.eq("is_del", 0).notEq("pid", 0).orderby("topics desc").add("limit 10");
+		np.eq("is_del", 0).notEq("pid", 0).orderby("topics desc").add("limit 8");
 		List<Node> hot_nodes = nodeService.getNodeList(np);
 		request.attribute("hot_nodes", hot_nodes);
 		
-		return this.getView("home");
+		return this.getView("recent");
 	}
 	
-	private void putData(Request request, Long nid){
-		
-		// 帖子
-		QueryParam tp = QueryParam.me();
-		
-		String tab = request.query("tab");
-		Integer page = request.queryAsInt("p");
-		
-		if(StringKit.isNotBlank(tab)){
-			QueryParam np = QueryParam.me();
-			np.eq("is_del", 0).eq("slug", tab);
-			Node node = nodeService.getNode(np);
-			if(null != node){
-				tp.eq("nid", node.getNid());
-				request.attribute("tab", tab);
-				request.attribute("node_name", node.getTitle());
-			}
-		} else {
-			if(null != nid){
-				tp.eq("nid", nid);
-			}
-		}
-		
-		if(null == page || page < 1){
-			page = 1;
-		}
-		
-		tp.eq("status", 1).orderby("create_time desc, update_time desc").page(page, 16);
-		Page<Map<String, Object>> topicPage = topicService.getPageList(tp);
-		request.attribute("topicPage", topicPage);
-		
+	private void putData(Request request){
 		// 读取节点列表
 		List<Map<String, Object>> nodes = nodeService.getNodeList();
 		request.attribute("nodes", nodes);
@@ -130,7 +161,6 @@ public class IndexController extends BaseController {
 		
 		QueryParam np = QueryParam.me();
 		np.eq("is_del", 0).eq("slug", slug);
-		
 		Node node = nodeService.getNode(np);
 		if(null == node){
 			// 不存在的节点
@@ -138,7 +168,10 @@ public class IndexController extends BaseController {
 			return null;
 		}
 		
-		this.putData(request, node.getNid());
+		Integer page = request.queryAsInt("page");
+		
+		Page<Map<String, Object>> topicPage = topicService.getRecentTopic(node.getNid(), page, 15);
+		request.attribute("topicPage", topicPage);
 		
 		Map<String, Object> nodeMap = nodeService.getNodeDetail(null, node.getNid());
 		request.attribute("node", nodeMap);

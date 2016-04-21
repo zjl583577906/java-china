@@ -184,5 +184,31 @@ public class Utils {
 		return Funcs.emoji(processed);
 	}
 	
+	/**
+	 * 计算帖子权重
+	 * 
+	 * 根据点赞数、收藏数、评论数、下沉数、创建时间计算
+	 * 
+	 * @param loves			点赞数：权重占比1
+	 * @param favorites 	点赞数：权重占比2
+	 * @param comment		点赞数：权重占比2
+	 * @param sinks			点赞数：权重占比-1
+	 * @param create_time	创建时间，越早权重越低
+	 * @return
+	 */
+	public static double getWeight(Long loves, Long favorites, Long comment, Long sinks, Long create_time) {
+		
+		long score = Math.max(loves - 1, 0) + favorites * 2 + comment * 2 - sinks;
+		
+		// 投票方向
+		int sign = (score == 0) ? 0 : (score > 0 ? 1 : -1);
+		
+		// 帖子争议度
+		double order = Math.log10(Math.max(Math.abs(score), 1));
+		
+		// 1459440000是项目创建时间
+		double seconds = create_time - 1459440000;
+		return Double.parseDouble(String.format("%.2f", order + sign * seconds / 45000));
+	}
 	
 }

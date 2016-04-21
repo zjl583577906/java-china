@@ -38,11 +38,17 @@ public class Topic implements Serializable {
 	//评论数
 	private Long comments;
 	
+	//下沉数
+	private Long sinks;
+	
 	//是否置顶
 	private Integer is_top;
 	
 	//是否是精华贴
 	private Integer is_essence;
+	
+	// 帖子权重
+	private Double weight;
 	
 	//帖子创建时间
 	private Long create_time;
@@ -165,6 +171,22 @@ public class Topic implements Serializable {
 
 	public void setIs_essence(Integer is_essence) {
 		this.is_essence = is_essence;
+	}
+
+	public Double getWeight() {
+		return weight;
+	}
+
+	public void setWeight(Double weight) {
+		this.weight = weight;
+	}
+
+	public Long getSinks() {
+		return sinks;
+	}
+
+	public void setSinks(Long sinks) {
+		this.sinks = sinks;
 	}
 	
 }

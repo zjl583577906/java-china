@@ -19,7 +19,6 @@ import com.blade.web.http.Response;
 import com.javachina.Constant;
 import com.javachina.Types;
 import com.javachina.controller.BaseController;
-import com.javachina.kit.CronKit;
 import com.javachina.model.Node;
 import com.javachina.model.User;
 import com.javachina.service.NodeService;
@@ -265,13 +264,14 @@ public class IndexController extends BaseController {
 			return this.getAdminView("tools");
 		}
 		
-		if(type.equals("backupdb")){
+		// 刷新帖子权重，慎用会扫描全表
+		if(type.equals("refresh_weight")){
 			try {
-				CronKit.backup();
-				request.attribute(this.INFO, "备份成功，数据库文件已经发送到指定邮箱");
+				topicService.refreshWeight();
+				request.attribute(this.INFO, "权重刷新成功，请在首页进行查看。");
 			} catch (Exception e) {
 				e.printStackTrace();
-				request.attribute(this.ERROR, "备份失败");
+				request.attribute(this.ERROR, "刷新失败");
 			}
 			return this.getAdminView("tools");
 		}

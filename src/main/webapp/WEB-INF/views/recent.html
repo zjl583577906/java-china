@@ -9,7 +9,7 @@
 							<li #if(null==tab)class="active"#end><a href="${base_url('/')}" data-toggle="tab">热门</a></li>
 							<li #if(tab=='recent')class="active"#end><a href="${base_url('/recent')}" data-toggle="tab">最新</a></li>
 							#for(node : hot_nodes)
-							<li #if(tab==node.slug)class="active"#end><a href="${base_url('/?tab=') + node.slug}" data-toggle="tab">${node.title}</a></li>
+							<li #if(tab==node.slug)class="active"#end><a href="${base_url('/recent?tab=') + node.slug}" data-toggle="tab">${node.title}</a></li>
 							#end
 						</ul>
 						<div class="tab-content">
@@ -52,9 +52,17 @@
 									#end
 								</section>								
 								#end
-								<div>
-									<a href="${base_url('/recent')}" class="">最新发布</a>
-								</div>
+								
+								#if(topicPage.totalPage > 1)
+								<ul class="pager">
+									#if(topicPage.page > 1)
+									<li class="pull-left"><a href="${base_url('/?p=') + topicPage.prev_page}">上一页</a></li>
+									#end
+									#if(topicPage.totalPage > 1 && topicPage.page != topicPage.totalPage)
+									<li class="pull-right"><a href="${base_url('/?p=') + topicPage.next_page}">下一页</a></li>
+									#end
+								</ul>
+								#end
 							</div>
 						</div>
 					</div>

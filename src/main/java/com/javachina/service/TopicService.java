@@ -26,9 +26,17 @@ public interface TopicService {
 	boolean delete(Long tid);
 	
 	boolean updateCount(Long tid, String type, long count, boolean updateCount);
-
+	
+	boolean refreshWeight();
+	
+	boolean updateWeight(Long tid, Long loves, Long favorites, Long comment, Long sinks, Long create_time);
+	
 	Long getTopics(Long uid);
 
 	Long getLastTime(Long uid);
+
+	Page<Map<String, Object>> getHotTopic(Long nid, Integer page, Integer count);
+	
+	Page<Map<String, Object>> getRecentTopic(Long nid, Integer page, Integer count);
 	
 }

@@ -25805,11 +25805,11 @@ ul, menu, dir {
     -webkit-margin-after: 1em;
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
-    -webkit-padding-start: 40px;
 }
 ol, ul {
     margin-top: 0;
     margin-bottom: 10px;
+    -webkit-padding-start: 20px;
 }
 .essence {
 	margin: 0;

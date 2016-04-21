@@ -197,12 +197,22 @@ public class TopicServiceImpl implements TopicService {
 	public boolean updateCount(Long tid, String type, long count, boolean updateTime) {
 		if(null != tid && StringKit.isNotBlank(type)){
 			try {
+				
 				StringBuffer upSql = new StringBuffer("update t_topic set %s = (%s + ?) ");
 				if(updateTime){
 					upSql.append(", update_time = " + DateKit.getCurrentUnixTime());
 				}
 				upSql.append(" where tid = ?");
 				AR.update(String.format(upSql.toString(), type, type), count, tid).executeUpdate();
+				
+				Topic topic = this.getTopic(tid);
+				if(null == topic) {
+					return false;
+				}
+				
+				// 刷新权重
+				this.updateWeight(tid, topic.getLoves(), topic.getFavorites(), topic.getComments(), topic.getSinks(), topic.getCreate_time());
+				
 				return true;
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -224,6 +234,7 @@ public class TopicServiceImpl implements TopicService {
 		try {
 			boolean flag = commentService.save(uid, to_uid, tid, content, ua);
 			if(flag){
+				
 				this.updateCount(tid, Types.comments.toString(), +1, true);
 				// 通知
 				if(!uid.equals(to_uid)){
@@ -279,6 +290,66 @@ public class TopicServiceImpl implements TopicService {
 			return null;
 		}
 		return AR.find("select update_time from t_topic where uid = ? order by update_time desc", uid).first(Long.class);
+	}
+	
+	@Override
+	public boolean refreshWeight() {
+		List<Map<String, Object>> topics = AR.find("select tid, loves, favorites, comments, sinks, create_time from t_topic where status = 1").listmap();
+		if(null != topics) {
+			for(Map<String, Object> topic : topics){
+				
+				Long tid = AR.getLong(topic.get("tid"));
+				Long loves = AR.getLong(topic.get("loves"));
+				Long favorites = AR.getLong(topic.get("favorites"));
+				Long comments = AR.getLong(topic.get("comments"));
+				Long sinks = AR.getLong(topic.get("sinks"));
+				Long create_time = AR.getLong(topic.get("create_time"));
+				
+				this.updateWeight(tid, loves, favorites, comments, sinks, create_time);
+			}
+		}
+		return false;
+	}
+
+	public boolean updateWeight(Long tid, Long loves, Long favorites, Long comment, Long sinks, Long create_time) {
+		if(null == tid){
+			return false;
+		}
+		
+		try {
+			double weight = Utils.getWeight(loves, favorites, comment, sinks, create_time);
+			AR.update("update t_topic set weight = ? where tid = ?", weight, tid).executeUpdate();
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public Page<Map<String, Object>> getHotTopic(Long nid, Integer page, Integer count) {
+		if(null == page || page < 1){
+			page = 1;
+		}
+		QueryParam tp = QueryParam.me();
+		if(null != nid){
+			tp.eq("nid", nid);
+		}
+		tp.eq("status", 1).orderby("weight desc").page(page, count);
+		return this.getPageList(tp);
+	}
+
+	@Override
+	public Page<Map<String, Object>> getRecentTopic(Long nid, Integer page, Integer count) {
+		if(null == page || page < 1){
+			page = 1;
+		}
+		QueryParam tp = QueryParam.me();
+		if(null != nid){
+			tp.eq("nid", nid);
+		}
+		tp.eq("status", 1).orderby("create_time desc").page(page, count);
+		return this.getPageList(tp);
 	}
 	
 }
