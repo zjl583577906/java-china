@@ -46,6 +46,7 @@ $('#signin_form .ladda-button').on('click', function(){
 	if(form.checkValidity()) {
 		var obj = Ladda.create(this);
 		obj.start();
+		$('#signin_form').submit();
 	}
 	return true;
 });
