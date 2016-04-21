@@ -181,6 +181,10 @@ public class Utils {
 		
 		String processed = Processor.process(content_, config);
 		
+		if(processed.indexOf("[mp3:") != -1){
+			processed = processed.replaceAll("\\[mp3:(\\d+)\\]", "<iframe frameborder='no' border='0' marginwidth='0' marginheight='0' width=330 height=86 src='http://music.163.com/outchain/player?type=2&id=$1&auto=0&height=66'></iframe>");
+		}
+		
 		return Funcs.emoji(processed);
 	}
 	
@@ -198,7 +202,7 @@ public class Utils {
 	 */
 	public static double getWeight(Long loves, Long favorites, Long comment, Long sinks, Long create_time) {
 		
-		long score = Math.max(loves - 1, 0) + favorites * 2 + comment * 2 - sinks;
+		long score = Math.max(loves - 1, 1) + favorites * 2 + comment * 2 - sinks;
 		
 		// 投票方向
 		int sign = (score == 0) ? 0 : (score > 0 ? 1 : -1);
