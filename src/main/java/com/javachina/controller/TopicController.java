@@ -60,6 +60,11 @@ public class TopicController extends BaseController {
 	 */
 	@Route(value = "/topic/add", method = HttpMethod.GET)
 	public ModelAndView show_add_topic(Request request, Response response){
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.go("/");
+			return null;
+		}
 		this.putData(request);
 		Long pid = request.queryAsLong("pid");
 		request.attribute("pid", pid);

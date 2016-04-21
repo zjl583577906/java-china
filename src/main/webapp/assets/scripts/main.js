@@ -90,65 +90,166 @@ function emoji(content){
 	return content;
 }
 
-$(function(){
 	
-	//预览帖子
-	$('#topic-add .preview').on('click', function(){
-		var content = $("#topic-add #content").val();
-		if(content){
-			$.post(BASE + '/markdown', {content : content}, function(response){
-				if(response){
-					$("#markdown_preview").html(response).removeClass('hide');
-					$('#markdown_preview pre code').each(function(i, block) {
-					    hljs.highlightBlock(block);
-					});
-				}
-			});
-		} else{
-			$("#markdown_preview").html('').addClass('hide');
-		}
-	});
-	
-	
-	$('#topic-edit .preview').on('click', function(){
-		var content = $("#topic-edit #content").val();
-		if(content){
-			$.post(BASE + '/markdown', {content : content}, function(response){
-				if(response){
-					$("#markdown_preview").html(response).removeClass('hide');
-					$('#markdown_preview pre code').each(function(i, block) {
-					    hljs.highlightBlock(block);
-					});
-				}
-			});
-		} else{
-			$("#markdown_preview").html('').addClass('hide');
-		}
-	});
+//预览帖子
+$('#topic-add .preview').on('click', function(){
+	var content = $("#topic-add #content").val();
+	if(content){
+		$.post(BASE + '/markdown', {content : content}, function(response){
+			if(response){
+				$("#markdown_preview").html(response).removeClass('hide');
+				$('#markdown_preview pre code').each(function(i, block) {
+				    hljs.highlightBlock(block);
+				});
+			}
+		});
+	} else{
+		$("#markdown_preview").html('').addClass('hide');
+	}
+});
 
-	//帖子点赞
-	$('.topic-footer .heart').on('click', function(){
-		var A = $(this).attr("id");
-		var B=A.split("like");
-		var messageID=B[1];
-		var C=parseInt($("#likeCount").text());
-		$(this).css("background-position","")
-		var D = $("#likeCount");
-	    
-		var _this = $(this);
-		var tid = $(this).attr('tid');
-		$.post(BASE + '/favorite', {type:'love',event_id : tid}, function(response){
+
+$('#topic-edit .preview').on('click', function(){
+	var content = $("#topic-edit #content").val();
+	if(content){
+		$.post(BASE + '/markdown', {content : content}, function(response){
+			if(response){
+				$("#markdown_preview").html(response).removeClass('hide');
+				$('#markdown_preview pre code').each(function(i, block) {
+				    hljs.highlightBlock(block);
+				});
+			}
+		});
+	} else{
+		$("#markdown_preview").html('').addClass('hide');
+	}
+});
+
+//帖子点赞
+$('.topic-footer .heart').on('click', function(){
+	var A = $(this).attr("id");
+	var B=A.split("like");
+	var messageID=B[1];
+	var C=parseInt($("#likeCount").text());
+	$(this).css("background-position","")
+	var D = $("#likeCount");
+    
+	var _this = $(this);
+	var tid = $(this).attr('tid');
+	$.post(BASE + '/favorite', {type:'love',event_id : tid}, function(response){
+		if(response){
+			if(response.status == 200){
+				if(response.data == 1){
+					D.text(C+1);
+					_this.addClass("heartAnimation").attr("rel","unlike");
+				}
+				if(response.data == -1){
+					D.text(C-1);
+					_this.removeClass("heartAnimation").attr("rel","like");
+					_this.css("background-position","left");
+				}
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
+//帖子收藏
+$('.topic-footer .follow').on('click', function(){
+	var tid = $(this).attr("tid");
+	var _this = $(this);
+	$.post(BASE + '/favorite', {type:'topic', event_id : tid}, function(response){
+		if(response){
+			if(response.status == 200){
+				window.location.reload();	
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
+//设置精华帖
+$('.topic-footer .essence').on('click', function(){
+	var tid = $(this).attr("tid");
+	var _this = $(this);
+	$.post(BASE + '/essence', {tid : tid}, function(response){
+		if(response){
+			if(response.status == 200){
+				window.location.reload();	
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
+//分享到微博
+$('.topic-footer .share-weibo').on('click', function(){
+	var title = $('.topic-detail-heading .panel-title').text();
+	var href = window.location.href;
+	var share_url = 'http://service.weibo.com/share/share.php?url=' + href + '&title=' + encodeURI(title);
+	openWindow(share_url, '', 550, 422);
+});
+
+//at用户
+$('.comment-list .at-user').on('click', function(){
+	var user_name = $(this).attr('alt');
+	var ctn = $('#comment-form #content');
+	var text = ctn.val();
+	var at = '@' + user_name + ' ';
+	if(text == at){
+		ctn.val('');		
+	} else{
+		var br = text ? '\r\n' : '';
+		ctn.val(text + br + at);
+	}
+	ctn.focus();
+});
+
+$('.profile .following').on('click', function(){
+	var uid = $(this).attr("uid");
+	var _this = $(this);
+	$.post(BASE+'/favorite', {type:'following', event_id : uid}, function(response){
+		if(response){
+			if(response.status == 200){
+				window.location.reload();	
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
+var info_data = {};
+$("#info_form :input").change(function (){
+	var key = $(this).attr('name');
+	info_data[key] = $(this).val();
+});
+
+// 修改个人基本信息
+$("#info_form .submit").on('click', function(e){
+	e.preventDefault();
+	if(len(info_data) > 0){
+		var l = Ladda.create(this);
+		l.start();
+		$.post(BASE+'/settings?type=info', info_data, function(response){
+			info_data = {};
+			setTimeout(function () {
+	            l.stop();
+	        }, 600);
 			if(response){
 				if(response.status == 200){
-					if(response.data == 1){
-						D.text(C+1);
-						_this.addClass("heartAnimation").attr("rel","unlike");
-					}
-					if(response.data == -1){
-						D.text(C-1);
-						_this.removeClass("heartAnimation").attr("rel","like");
-						_this.css("background-position","left");
-					}
+					alertOk("修改成功！");
 				} else if(response.status == 401){
 					go_signin();
 				} else{
@@ -156,111 +257,7 @@ $(function(){
 				}
 			}
 		});
-	});
-
-	//帖子收藏
-	$('.topic-footer .follow').on('click', function(){
-		var tid = $(this).attr("tid");
-		var _this = $(this);
-		$.post(BASE + '/favorite', {type:'topic', event_id : tid}, function(response){
-			if(response){
-				if(response.status == 200){
-					window.location.reload();	
-				} else if(response.status == 401){
-					go_signin();
-				} else{
-					alertError(response.msg);
-				}
-			}
-		});
-	});
-
-	//设置精华帖
-	$('.topic-footer .essence').on('click', function(){
-		var tid = $(this).attr("tid");
-		var _this = $(this);
-		$.post(BASE + '/essence', {tid : tid}, function(response){
-			if(response){
-				if(response.status == 200){
-					window.location.reload();	
-				} else if(response.status == 401){
-					go_signin();
-				} else{
-					alertError(response.msg);
-				}
-			}
-		});
-	});
-
-	//分享到微博
-	$('.topic-footer .share-weibo').on('click', function(){
-		var title = $('.topic-detail-heading .panel-title').text();
-		var href = window.location.href;
-		var share_url = 'http://service.weibo.com/share/share.php?url=' + href + '&title=' + encodeURI(title);
-		openWindow(share_url, '', 550, 422);
-	});
-
-	//at用户
-	$('.comment-list .at-user').on('click', function(){
-		var user_name = $(this).attr('alt');
-		var ctn = $('#comment-form #content');
-		var text = ctn.val();
-		var at = '@' + user_name + ' ';
-		if(text == at){
-			ctn.val('');		
-		} else{
-			var br = text ? '\r\n' : '';
-			ctn.val(text + br + at);
-		}
-		ctn.focus();
-	});
-	
-	$('.profile .following').on('click', function(){
-		var uid = $(this).attr("uid");
-		var _this = $(this);
-		$.post(BASE+'/favorite', {type:'following', event_id : uid}, function(response){
-			if(response){
-				if(response.status == 200){
-					window.location.reload();	
-				} else if(response.status == 401){
-					go_signin();
-				} else{
-					alertError(response.msg);
-				}
-			}
-		});
-	});
-	
-	var info_data = {};
-	$("#info_form :input").change(function (){
-		var key = $(this).attr('name');
-		info_data[key] = $(this).val();
-	});
-	
-	// 修改个人基本信息
-	$("#info_form .submit").on('click', function(e){
-		e.preventDefault();
-		if(len(info_data) > 0){
-			var l = Ladda.create(this);
-			l.start();
-			$.post(BASE+'/settings?type=info', info_data, function(response){
-				info_data = {};
-				setTimeout(function () {
-		            l.stop();
-		        }, 600);
-				if(response){
-					if(response.status == 200){
-						alertOk("修改成功！");
-					} else if(response.status == 401){
-						go_signin();
-					} else{
-						alertError(response.msg);
-					}
-				}
-			});
-		}
-	});
-	
+	}
 });
 
 ////////////////////帖子操作:START//////////////////////
