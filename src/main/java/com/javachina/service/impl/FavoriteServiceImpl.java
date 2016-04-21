@@ -67,6 +67,10 @@ public class FavoriteServiceImpl implements FavoriteService {
 				topicService.updateCount(event_id, Types.favorites.toString(), count, false);
 			}
 			
+			if(type.equals(Types.sinks.toString())){
+				topicService.updateCount(event_id, Types.sinks.toString(), count, false);
+			}
+			
 			if(type.equals(Types.love.toString())){
 				topicService.updateCount(event_id, Types.loves.toString(), count, false);
 			}

@@ -495,7 +495,7 @@ public class UserController extends BaseController {
 	
 
 	/**
-	 * 关注／收藏／点赞
+	 * 关注／收藏／点赞／下沉帖
 	 */
 	@Route(value = "/favorite", method = HttpMethod.POST)
 	public void favorite(Request request, Response response){
