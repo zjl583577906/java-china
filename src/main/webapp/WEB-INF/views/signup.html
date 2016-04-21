@@ -28,6 +28,18 @@
 											<span class="input-group-addon">密　码</span>
 											<input type="password" name="pass_word" class="form-control input-lg" placeholder="请输入6-20位密码"  required="required" />
 										</div>
+										
+										<div class="input-group mb15">
+											<span class="input-group-addon">验证码&nbsp;</span>
+											<div class="row">
+												<div class="col-sm-6">
+													<input type="text" class="form-control" name="auth_code" placeholder="四位字符验证码" maxlength="4" required="required"/>
+												</div>
+												<div class="col-sm-6">
+													<img id="captcha" src="${base_url('/captcha')}" width="150" height="30"/>
+												</div>
+											</div>
+										</div>
 									</div>
 									<button class="btn btn-success btn-block btn-lg mb15" type="submit">创建账号</button>
 									</p>

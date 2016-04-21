@@ -192,21 +192,19 @@ public class UserController extends BaseController {
 		String login_name = request.query("login_name");
 		String email = request.query("email");
 		String pass_word = request.query("pass_word");
+		String auth_code = request.query("auth_code");
 		
 		request.attribute("login_name", login_name);
 		request.attribute("email", email);
 		
-		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word) || StringKit.isBlank(email)){
+		if(StringKit.isBlank(login_name) || StringKit.isBlank(pass_word) 
+				|| StringKit.isBlank(email) || StringKit.isBlank(auth_code) ){
 			request.attribute(this.ERROR, "参数不能为空");
-			request.attribute("login_name", login_name);
-			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
 		if(login_name.length() > 16 || login_name.length() < 4){
 			request.attribute(this.ERROR, "请输入4-16位用户名");
-			request.attribute("login_name", login_name);
-			request.attribute("email", email);
 			return this.getView("signup");
 		}
 		
@@ -227,6 +225,12 @@ public class UserController extends BaseController {
 		
 		if(pass_word.length() > 20 || pass_word.length() < 6){
 			request.attribute(this.ERROR, "请输入6-20位字符的密码");
+			return this.getView("signup");
+		}
+		
+		String patchca = request.session().attribute("patchca");
+		if(StringKit.isNotBlank(patchca) && !patchca.equalsIgnoreCase(auth_code)){
+			request.attribute(this.ERROR, "验证码输入错误");
 			return this.getView("signup");
 		}
 		
