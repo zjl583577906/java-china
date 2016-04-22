@@ -26,6 +26,7 @@ public enum Types {
 	recoveryAccount, 
 	allow_signup,
 	forgot, 
-	sinks
+	sinks,
+	topic_sinks
 	
 }

@@ -513,7 +513,7 @@ public class UserController extends BaseController {
 			return;
 		}
 		
-		Long count = favoriteService.save(type, user.getUid(), event_id);
+		Integer count = favoriteService.update(type, user.getUid(), event_id);
 		
 		LoginUser loginUser = userService.getLoginUser(null, user.getUid());
 		SessionKit.setLoginUser(request.session(), loginUser);

@@ -74,9 +74,7 @@ public class IndexController extends BaseController {
 		request.attribute("topicPage", topicPage);
 		
 		// 最热帖子
-		QueryParam hp = QueryParam.me();
-		hp.eq("status", 1)/*.between("update_time", start_time, end_time)*/.orderby("tid, comments, views desc").add("limit 10");
-		List<Map<String, Object>> hot_topics = topicService.getTopicList(hp);
+		List<Map<String, Object>> hot_topics = topicService.getHotTopic(null, 1, 10).getResults();
 		request.attribute("hot_topics", hot_topics);
 		
 		// 最热门的8个节点
@@ -116,9 +114,7 @@ public class IndexController extends BaseController {
 		request.attribute("topicPage", topicPage);
 				
 		// 最热帖子
-		QueryParam hp = QueryParam.me();
-		hp.eq("status", 1)/*.between("update_time", start_time, end_time)*/.orderby("tid, comments, views desc").add("limit 10");
-		List<Map<String, Object>> hot_topics = topicService.getTopicList(hp);
+		List<Map<String, Object>> hot_topics = topicService.getHotTopic(null, 1, 10).getResults();
 		request.attribute("hot_topics", hot_topics);
 		
 		// 最热门的10个节点

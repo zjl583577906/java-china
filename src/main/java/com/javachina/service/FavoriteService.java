@@ -14,7 +14,7 @@ public interface FavoriteService {
 	// 查询我关注的用户
 	Page<Map<String, Object>> getFollowing(Long uid, Integer page, Integer count);
 	
-	Long save(String type, Long uid, Long eventId);
+	Integer update(String type, Long uid, Long eventId);
 	
 	Long favorites(String type, Long uid);
 }

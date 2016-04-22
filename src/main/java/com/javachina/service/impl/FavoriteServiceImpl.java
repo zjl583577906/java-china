@@ -13,6 +13,7 @@ import com.javachina.Types;
 import com.javachina.model.Favorite;
 import com.javachina.model.Topic;
 import com.javachina.service.FavoriteService;
+import com.javachina.service.TopicCountService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
@@ -27,6 +28,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private TopicCountService topicCountService;
 	
 	public Favorite getFavorite(String type,Long uid, Long event_id) {
 		return AR.find(QueryParam.me().eq("type", type).eq("uid", uid).eq("event_id", event_id)).first(Favorite.class);
@@ -47,39 +51,43 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 	
 	@Override
-	public Long save(String type, Long uid, Long event_id) {
+	public Integer update(String type, Long uid, Long event_id) {
 		
 		try {
 			
-			Long count = 0L;
+			int count = 0;
 			
 			boolean isFavorite = this.isFavorite(type, uid, event_id);
 			if(!isFavorite){
 				AR.update("insert into t_favorite(type, uid, event_id, create_time) values(?, ?, ?, ?)", 
 						type, uid, event_id, DateKit.getCurrentUnixTime()).executeUpdate();
-				count = 1L;
+				count = 1;
 			} else {
 				AR.update("delete from t_favorite where type = ? and uid = ? and event_id = ?", type, uid, event_id).executeUpdate();
-				count = -1L;
+				count = -1;
 			}
 			
+			// 收藏帖子
 			if(type.equals(Types.topic.toString())){
-				topicService.updateCount(event_id, Types.favorites.toString(), count, false);
+				topicCountService.update(Types.favorites.toString(), event_id, count);
 			}
 			
+			// 帖子下沉
 			if(type.equals(Types.sinks.toString())){
-				topicService.updateCount(event_id, Types.sinks.toString(), count, false);
+//				typeCountService.update(Types.topic_sinks.toString(), event_id, count);
+//				topicService.updateCount(event_id, Types.topic_sinks.toString(), count, false);
 			}
 			
+			// 帖子点赞
 			if(type.equals(Types.love.toString())){
-				topicService.updateCount(event_id, Types.loves.toString(), count, false);
+				topicCountService.update(Types.loves.toString(), event_id, count);
 			}
 			
 			return count;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return 0L;
+		return 0;
 	}
 
 	@Override

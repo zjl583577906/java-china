@@ -26,18 +26,6 @@ public class Topic implements Serializable {
 	//帖子内容
 	private String content;
 	
-	//浏览量
-	private Long views;
-	
-	//被收藏数
-	private Long favorites;
-	
-	//获得点赞数
-	private Long loves;
-	
-	//评论数
-	private Long comments;
-	
 	//下沉数
 	private Long sinks;
 	
@@ -99,38 +87,6 @@ public class Topic implements Serializable {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-	
-	public Long getViews() {
-		return views;
-	}
-
-	public void setViews(Long views) {
-		this.views = views;
-	}
-	
-	public Long getFavorites() {
-		return favorites;
-	}
-
-	public void setFavorites(Long favorites) {
-		this.favorites = favorites;
-	}
-	
-	public Long getLoves() {
-		return loves;
-	}
-
-	public void setLoves(Long loves) {
-		this.loves = loves;
-	}
-
-	public Long getComments() {
-		return comments;
-	}
-
-	public void setComments(Long comments) {
-		this.comments = comments;
 	}
 	
 	public Integer getIs_top() {

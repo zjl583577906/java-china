@@ -18,12 +18,14 @@ import com.javachina.kit.Utils;
 import com.javachina.model.Comment;
 import com.javachina.model.Node;
 import com.javachina.model.Topic;
+import com.javachina.model.TopicCount;
 import com.javachina.model.User;
 import com.javachina.service.CommentService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
+import com.javachina.service.TopicCountService;
 import com.javachina.service.UserService;
 
 import blade.kit.CollectionKit;
@@ -46,6 +48,9 @@ public class TopicServiceImpl implements TopicService {
 	
 	@Inject
 	private SettingsService settingsService;
+	
+	@Inject
+	private TopicCountService topicCountService;
 	
 	@Override
 	public Topic getTopic(Long tid) {
@@ -108,6 +113,9 @@ public class TopicServiceImpl implements TopicService {
 							uid, nid, title, content, isTop, time, time, 1).key();
 			
 			if(null != tid){
+				
+				topicCountService.save(tid);
+				
 				// 更新节点下的帖子数
 				nodeService.updateCount(nid, Types.topics.toString(), +1);
 				
@@ -151,7 +159,6 @@ public class TopicServiceImpl implements TopicService {
 		Long tid = topic.getTid();
 		Long uid = topic.getUid();
 		Long nid = topic.getNid();
-		Long comments = topic.getComments();
 		
 		User user = userService.getUser(uid);
 		Node node = nodeService.getNode(nid);
@@ -162,9 +169,19 @@ public class TopicServiceImpl implements TopicService {
 		
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("tid", tid);
-		map.put("views", topic.getViews());
-		map.put("loves", topic.getLoves());
-		map.put("favorites", topic.getFavorites());
+		
+		TopicCount topicCount = topicCountService.getCount(tid);
+		Long views = 0L, loves = 0L, favorites = 0L, comments = 0L;
+		if(null != topicCount){
+			views = topicCount.getViews();
+			loves = topicCount.getLoves();
+			favorites = topicCount.getFavorites();
+			comments = topicCount.getComments();
+		}
+		
+		map.put("views", views);
+		map.put("loves", loves);
+		map.put("favorites", favorites);
 		map.put("comments", comments);
 		map.put("title", topic.getTitle());
 		map.put("is_essence", topic.getIs_essence());
@@ -193,35 +210,7 @@ public class TopicServiceImpl implements TopicService {
 		return map;
 	}
 
-	@Override
-	public boolean updateCount(Long tid, String type, long count, boolean updateTime) {
-		if(null != tid && StringKit.isNotBlank(type)){
-			try {
-				
-				StringBuffer upSql = new StringBuffer("update t_topic set %s = (%s + ?) ");
-				if(updateTime){
-					upSql.append(", update_time = " + DateKit.getCurrentUnixTime());
-				}
-				upSql.append(" where tid = ?");
-				AR.update(String.format(upSql.toString(), type, type), count, tid).executeUpdate();
-				
-				Topic topic = this.getTopic(tid);
-				if(null == topic) {
-					return false;
-				}
-				
-				if(!type.equals(Types.views.toString())){
-					// 刷新权重
-					this.updateWeight(tid, topic.getLoves(), topic.getFavorites(), topic.getComments(), topic.getSinks(), topic.getCreate_time());
-				}
-				
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		return false;
-	}
+	
 
 	/**
 	 * 评论帖子
@@ -237,7 +226,8 @@ public class TopicServiceImpl implements TopicService {
 			boolean flag = commentService.save(uid, to_uid, tid, content, ua);
 			if(flag){
 				
-				this.updateCount(tid, Types.comments.toString(), +1, true);
+				topicCountService.update(Types.comments.toString(), tid, 1);
+				
 				// 通知
 				if(!uid.equals(to_uid)){
 					noticeService.save(Types.comment.toString(), uid, to_uid, tid);
@@ -360,6 +350,15 @@ public class TopicServiceImpl implements TopicService {
 		}
 		tp.eq("status", 1).orderby("create_time desc").page(page, count);
 		return this.getPageList(tp);
+	}
+
+	@Override
+	public void essence(Long tid, Integer count) {
+		try {
+			AR.update("update t_topic set is_essence = ? where tid = ?", count, tid).executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

@@ -26,6 +26,7 @@ import com.javachina.service.FavoriteService;
 import com.javachina.service.NodeService;
 import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
+import com.javachina.service.TopicCountService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserlogService;
 
@@ -54,6 +55,9 @@ public class TopicController extends BaseController {
 	
 	@Inject
 	private UserlogService userlogService;
+	
+	@Inject
+	private TopicCountService typeCountService;
 	
 	/**
 	 * 发布帖子页面
@@ -256,7 +260,7 @@ public class TopicController extends BaseController {
 	 * 帖子详情页面
 	 */
 	@Route(value = "/topic/:tid", method = HttpMethod.GET)
-	public ModelAndView show_add_topic(@PathVariable("tid") Long tid, Request request, Response response){
+	public ModelAndView show_topic(@PathVariable("tid") Long tid, Request request, Response response){
 		
 		LoginUser user = SessionKit.getLoginUser();
 		
@@ -267,11 +271,10 @@ public class TopicController extends BaseController {
 			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
 		}
 		
-		putDetail(request, response, uid, tid);
+		this.putDetail(request, response, uid, tid);
 		
 		// 刷新浏览数
-		topicService.updateCount(tid, Types.views.toString(), +1, false);
-		
+		typeCountService.update(Types.views.toString(), tid, 1);
 		return this.getView("topic_detail");
 	}
 	
@@ -344,9 +347,11 @@ public class TopicController extends BaseController {
 			return;
 		}
 		
-		String ua = request.userAgent();
 		// 评论帖子
 		try {
+			
+			String ua = request.userAgent();
+			
 			boolean flag = topicService.comment(uid, topic.getUid(), tid, content, ua);
 			if(flag){
 				Constant.SYS_INFO = settingsService.getSystemInfo();
@@ -393,10 +398,8 @@ public class TopicController extends BaseController {
 		}
 		
 		try {
-			Integer count = topic.getIs_essence() == 1 ? -1 : 1;
-			boolean updateTime = count > 0;
-			topicService.updateCount(tid, Types.is_essence.toString(), count, updateTime);
-			
+			Integer count = topic.getIs_essence() == 1 ? 0 : 1;
+			topicService.essence(tid, count);
 			userlogService.save(user.getUid(), Actions.ESSENCE, tid+":" + count);
 			
 			this.success(response, tid);
