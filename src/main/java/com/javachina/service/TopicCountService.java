@@ -8,6 +8,6 @@ public interface TopicCountService {
 	
 	boolean update(String type, Long tid, int count);
 	
-	boolean save(Long tid);
+	boolean save(Long tid, Integer create_time);
 	
 }

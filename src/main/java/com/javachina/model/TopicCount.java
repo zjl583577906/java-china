@@ -13,7 +13,9 @@ public class TopicCount implements Serializable {
 	private Long views;
 	private Long loves;
 	private Long favorites;
+	private Long sinks;
 	private Long comments;
+	private Long create_time;
 	
 	public TopicCount() {
 	}
@@ -56,6 +58,22 @@ public class TopicCount implements Serializable {
 
 	public void setComments(Long comments) {
 		this.comments = comments;
+	}
+
+	public Long getSinks() {
+		return sinks;
+	}
+
+	public void setSinks(Long sinks) {
+		this.sinks = sinks;
+	}
+
+	public Long getCreate_time() {
+		return create_time;
+	}
+
+	public void setCreate_time(Long create_time) {
+		this.create_time = create_time;
 	}
 	
 }

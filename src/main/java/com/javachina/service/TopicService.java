@@ -27,6 +27,8 @@ public interface TopicService {
 	
 	boolean refreshWeight();
 	
+	boolean updateWeight(Long tid);
+	
 	boolean updateWeight(Long tid, Long loves, Long favorites, Long comment, Long sinks, Long create_time);
 	
 	Long getTopics(Long uid);

@@ -1,6 +1,5 @@
 package com.javachina.controller;
 
-
 import java.util.List;
 import java.util.Map;
 
@@ -25,8 +24,8 @@ import com.javachina.service.CommentService;
 import com.javachina.service.FavoriteService;
 import com.javachina.service.NodeService;
 import com.javachina.service.SettingsService;
-import com.javachina.service.TopicService;
 import com.javachina.service.TopicCountService;
+import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 import com.javachina.service.UserlogService;
 
@@ -37,6 +36,9 @@ public class TopicController extends BaseController {
 
 	@Inject
 	private TopicService topicService;
+	
+	@Inject
+	private TopicCountService topicCountService;
 	
 	@Inject
 	private NodeService nodeService;
@@ -402,6 +404,37 @@ public class TopicController extends BaseController {
 			topicService.essence(tid, count);
 			userlogService.save(user.getUid(), Actions.ESSENCE, tid+":" + count);
 			
+			this.success(response, tid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 帖子下沉
+	 */
+	@Route(value = "/sink", method = HttpMethod.POST)
+	public void sink(Request request, Response response){
+		
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			this.nosignin(response);
+			return;
+		}
+		
+		Long tid = request.queryAsLong("tid");
+		if(null == tid || tid == 0){
+			return;
+		}
+		
+		try {
+			boolean isFavorite = favoriteService.isFavorite(Types.sinks.toString(), user.getUid(), tid);
+			if(!isFavorite){
+				favoriteService.update(Types.sinks.toString(), user.getUid(), tid);
+				topicCountService.update(Types.sinks.toString(), tid, 1);
+				topicService.updateWeight(tid);
+				userlogService.save(user.getUid(), Actions.SINK, tid+"");
+			}
 			this.success(response, tid);
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -60,7 +60,6 @@ public class FavoriteServiceImpl implements FavoriteService {
 		try {
 			
 			int count = 0;
-			
 			boolean isFavorite = this.isFavorite(type, uid, event_id);
 			if(!isFavorite){
 				AR.update("insert into t_favorite(type, uid, event_id, create_time) values(?, ?, ?, ?)", 
@@ -74,17 +73,13 @@ public class FavoriteServiceImpl implements FavoriteService {
 			// 收藏帖子
 			if(type.equals(Types.topic.toString())){
 				topicCountService.update(Types.favorites.toString(), event_id, count);
-			}
-			
-			// 帖子下沉
-			if(type.equals(Types.sinks.toString())){
-//				typeCountService.update(Types.topic_sinks.toString(), event_id, count);
-//				topicService.updateCount(event_id, Types.topic_sinks.toString(), count, false);
+				topicService.updateWeight(event_id);
 			}
 			
 			// 帖子点赞
 			if(type.equals(Types.love.toString())){
 				topicCountService.update(Types.loves.toString(), event_id, count);
+				topicService.updateWeight(event_id);
 			}
 			
 			return count;

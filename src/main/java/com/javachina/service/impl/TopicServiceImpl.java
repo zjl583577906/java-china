@@ -24,8 +24,8 @@ import com.javachina.service.CommentService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.SettingsService;
-import com.javachina.service.TopicService;
 import com.javachina.service.TopicCountService;
+import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
 
 import blade.kit.CollectionKit;
@@ -114,7 +114,7 @@ public class TopicServiceImpl implements TopicService {
 			
 			if(null != tid){
 				
-				topicCountService.save(tid);
+				topicCountService.save(tid, time);
 				
 				// 更新节点下的帖子数
 				nodeService.updateCount(nid, Types.topics.toString(), +1);
@@ -227,6 +227,7 @@ public class TopicServiceImpl implements TopicService {
 			if(flag){
 				
 				topicCountService.update(Types.comments.toString(), tid, 1);
+				this.updateWeight(tid);
 				
 				// 通知
 				if(!uid.equals(to_uid)){
@@ -294,18 +295,10 @@ public class TopicServiceImpl implements TopicService {
 	
 	@Override
 	public boolean refreshWeight() {
-		List<Map<String, Object>> topics = AR.find("select tid, loves, favorites, comments, sinks, create_time from t_topic where status = 1").listmap();
+		List<Long> topics = AR.find("select tid from t_topic where status = 1").list(Long.class);
 		if(null != topics) {
-			for(Map<String, Object> topic : topics){
-				
-				Long tid = AR.getLong(topic.get("tid"));
-				Long loves = AR.getLong(topic.get("loves"));
-				Long favorites = AR.getLong(topic.get("favorites"));
-				Long comments = AR.getLong(topic.get("comments"));
-				Long sinks = AR.getLong(topic.get("sinks"));
-				Long create_time = AR.getLong(topic.get("create_time"));
-				
-				this.updateWeight(tid, loves, favorites, comments, sinks, create_time);
+			for(Long tid : topics){
+				this.updateWeight(tid);
 			}
 		}
 		return false;
@@ -359,6 +352,20 @@ public class TopicServiceImpl implements TopicService {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public boolean updateWeight(Long tid) {
+		if(null != tid){
+			TopicCount topicCount = topicCountService.getCount(tid);
+			Long loves = topicCount.getLoves();
+			Long favorites = topicCount.getFavorites();
+			Long comment = topicCount.getComments();
+			Long sinks = topicCount.getSinks();
+			Long create_time = topicCount.getCreate_time();
+			return this.updateWeight(tid, loves, favorites, comment, sinks, create_time);
+		}
+		return false;
 	}
 	
 }

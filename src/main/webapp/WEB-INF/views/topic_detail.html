@@ -22,8 +22,11 @@ var comment_members = [];
                     <small class="text-muted">
                         <span>by <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
                         <span>${fmtdate(topic.create_time)}</span>
-                        #if(null!=login_user && topic.uid == login_user.uid)
+                        #if(null!=login_user)
+                        &nbsp;&nbsp;&nbsp;<span><a href="javascript:void(0);" tid="${topic.tid}" class="sinks" alt="下沉" title="下沉"><i class="fa fa-sort-desc" aria-hidden="true"></i></a></span>
+                        #if(topic.uid == login_user.uid)
                         &nbsp;•&nbsp;&nbsp;<span><a href="${base_url('/topic/edit/') + topic.tid}">编辑</a></span>
+                        #end
                         #end
                     </small>
                     </p>

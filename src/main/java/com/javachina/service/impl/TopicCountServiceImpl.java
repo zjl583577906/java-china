@@ -32,12 +32,12 @@ public class TopicCountServiceImpl implements TopicCountService {
 	}
 	
 	@Override
-	public boolean save(Long tid) {
+	public boolean save(Long tid, Integer create_time) {
 		try {
 			if(null == tid || tid < 1){
 				return false;
 			}
-			AR.update("insert into t_topiccount(tid, views, loves, favorites, comments) values(?, ?, ?, ?, ?)", tid, 0, 0, 0, 0).executeUpdate();
+			AR.update("insert into t_topiccount(tid, views, loves, favorites, comments, sinks, create_time) values(?, ?, ?, ?, ?, ?, ?)", tid, 0, 0, 0, 0, 0, create_time).executeUpdate();
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -157,6 +157,23 @@ $('.topic-footer .heart').on('click', function(){
 	});
 });
 
+//帖子下沉
+$('.topic-detail-heading .sinks').on('click', function(){
+	var tid = $(this).attr("tid");
+	var _this = $(this);
+	$.post(BASE + '/sink', {tid : tid}, function(response){
+		if(response){
+			if(response.status == 200){
+				window.location.reload();	
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
 //帖子收藏
 $('.topic-footer .follow').on('click', function(){
 	var tid = $(this).attr("tid");

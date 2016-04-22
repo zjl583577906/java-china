@@ -50,8 +50,9 @@
 											<div class="comment-author h6 no-margin">
 												#if(topic.comments > 0)
 												<div class="comment-meta small">
-													<span class="badge bg-default">${topic.comments}</span>
+													<a href="${base_url('/topic/') + topic.tid + '#Reply' + topic.comments}" class="badge-comment">${topic.comments}</a>
 												</div>
+												<a href="${base_url('/topic/') + topic.tid + '#Reply' + topic.comments}">${topic.title}</a>
 												#end
 												<a href="${base_url('/topic/') + topic.tid}">${topic.title}</a>
 											</div>

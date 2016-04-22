@@ -26,9 +26,6 @@ public class Topic implements Serializable {
 	//帖子内容
 	private String content;
 	
-	//下沉数
-	private Long sinks;
-	
 	//是否置顶
 	private Integer is_top;
 	
@@ -120,7 +117,7 @@ public class Topic implements Serializable {
 	public void setStatus(Integer status) {
 		this.status = status;
 	}
-
+	
 	public Integer getIs_essence() {
 		return is_essence;
 	}
@@ -135,14 +132,6 @@ public class Topic implements Serializable {
 
 	public void setWeight(Double weight) {
 		this.weight = weight;
-	}
-
-	public Long getSinks() {
-		return sinks;
-	}
-
-	public void setSinks(Long sinks) {
-		this.sinks = sinks;
 	}
 	
 }
