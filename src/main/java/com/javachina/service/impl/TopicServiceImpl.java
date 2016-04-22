@@ -210,8 +210,10 @@ public class TopicServiceImpl implements TopicService {
 					return false;
 				}
 				
-				// 刷新权重
-				this.updateWeight(tid, topic.getLoves(), topic.getFavorites(), topic.getComments(), topic.getSinks(), topic.getCreate_time());
+				if(!type.equals(Types.views.toString())){
+					// 刷新权重
+					this.updateWeight(tid, topic.getLoves(), topic.getFavorites(), topic.getComments(), topic.getSinks(), topic.getCreate_time());
+				}
 				
 				return true;
 			} catch (Exception e) {
