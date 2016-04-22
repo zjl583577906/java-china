@@ -13,6 +13,7 @@ import com.javachina.Types;
 import com.javachina.model.Favorite;
 import com.javachina.model.Topic;
 import com.javachina.service.FavoriteService;
+import com.javachina.service.NodeService;
 import com.javachina.service.TopicCountService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
@@ -28,6 +29,9 @@ public class FavoriteServiceImpl implements FavoriteService {
 	
 	@Inject
 	private UserService userService;
+	
+	@Inject
+	private NodeService nodeService;
 	
 	@Inject
 	private TopicCountService topicCountService;
@@ -107,7 +111,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 	}
 
 	@Override
-	public Page<Map<String, Object>> getFavorites(Long uid, Integer page, Integer count) {
+	public Page<Map<String, Object>> getMyTopics(Long uid, Integer page, Integer count) {
 		if(null != uid){
 			if(null == page || page < 1){
 				page = 1;
@@ -179,6 +183,25 @@ public class FavoriteServiceImpl implements FavoriteService {
 					}
 				}
 				result.setResults(list);
+				return result;
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<Map<String, Object>> getMyNodes(Long uid) {
+		if(null != uid){
+			QueryParam queryParam = QueryParam.me();
+			queryParam.eq("type", Types.node.toString()).eq("uid", uid).orderby("id desc");
+			List<Favorite> favorites = AR.find(queryParam).list(Favorite.class);
+			if(null != favorites && favorites.size() > 0){
+				List<Map<String, Object>> result = new ArrayList<Map<String,Object>>(favorites.size());
+				for(Favorite favorite : favorites){
+					Long nid = favorite.getEvent_id();
+					Map<String, Object> node = nodeService.getNodeDetail(null, nid);
+					result.add(node);
+				}
 				return result;
 			}
 		}

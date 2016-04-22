@@ -454,10 +454,10 @@ public class UserController extends BaseController {
 	}
 	
 	/**
-	 * 我的收藏
+	 * 我收藏的帖子
 	 */
-	@Route(value = "/favorites")
-	public ModelAndView favorites(Request request, Response response){
+	@Route(value = "/my/topics")
+	public ModelAndView myTopics(Request request, Response response){
 		
 		LoginUser user = SessionKit.getLoginUser();
 		if(null == user){
@@ -467,16 +467,34 @@ public class UserController extends BaseController {
 		
 		Integer page = request.queryAsInt("p");
 		
-		Page<Map<String, Object>> favoritesPage = favoriteService.getFavorites(user.getUid(), page, 10);
+		Page<Map<String, Object>> favoritesPage = favoriteService.getMyTopics(user.getUid(), page, 10);
 		request.attribute("favoritesPage", favoritesPage);
 		
-		return this.getView("favorites");
+		return this.getView("my_topics");
+	}
+	
+	/**
+	 * 我收藏的节点
+	 */
+	@Route(value = "/my/nodes")
+	public ModelAndView myNodes(Request request, Response response){
+		
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.go("/");
+			return null;
+		}
+		
+		List<Map<String, Object>> nodes = favoriteService.getMyNodes(user.getUid());
+		request.attribute("nodes", nodes);
+		
+		return this.getView("my_nodes");
 	}
 	
 	/**
 	 * 我的关注
 	 */
-	@Route(value = "/following")
+	@Route(value = "/my/following")
 	public ModelAndView following(Request request, Response response){
 		
 		LoginUser user = SessionKit.getLoginUser();

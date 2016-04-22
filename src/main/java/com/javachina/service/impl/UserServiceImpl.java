@@ -253,8 +253,11 @@ public class UserServiceImpl implements UserService {
 				loginUser.setNick_name(userinfo.getNick_name());
 			}
 			
-			Long favorites = favoriteService.favorites(Types.topic.toString(), user.getUid());
-			loginUser.setFavorites(favorites);
+			Long my_topics = favoriteService.favorites(Types.topic.toString(), user.getUid());
+			Long my_nodes = favoriteService.favorites(Types.node.toString(), user.getUid());
+			
+			loginUser.setMy_topics(my_topics);
+			loginUser.setMy_nodes(my_nodes);
 			
 			Long following = favoriteService.favorites(Types.following.toString(), user.getUid());
 			loginUser.setFollowing(following);

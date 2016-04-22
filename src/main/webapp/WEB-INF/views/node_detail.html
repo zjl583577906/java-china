@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-9">
         	<div class="panel panel-default">
-        		<div class="panel-heading" style="height: 100px;">
+        		<div class="panel-heading node-head" style="height: 100px;">
 					<div>
 						#if(null != node.pic && node.pic != '')
 						<div class="pull-left mr10">
@@ -19,6 +19,12 @@
 					<div class="pull-right text-right mr10">
                 		<span>主题总数 ${node.topics}</span>
                 		#if(null != login_user)
+                		&nbsp;&nbsp;•&nbsp;
+                		#if(is_favorite)
+                		<a href="javascript:void(0);" nid="${node.nid}" class="favorite"><span>取消收藏</span></a>
+                		#else
+                		<a href="javascript:void(0);" nid="${node.nid}" class="favorite"><span>加入收藏</span></a>
+                		#end
 						<p class="mt20">
 							<a href="${base_url('/topic/add?pid=') + node.nid}" class="btn btn-primary btn-sm">创建新主题</a>
 						</p>

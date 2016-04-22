@@ -230,6 +230,23 @@ $('.profile .following').on('click', function(){
 	});
 });
 
+//节点收藏
+$('.node-head .favorite').on('click', function(){
+	var nid = $(this).attr("nid");
+	var _this = $(this);
+	$.post(BASE + '/favorite', {type:'node', event_id : nid}, function(response){
+		if(response){
+			if(response.status == 200){
+				window.location.reload();	
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
 var info_data = {};
 $("#info_form :input").change(function (){
 	var key = $(this).attr('name');

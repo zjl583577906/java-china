@@ -18,12 +18,14 @@ import com.blade.web.http.Request;
 import com.blade.web.http.Response;
 import com.blade.web.multipart.FileItem;
 import com.javachina.Constant;
+import com.javachina.Types;
 import com.javachina.kit.FamousDay;
 import com.javachina.kit.FamousKit;
 import com.javachina.kit.SessionKit;
 import com.javachina.kit.Utils;
 import com.javachina.model.LoginUser;
 import com.javachina.model.Node;
+import com.javachina.service.FavoriteService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.TopicService;
@@ -45,6 +47,9 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private NoticeService noticeService;
+	
+	@Inject
+	private FavoriteService favoriteService;
 	
 	/**
 	 * 首页热门
@@ -151,17 +156,22 @@ public class IndexController extends BaseController {
 			Request request, Response response){
 		
 		LoginUser loginUser = SessionKit.getLoginUser();
-		if(null == loginUser){
-			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
-		}
-		
 		QueryParam np = QueryParam.me();
 		np.eq("is_del", 0).eq("slug", slug);
 		Node node = nodeService.getNode(np);
 		if(null == node){
 			// 不存在的节点
-			response.text("not found node.");
+//			response.text("not found node.");
+			response.go("/");
 			return null;
+		}
+		
+		if(null == loginUser){
+			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
+		} else {
+			// 查询是否收藏
+			boolean is_favorite = favoriteService.isFavorite(Types.node.toString(), loginUser.getUid(), node.getNid());
+			request.attribute("is_favorite", is_favorite);
 		}
 		
 		Integer page = request.queryAsInt("page");
