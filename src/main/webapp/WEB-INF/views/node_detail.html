@@ -17,7 +17,7 @@
 						</div>
 					</div>
 					<div class="pull-right text-right mr10">
-                		<span>主题总数 ${node.topics}</span>
+                		<span>帖子总数 ${node.topics}</span>
                 		#if(null != login_user)
                 		&nbsp;&nbsp;•&nbsp;
                 		#if(is_favorite)
@@ -26,7 +26,7 @@
                 		<a href="javascript:void(0);" nid="${node.nid}" class="favorite"><span>加入收藏</span></a>
                 		#end
 						<p class="mt20">
-							<a href="${base_url('/topic/add?pid=') + node.nid}" class="btn btn-primary btn-sm">创建新主题</a>
+							<a href="${base_url('/topic/add?pid=') + node.nid}" class="btn btn-primary btn-sm">发布新帖子</a>
 						</p>
 						#end
                 	</div>

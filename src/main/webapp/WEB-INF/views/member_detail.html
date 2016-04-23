@@ -65,7 +65,7 @@
             
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <span>${profile.username} 最近创建的主题</span>
+                    <span>${profile.username} 最近创建的帖子</span>
                 </div>
                 <div class="panel-body essence">
                 	#for(topic : topicPage.results)
@@ -90,7 +90,7 @@
 					#for(comment : commentPage.results)
 		        	<div class="panel panel-default">
 					  <div class="panel-body">
-					  	<div>${timespan(comment.reply_time)} 回复了 ${comment.reply_name} 创建的主题 <a href="${base_url('/topic/') + comment.tid}">${comment.title}</a></div>
+					  	<div>${timespan(comment.reply_time)} 回复了 ${comment.reply_name} 创建的帖子 <a href="${base_url('/topic/') + comment.tid}">${comment.title}</a></div>
 					  	<p>${comment.content}</p>
 					  </div>
 					</div>
