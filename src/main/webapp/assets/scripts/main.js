@@ -90,6 +90,11 @@ function emoji(content){
 	return content;
 }
 
+function change_captcha(){
+	var timestamp = (new Date()).valueOf();  
+	$('#captcha').attr('src', BASE + '/captcha?t=' + timestamp);
+	return false;
+}
 	
 //预览帖子
 $('#topic-add .preview').on('click', function(){
