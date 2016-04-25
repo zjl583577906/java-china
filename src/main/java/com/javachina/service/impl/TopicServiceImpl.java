@@ -116,6 +116,8 @@ public class TopicServiceImpl implements TopicService {
 				
 				topicCountService.save(tid, time);
 				
+				this.updateWeight(tid);
+				
 				// 更新节点下的帖子数
 				nodeService.updateCount(nid, Types.topics.toString(), +1);
 				
