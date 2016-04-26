@@ -75,6 +75,9 @@ public class App extends Bootstrap {
 	public void contextInitialized(Blade blade) {
 		settingsService.refreshCount();
 		Constant.SYS_INFO = settingsService.getSystemInfo();
+		Constant.VIEW_CONTEXT.set("base", BladeWebContext.servletContext().getContextPath());
+		Constant.VIEW_CONTEXT.set("version", Constant.APP_VERSION);
+		Constant.VIEW_CONTEXT.set("cdn", Constant.CDN_URL);
 		Constant.VIEW_CONTEXT.set(Map.class, "sys_info", Constant.SYS_INFO);
 		Constant.VIEW_CONTEXT.set(String.class, "site_url", Constant.SITE_URL);
 	}

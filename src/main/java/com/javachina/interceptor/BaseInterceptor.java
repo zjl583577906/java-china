@@ -29,10 +29,6 @@ public class BaseInterceptor implements Interceptor {
 		
 		LOGGE.info("用户访问地址 >>> " + request.raw().getRequestURI() + ", 来路地址  >>> " + Utils.getIpAddr(request));
 		
-		request.attribute("base", request.contextPath());
-		request.attribute("version", Constant.APP_VERSION);
-		request.attribute("cdn", Constant.CDN_URL);
-		
 		LoginUser user = SessionKit.getLoginUser();
 		
 		if(null == user){
