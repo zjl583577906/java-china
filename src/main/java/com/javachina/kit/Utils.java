@@ -22,8 +22,16 @@ import com.javachina.ext.markdown.Processor;
 
 import blade.kit.StringKit;
 
+/**
+ * 工具类
+ */
 public class Utils {
 
+	/**
+	 * 获取ip地址
+	 * @param request
+	 * @return
+	 */
 	public static String getIpAddr(Request request) {
 		if (null == request) {
 			return "0.0.0.0";
@@ -41,14 +49,17 @@ public class Utils {
 		return ip;
 	}
 	
+	/**
+	 * 获取@的用户列表
+	 * @param str
+	 * @return
+	 */
 	public static Set<String> getAtUsers(String str){
 		Set<String> users = new HashSet<String>();
 		if(StringKit.isNotBlank(str)){
 			Pattern pattern= Pattern.compile("\\@([a-zA-Z_0-9-]+)\\s");
 			Matcher matcher = pattern.matcher(str);
 			while(matcher.find()){
-//				System.out.println(matcher.group(0));
-//				System.out.println(matcher.group(1));
 				users.add(matcher.group(1));
 			}
 		}
@@ -60,12 +71,28 @@ public class Utils {
 		return QiniuKit.getUrl(avatar + '-' + imageTypes.toString());
 	}
 	
+	/**
+	 * 判断用户是否可以注册
+	 * @param user_name
+	 * @return
+	 */
 	public static boolean isSignup(String user_name){
 		if(StringKit.isNotBlank(user_name)){
 			user_name = user_name.toLowerCase();
 			if(user_name.indexOf("admin") != -1 ||
 					user_name.indexOf("test") != -1 ||
 					user_name.indexOf("support") != -1){
+				return false;
+			}
+			return true;
+		}
+		return false;
+	}
+	
+	public static boolean isLegalName(String str){
+		if(StringKit.isNotBlank(str)){
+			Pattern pattern = Pattern.compile("^[a-zA-Z_0-9]{4,16}$");
+			if(!pattern.matcher(str).find()){
 				return false;
 			}
 			return true;

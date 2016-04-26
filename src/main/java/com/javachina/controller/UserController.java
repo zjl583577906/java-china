@@ -208,7 +208,7 @@ public class UserController extends BaseController {
 			return this.getView("signup");
 		}
 		
-		if(!PatternKit.isStudentNum(login_name)){
+		if(!Utils.isLegalName(login_name)){
 			request.attribute(this.ERROR, "请输入只包含字母／数字／下划线的用户名");
 			return this.getView("signup");
 		}
