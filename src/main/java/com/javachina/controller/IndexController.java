@@ -1,6 +1,7 @@
 package com.javachina.controller;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,9 @@ import com.javachina.service.FavoriteService;
 import com.javachina.service.NodeService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.TopicService;
+import com.redfin.sitemapgenerator.ChangeFreq;
+import com.redfin.sitemapgenerator.WebSitemapGenerator;
+import com.redfin.sitemapgenerator.WebSitemapUrl;
 
 import blade.kit.DateKit;
 import blade.kit.FileKit;
@@ -269,6 +273,34 @@ public class IndexController extends BaseController {
 	@Route(value = "/donate", method = HttpMethod.GET)
 	public ModelAndView donate(Request request, Response response){
 		return this.getView("donate");
+	}
+	
+	/**
+	 * sitemap页面
+	 */
+	@Route(value = "/sitemap.xml", method = HttpMethod.GET)
+	public void sitemap(Request request, Response response){
+		try {
+			WebSitemapGenerator wsg = new WebSitemapGenerator(Constant.SITE_URL);
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL).lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.ALWAYS).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/markdown").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/essence").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/signup").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/signin").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/faq").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/about").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			wsg.addUrl(new WebSitemapUrl.Options(Constant.SITE_URL + "/donate").lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.MONTHLY).build());
+			
+			List<Long> tids = topicService.topicIds();
+			for(Long tid : tids){
+				WebSitemapUrl url = new WebSitemapUrl.Options(Constant.SITE_URL + "/topic/" + tid).lastMod(new Date()).priority(0.8).changeFreq(ChangeFreq.DAILY).build();
+				wsg.addUrl(url);
+			}
+			
+			response.xml(wsg.writeAsStrings().get(0));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }

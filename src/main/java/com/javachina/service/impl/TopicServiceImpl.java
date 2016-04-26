@@ -377,5 +377,10 @@ public class TopicServiceImpl implements TopicService {
 		}
 		return false;
 	}
+
+	@Override
+	public List<Long> topicIds() {
+		return AR.find("select tid from t_topic where status = 1").list(Long.class);
+	}
 	
 }

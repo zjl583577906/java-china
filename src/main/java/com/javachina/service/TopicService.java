@@ -11,6 +11,8 @@ public interface TopicService {
 	
 	Topic getTopic(Long tid);
 	
+	List<Long> topicIds();
+	
 	Map<String, Object> getTopicMap(Topic topic, boolean isDetail);
 	
 	List<Map<String, Object>> getTopicList(QueryParam queryParam);
