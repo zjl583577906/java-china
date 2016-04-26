@@ -20,7 +20,7 @@ var comment_members = [];
                     <h1 class="panel-title">$!{topic.title}</h1>
                     <p class="mt5">
                     <small class="text-muted">
-                        <span>by <a href="${base_url('member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
+                        <span>by <a href="${base_url('/member/')}${topic.user_name}">${topic.user_name}</a></span>&nbsp;•&nbsp;
                         <span>${fmtdate(topic.create_time)}</span>
                         #if(null!=login_user)
                         &nbsp;&nbsp;&nbsp;<span><a href="javascript:void(0);" tid="${topic.tid}" class="sinks" alt="下沉" title="下沉"><i class="fa fa-sort-desc" aria-hidden="true"></i></a></span>
@@ -78,7 +78,7 @@ var comment_members = [];
                 <div class="panel-body">
                     <ul class="media-list comment-list">
                     	#for(comment : commentPage.results)
-                    	<li class="media" id="Reply${comment.cid}">
+                    	<li class="media">
                             <a href="javascript:void(0);" alt="${comment.reply_name}" class="pull-right text-muted at-user">
                             	<i class="fa fa-mail-forward"></i> #${for.index}
                             </a>
