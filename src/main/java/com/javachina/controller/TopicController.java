@@ -273,20 +273,20 @@ public class TopicController extends BaseController {
 			SessionKit.setCookie(response, Constant.JC_REFERRER_COOKIE, request.url());
 		}
 		
-		this.putDetail(request, response, uid, tid);
+		Topic topic = topicService.getTopic(tid);
+		if(null == topic){
+			response.go("/");
+			return null;
+		}
+		
+		this.putDetail(request, response, uid, topic);
 		
 		// 刷新浏览数
 		typeCountService.update(Types.views.toString(), tid, 1);
 		return this.getView("topic_detail");
 	}
 	
-	private void putDetail(Request request, Response response, Long uid, Long tid){
-		
-		Topic topic = topicService.getTopic(tid);
-		if(null == topic){
-			response.go("/");
-			return;
-		}
+	private void putDetail(Request request, Response response, Long uid, Topic topic){
 		
 		Integer page = request.queryAsInt("p");
 		if(null == page || page < 1){
@@ -298,15 +298,15 @@ public class TopicController extends BaseController {
 		request.attribute("topic", topicMap);
 		
 		// 是否收藏
-		boolean is_favorite = favoriteService.isFavorite(Types.topic.toString(), uid, tid);
+		boolean is_favorite = favoriteService.isFavorite(Types.topic.toString(), uid, topic.getTid());
 		request.attribute("is_favorite", is_favorite);
 		
 		// 是否点赞
-		boolean is_love = favoriteService.isFavorite(Types.love.toString(), uid, tid);
+		boolean is_love = favoriteService.isFavorite(Types.love.toString(), uid, topic.getTid());
 		request.attribute("is_love", is_love);
 		
 		QueryParam cp = QueryParam.me();
-		cp.eq("tid", tid).orderby("cid asc").page(page, 20);
+		cp.eq("tid", topic.getTid()).orderby("cid asc").page(page, 20);
 		Page<Map<String, Object>> commentPage = commentService.getPageListMap(cp);
 		request.attribute("commentPage", commentPage);
 	}
