@@ -2,10 +2,6 @@
 <link rel="stylesheet" href="${base}/assets/lib/highlight/styles/default.css" />
 <link rel="stylesheet" href="${base}/assets/lib/highlight/styles/github.css" />
 <script src="${base}/assets/lib/highlight/highlight.pack.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-<script>
-var comment_members = [];
-</script>
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -77,6 +73,9 @@ var comment_members = [];
                 </div>
                 <div class="panel-body">
                     <ul class="media-list comment-list">
+                    	<script>
+						var comment_members = [];
+						</script>
                     	#for(comment : commentPage.results)
                     	<li class="media">
                             <a href="javascript:void(0);" alt="${comment.reply_name}" class="pull-right text-muted at-user">
@@ -141,6 +140,7 @@ var comment_members = [];
         #include("./common/sidebar.html")
     </div>
 </div>
+<script>hljs.initHighlightingOnLoad();</script>
 #include("./common/footer.html")
 </body>
 </html>

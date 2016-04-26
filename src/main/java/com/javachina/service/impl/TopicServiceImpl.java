@@ -147,7 +147,15 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public boolean delete(Long tid) {
 		if(null != tid){
+			Topic topic = this.getTopic(tid);
+			if(null == topic){
+				return false;
+			}
 			AR.update("update t_topic set status = 2 where tid = ?", tid).executeUpdate(true);
+			// 更新节点下的帖子数
+			nodeService.updateCount(topic.getNid(), Types.topics.toString(), +1);
+			// 更新总贴数
+			settingsService.updateCount(Types.topic_count.toString(), +1);
 			return true;
 		}
 		return false;

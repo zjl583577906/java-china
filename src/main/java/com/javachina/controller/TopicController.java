@@ -442,6 +442,31 @@ public class TopicController extends BaseController {
 	}
 	
 	/**
+	 * 删除帖子
+	 */
+	@Route(value = "/delete", method = HttpMethod.POST)
+	public void delete(Request request, Response response){
+		
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			this.nosignin(response);
+			return;
+		}
+		
+		Long tid = request.queryAsLong("tid");
+		if(null == tid || tid == 0 || user.getRole_id() > 2){
+			return;
+		}
+		
+		try {
+			topicService.delete(tid);
+			this.success(response, tid);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * 精华帖页面
 	 */
 	@Route(value = "/essence", method = HttpMethod.GET)

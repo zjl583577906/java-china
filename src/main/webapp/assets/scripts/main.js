@@ -213,6 +213,23 @@ $('.topic-footer .essence').on('click', function(){
 	});
 });
 
+//管理员删帖
+$('.topic-footer .deltopic').on('click', function(){
+	var tid = $(this).attr("tid");
+	var _this = $(this);
+	$.post(BASE + '/essence', {tid : tid}, function(response){
+		if(response){
+			if(response.status == 200){
+				window.location.reload();	
+			} else if(response.status == 401){
+				go_signin();
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
 //分享到微博
 $('.topic-footer .share-weibo').on('click', function(){
 	var title = $('.topic-detail-heading .panel-title').text();
