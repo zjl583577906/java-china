@@ -129,7 +129,7 @@ public class TopicServiceImpl implements TopicService {
 					Set<String> atUsers = Utils.getAtUsers(content);
 					if(CollectionKit.isNotEmpty(atUsers)){
 						for(String user_name : atUsers){
-							User user = userService.getUser(user_name);
+							User user = userService.getUserByLoginName(user_name);
 							if(null != user && !user.getUid().equals(uid)){
 								noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
 							}
@@ -247,7 +247,7 @@ public class TopicServiceImpl implements TopicService {
 					Set<String> atUsers = Utils.getAtUsers(content);
 					if(CollectionKit.isNotEmpty(atUsers)){
 						for(String user_name : atUsers){
-							User user = userService.getUser(user_name);
+							User user = userService.getUserByLoginName(user_name);
 							if(null != user && !user.getUid().equals(uid)){
 								noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
 							}

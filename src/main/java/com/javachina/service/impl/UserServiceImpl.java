@@ -82,6 +82,17 @@ public class UserServiceImpl implements UserService {
 		if(StringKit.isBlank(loginName) || StringKit.isBlank(passWord) || StringKit.isBlank(email)){
 			return null;
 		}
+		
+		User user = this.getUserByLoginName(loginName);
+		if(null != user){
+			return user;
+		}
+		
+		user = this.getUserByEmail(email);
+		if(null != user){
+			return user;
+		}
+		
 		int time = DateKit.getCurrentUnixTime();
 		String pwd = EncrypKit.md5(loginName + passWord);
 		try {
@@ -91,7 +102,7 @@ public class UserServiceImpl implements UserService {
 			Long uid = (Long) AR.update("insert into t_user(login_name, pass_word, email, avatar, status, create_time, update_time) values(?, ?, ?, ?, ?, ?, ?)",
 					loginName, pwd, email, avatar, 0, time, time).key();
 			
-			User user = this.getUser(uid);
+			user = this.getUser(uid);
 			
 			// 发送邮件通知
 			activecodeService.save(user, Types.signup.toString());
@@ -280,9 +291,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public User getUser(String user_name) {
+	public User getUserByLoginName(String user_name) {
 		if(StringKit.isNotBlank(user_name)){
 			return AR.find("select * from t_user where login_name = ? and status = 1", user_name).first(User.class);
+		}
+		return null;
+	}
+	
+	public User getUserByEmail(String email) {
+		if(StringKit.isNotBlank(email)){
+			return AR.find("select * from t_user where email = ? and status = 1", email).first(User.class);
 		}
 		return null;
 	}
