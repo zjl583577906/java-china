@@ -28,7 +28,7 @@ $(function(){
 	
     $inputor.atwho(emoji_config);
     $inputor.caret('pos', 47);
-    $inputor.focus().atwho('run');
+    $inputor.atwho('run');
 });
 function unique(arr){
 	var uniqueArr = [];

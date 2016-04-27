@@ -2,6 +2,9 @@
 <link rel="stylesheet" href="${base}/assets/lib/highlight/styles/default.css" />
 <link rel="stylesheet" href="${base}/assets/lib/highlight/styles/github.css" />
 <script src="${base}/assets/lib/highlight/highlight.pack.js"></script>
+<script>
+var comment_members = [];
+</script>
 <div class="container">
     <div class="row">
         <div class="col-md-9">
@@ -73,11 +76,8 @@
                 </div>
                 <div class="panel-body">
                     <ul class="media-list comment-list">
-                    	<script>
-						var comment_members = [];
-						</script>
                     	#for(comment : commentPage.results)
-                    	<li class="media">
+                    	<li class="media" id="Reply${for.index}">
                             <a href="javascript:void(0);" alt="${comment.reply_name}" class="pull-right text-muted at-user">
                             	<i class="fa fa-mail-forward"></i> #${for.index}
                             </a>
@@ -122,7 +122,7 @@
                         <input type="hidden" name="tuid" value="${topic.uid}">
                         <div class="mb10">
 	                        <textarea id="content" class="inputor form-control textarea-control-comment" 
-	                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required"></textarea>
+	                        	name="content" rows="4" placeholder="对楼主说点儿什么吧.." required="required" ></textarea>
                         </div>
                         <div class="pull-right">
                         	<button type="submit" class="btn btn-success ladda-button" data-style="zoom-out">回复</button>

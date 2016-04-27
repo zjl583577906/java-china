@@ -96,7 +96,6 @@ public class NoticeServiceImpl implements NoticeService {
 			return null;
 		}
 		map.put("id", notice.getId());
-		map.put("tid", notice.getEvent_id());
 		map.put("type", notice.getType());
 		map.put("create_time", notice.getCreate_time());
 		map.put("user_name", user.getLogin_name());
@@ -110,6 +109,7 @@ public class NoticeServiceImpl implements NoticeService {
 					String content = Utils.markdown2html(comment.getContent());
 					map.put("title", title);
 					map.put("content", content);
+					map.put("tid", topic.getTid());
 				}
 			}
 		}
@@ -122,6 +122,7 @@ public class NoticeServiceImpl implements NoticeService {
 				
 				map.put("title", title);
 				map.put("content", content);
+				map.put("tid", topic.getTid());
 			}
 		}
 		
