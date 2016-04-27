@@ -27,6 +27,7 @@ public class BaseInterceptor implements Interceptor {
 	@Override
 	public boolean before(Request request, Response response) {
 		
+		LOGGE.info("UA >>> " + request.userAgent());
 		LOGGE.info("用户访问地址 >>> " + request.raw().getRequestURI() + ", 来路地址  >>> " + Utils.getIpAddr(request));
 		
 		LoginUser user = SessionKit.getLoginUser();
