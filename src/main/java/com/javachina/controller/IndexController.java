@@ -276,6 +276,14 @@ public class IndexController extends BaseController {
 	}
 	
 	/**
+	 * robots.txt
+	 */
+	@Route(value = "/robots.txt", method = HttpMethod.GET)
+	public ModelAndView robots(Request request, Response response){
+		return this.getView("robots");
+	}
+	
+	/**
 	 * sitemap页面
 	 */
 	@Route(value = "/sitemap.xml", method = HttpMethod.GET)
