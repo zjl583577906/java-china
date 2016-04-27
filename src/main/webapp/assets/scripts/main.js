@@ -132,27 +132,23 @@ $('#topic-edit .preview').on('click', function(){
 
 //帖子点赞
 $('.topic-footer .heart').on('click', function(){
-	var A = $(this).attr("id");
-	var B=A.split("like");
-	var messageID=B[1];
-	var C=parseInt($("#likeCount").text());
-	$(this).css("background-position","")
-	var D = $("#likeCount");
-    
 	var _this = $(this);
+	var A = $(this).attr("rel");
+	var C=parseInt($("#likeCount").text());
+	var D = $("#likeCount");
+	$(this).css("background-position","")
+	if(A == 'like'){
+		D.text(C+1);
+		_this.addClass("heartAnimation").attr("rel","unlike");
+	} else{
+		D.text(C-1);
+		_this.removeClass("heartAnimation").attr("rel","like");
+		_this.css("background-position","left");
+	}
 	var tid = $(this).attr('tid');
 	$.post(BASE + '/favorite', {type:'love',event_id : tid}, function(response){
 		if(response){
 			if(response.status == 200){
-				if(response.data == 1){
-					D.text(C+1);
-					_this.addClass("heartAnimation").attr("rel","unlike");
-				}
-				if(response.data == -1){
-					D.text(C-1);
-					_this.removeClass("heartAnimation").attr("rel","like");
-					_this.css("background-position","left");
-				}
 			} else if(response.status == 401){
 				go_signin();
 			} else{
