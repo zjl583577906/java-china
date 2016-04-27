@@ -14,8 +14,6 @@ public class Notice implements Serializable {
 	
 	private Long id;
 	
-	private Long uid;
-	
 	private Long to_uid;
 	
 	private Long event_id;
@@ -76,12 +74,4 @@ public class Notice implements Serializable {
 		this.create_time = create_time;
 	}
 
-	public Long getUid() {
-		return uid;
-	}
-
-	public void setUid(Long uid) {
-		this.uid = uid;
-	}
-	
 }

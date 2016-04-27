@@ -162,6 +162,21 @@ public class UserController extends BaseController {
 	}
 	
 	/**
+	 * 检查是否有通知
+	 */
+	@Route(value = "/check_notice", method = HttpMethod.GET)
+	public void check_notice(Request request, Response response){
+		LoginUser user = SessionKit.getLoginUser();
+		if(null == user){
+			response.text("0");
+			return;
+		}
+		
+		Long notices = noticeService.getNotices(user.getUid());
+		response.text(notices.toString());
+	}
+	
+	/**
 	 * 通知列表
 	 */
 	@Route(value = "/notices", method = HttpMethod.GET)
@@ -172,11 +187,13 @@ public class UserController extends BaseController {
 			return null;
 		}
 		
-		List<Map<String, Object>> notices = noticeService.getNoticeList(user.getUid());
-		request.attribute("notices", notices);
+		Integer page = request.queryAsInt("p");
+		
+		Page<Map<String, Object>> noticePage = noticeService.getNoticePage(user.getUid(), page, 10);
+		request.attribute("noticePage", noticePage);
 		
 		// 清空我的通知
-		if(null != notices && notices.size() > 0){
+		if(null != noticePage && noticePage.getResults().size() > 0){
 			noticeService.read(user.getUid());
 		}
 		

@@ -143,13 +143,6 @@ public class IndexController extends BaseController {
 		// 每日格言
 		FamousDay famousDay = FamousKit.getTodayFamous();
 		Constant.VIEW_CONTEXT.set("famousDay", famousDay);
-		
-		// 未读提醒
-		LoginUser loginUser = SessionKit.getLoginUser();
-		if(null != loginUser){
-			Long notices = noticeService.getNotices(loginUser.getUid());
-			Constant.VIEW_CONTEXT.set("my_notices", notices);
-		}
 	}
 	
 	/**

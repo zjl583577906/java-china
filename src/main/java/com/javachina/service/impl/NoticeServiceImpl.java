@@ -8,10 +8,16 @@ import java.util.Map;
 import com.blade.ioc.annotation.Inject;
 import com.blade.ioc.annotation.Service;
 import com.blade.jdbc.AR;
+import com.blade.jdbc.Page;
+import com.blade.jdbc.QueryParam;
+import com.javachina.Types;
 import com.javachina.kit.DateKit;
+import com.javachina.kit.Utils;
+import com.javachina.model.Comment;
 import com.javachina.model.Notice;
 import com.javachina.model.Topic;
 import com.javachina.model.User;
+import com.javachina.service.CommentService;
 import com.javachina.service.NoticeService;
 import com.javachina.service.TopicService;
 import com.javachina.service.UserService;
@@ -27,32 +33,56 @@ public class NoticeServiceImpl implements NoticeService {
 	@Inject
 	private UserService userService;
 	
+	@Inject
+	private CommentService commentService;
+	
 	@Override
-	public boolean save(String type, Long uid, Long to_uid, Long event_id) {
-		if(StringKit.isNotBlank(type) && null != uid && null != to_uid && null != event_id){
-			AR.update("insert into t_notice(type, uid, to_uid, event_id, create_time) values(?, ?, ?, ?, ?)", type,
-					uid, to_uid, event_id, DateKit.getCurrentUnixTime()).executeUpdate();
+	public boolean save(String type, Long to_uid, Long event_id) {
+		if(StringKit.isNotBlank(type) && null != to_uid && null != event_id){
+			AR.update("insert into t_notice(type, to_uid, event_id, create_time) values(?, ?, ?, ?)", type,
+					to_uid, event_id, DateKit.getCurrentUnixTime()).executeUpdate();
 			return true;
 		}
 		return false;
 	}
 	
 	@Override
-	public List<Map<String, Object>> getNoticeList(Long uid) {
+	public Page<Map<String, Object>> getNoticePage(Long uid, Integer page, Integer count) {
 		if(null != uid){
-			List<Notice> notices = AR.find("select * from t_notice where is_read = 0 and to_uid = ?", uid).list(Notice.class);
-			if(null != notices && notices.size() > 0){
-				List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
-				for(Notice notice : notices){
-					Map<String, Object> map = this.getNotice(notice);
-					if(null != map && !map.isEmpty()){
-						result.add(map);
-					}
-				}
-				return result;
+			if(null == page || page < 1){
+				page = 1;
 			}
+			if(null == count || count < 1){
+				count = 10;
+			}
+			QueryParam queryParam = QueryParam.me();
+			queryParam.eq("to_uid", uid).orderby("id desc").page(page, count);
+			Page<Notice> noticePage = AR.find(queryParam).page(Notice.class);
+			return this.getNoticePageMap(noticePage);
 		}
 		return null;
+	}
+	
+	private Page<Map<String, Object>> getNoticePageMap(Page<Notice> noticePage){
+		long totalCount = noticePage.getTotalCount();
+		int page = noticePage.getPage();
+		int pageSize = noticePage.getPageSize();
+		Page<Map<String, Object>> pageResult = new Page<Map<String,Object>>(totalCount, page, pageSize);
+		
+		List<Notice> notices = noticePage.getResults();
+		
+		List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
+		if(null != notices){
+			for(Notice notice : notices){
+				Map<String, Object> map = this.getNotice(notice);
+				if(null != map && !map.isEmpty()){
+					result.add(map);
+				}
+			}
+		}
+		pageResult.setResults(result);
+		
+		return pageResult;
 	}
 	
 	private Map<String, Object> getNotice(Notice notice){
@@ -60,17 +90,41 @@ public class NoticeServiceImpl implements NoticeService {
 			return null;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		Long uid = notice.getUid();
+		Long uid = notice.getTo_uid();
 		User user = userService.getUser(uid);
-		Topic topic = topicService.getTopic(notice.getEvent_id());
-		if(null == topic || null == user){
+		if(null == user){
 			return null;
 		}
+		map.put("id", notice.getId());
 		map.put("tid", notice.getEvent_id());
 		map.put("type", notice.getType());
-		String title = topic.getTitle();
-		map.put("title", title);
+		map.put("create_time", notice.getCreate_time());
 		map.put("user_name", user.getLogin_name());
+		
+		if(notice.getType().equals(Types.comment_at.toString()) || notice.getType().equals(Types.comment.toString())){
+			Comment comment = commentService.getComment(notice.getEvent_id());
+			if(null != comment){
+				Topic topic = topicService.getTopic(comment.getTid());
+				if(null != topic){
+					String title = topic.getTitle();
+					String content = Utils.markdown2html(comment.getContent());
+					map.put("title", title);
+					map.put("content", content);
+				}
+			}
+		}
+		
+		if(notice.getType().equals(Types.topic_at.toString())){
+			Topic topic = topicService.getTopic(notice.getEvent_id());
+			if(null != topic){
+				String title = topic.getTitle();
+				String content = Utils.markdown2html(topic.getContent());
+				
+				map.put("title", title);
+				map.put("content", content);
+			}
+		}
+		
 		return map;
 	}
 

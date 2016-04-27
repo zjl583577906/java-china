@@ -95,7 +95,7 @@ function change_captcha(){
 	$('#captcha').attr('src', BASE + '/captcha?t=' + timestamp);
 	return false;
 }
-	
+
 //预览帖子
 $('#topic-add .preview').on('click', function(){
 	var content = $("#topic-add #content").val();

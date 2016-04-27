@@ -106,15 +106,15 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public boolean save(Long uid, Long toUid, Long tid, String content, String ua) {
+	public Long save(Long uid, Long toUid, Long tid, String content, String ua) {
 		try {
-			AR.update("insert into t_comment(uid, to_uid, tid, content, device, create_time) values(?, ?, ?, ?, ?, ?)",
-					uid, toUid, tid, content, ua, DateKit.getCurrentUnixTime()).executeUpdate();
-			return true;
+			Long cid = (Long) AR.update("insert into t_comment(uid, to_uid, tid, content, device, create_time) values(?, ?, ?, ?, ?, ?)",
+					uid, toUid, tid, content, ua, DateKit.getCurrentUnixTime()).key();
+			return cid;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return false;
+		return null;
 	}
 	
 	@Override

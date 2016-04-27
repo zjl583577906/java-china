@@ -131,7 +131,7 @@ public class TopicServiceImpl implements TopicService {
 						for(String user_name : atUsers){
 							User user = userService.getUserByLoginName(user_name);
 							if(null != user && !user.getUid().equals(uid)){
-								noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+								noticeService.save(Types.topic_at.toString(), user.getUid(), tid);
 							}
 						}
 					}
@@ -233,15 +233,15 @@ public class TopicServiceImpl implements TopicService {
 	@Override
 	public boolean comment(Long uid, Long to_uid, Long tid, String content, String ua) {
 		try {
-			boolean flag = commentService.save(uid, to_uid, tid, content, ua);
-			if(flag){
+			Long cid = commentService.save(uid, to_uid, tid, content, ua);
+			if(null != cid){
 				
 				topicCountService.update(Types.comments.toString(), tid, 1);
 				this.updateWeight(tid);
 				
 				// 通知
 				if(!uid.equals(to_uid)){
-					noticeService.save(Types.comment.toString(), uid, to_uid, tid);
+					noticeService.save(Types.comment.toString(), to_uid, tid);
 					
 					// 通知@的用户
 					Set<String> atUsers = Utils.getAtUsers(content);
@@ -249,7 +249,7 @@ public class TopicServiceImpl implements TopicService {
 						for(String user_name : atUsers){
 							User user = userService.getUserByLoginName(user_name);
 							if(null != user && !user.getUid().equals(uid)){
-								noticeService.save(Types.at.toString(), uid, user.getUid(), tid);
+								noticeService.save(Types.comment_at.toString(), user.getUid(), cid);
 							}
 						}
 					}

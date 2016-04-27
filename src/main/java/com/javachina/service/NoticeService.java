@@ -1,16 +1,17 @@
 package com.javachina.service;
 
-import java.util.List;
 import java.util.Map;
+
+import com.blade.jdbc.Page;
 
 public interface NoticeService {
 	
-	boolean save(String type, Long uid, Long to_uid, Long event_id);
+	boolean save(String type, Long to_uid, Long event_id);
 	
 	boolean read(Long to_uid);
 	
-	List<Map<String, Object>> getNoticeList(Long uid);
+	Page<Map<String, Object>> getNoticePage(Long to_uid, Integer page, Integer count);
 
-	Long getNotices(Long uid);
+	Long getNotices(Long to_uid);
 	
 }

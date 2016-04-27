@@ -42,11 +42,9 @@
 				</div>
 			</div>
 		</div>
-		#if(null != my_notices)
 		<div class="panel-footer box">
-			<a href="${base_url('/notices')}">${my_notices} 条未读提醒</a>
+			<a href="${base_url('/notices')}"><span id="notice_count">0</span> 条未读提醒</a>
 		</div>
-        #end
 	</div>
     #else
 	<div class="panel panel-default">
@@ -129,3 +127,14 @@
 	</div>  
 	#end
 </div><!-- /.col-md-4 -->
+<script type="text/javascript">
+function check_notice(){
+	$.get("${base_url('/check_notice')}",{},function(response){
+		if(response){
+			$('.panel-footer #notice_count').text(response);
+		}
+	});
+}
+check_notice();
+window.setInterval(check_notice, 30 * 1000);
+</script>
