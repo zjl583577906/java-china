@@ -71,6 +71,16 @@ public class Utils {
 		return QiniuKit.getUrl(avatar + '-' + imageTypes.toString());
 	}
 	
+	public static boolean isEmail(String str){
+		if(StringKit.isBlank(str)){
+			return false;
+		}
+		String check = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+		Pattern regex = Pattern.compile(check);
+		Matcher matcher = regex.matcher(str);
+		return matcher.matches();
+	}
+	
 	/**
 	 * 判断用户是否可以注册
 	 * @param user_name

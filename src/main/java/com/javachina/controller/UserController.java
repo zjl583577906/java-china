@@ -235,7 +235,7 @@ public class UserController extends BaseController {
 			return this.getView("signup");
 		}
 		
-		if(!PatternKit.isEmail(email)){
+		if(!Utils.isEmail(email)){
 			request.attribute(this.ERROR, "请输入正确的邮箱");
 			return this.getView("signup");
 		}
