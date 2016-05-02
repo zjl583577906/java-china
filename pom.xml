@@ -15,12 +15,6 @@
 			<artifactId>blade-core</artifactId>
 			<version>1.6.2</version>
 		</dependency>
-		<!-- 邮件发送 -->
-		<dependency>
-			<groupId>com.bladejava</groupId>
-			<artifactId>jmail</artifactId>
-			<version>0.0.3</version>
-		</dependency>
 		<!-- 七牛CDN -->
 		<dependency>
 			<groupId>com.qiniu</groupId>
