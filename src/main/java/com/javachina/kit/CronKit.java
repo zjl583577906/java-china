@@ -3,10 +3,6 @@ package com.javachina.kit;
 import java.io.File;
 
 import com.blade.Blade;
-import com.javachina.Constant;
-import com.jmail.MailMessage;
-import com.jmail.MailSender;
-import com.jmail.MailSenderImpl;
 
 import blade.kit.DateKit;
 import blade.kit.logging.Logger;
@@ -18,8 +14,6 @@ import blade.kit.logging.LoggerFactory;
 public class CronKit {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CronKit.class);
-	
-	private static MailSender mailSender = new MailSenderImpl();
 	
 	/**
 	 * 备份数据库
@@ -72,7 +66,7 @@ public class CronKit {
             
             System.out.println("pre send mail:" + file);
             
-            MailMessage mailMessage = new MailMessage();
+            /*MailMessage mailMessage = new MailMessage();
 			mailMessage
 			.subject("javachina数据库备份_" + DateKit.getToday("yyyy-MM-ddHHmmss"))
 			.from(Constant.MAIL_NICK, Constant.MAIL_USER)
@@ -80,7 +74,7 @@ public class CronKit {
 			.addTo("biezhi.me@gmail.com");
 			
 			mailSender.host(Constant.MAIL_HOST).username(Constant.MAIL_USER).password(Constant.MAIL_PASS);
-			mailSender.send(mailMessage, true);
+			mailSender.send(mailMessage, true);*/
 			
 			System.out.println("send mail end.");
 			

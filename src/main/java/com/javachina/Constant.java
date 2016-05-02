@@ -29,12 +29,10 @@ public class Constant {
 	public static String GITHUB_CLIENT_SECRET = "";
 	public static String GITHUB_REDIRECT_URL = "";
 	
-	public static String MAIL_HOST;
-	public static String MAIL_NICK;
-	public static String MAIL_USER;
-	public static String MAIL_PASS;
-	public static String MAIL_ADMIN;
-
+	// sendcloud邮件配置
+	public static String MAIL_API_USER;
+	public static String MAIL_API_KEY;
+	
 	public static JetGlobalContext VIEW_CONTEXT = null;
 	public static Map<String, Object> SYS_INFO = null;
 	
