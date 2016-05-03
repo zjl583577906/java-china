@@ -59,8 +59,8 @@ public class App extends Bootstrap {
 		CSRFTokenManager.config(conf);
 		
 		// 配置邮箱
-		Constant.MAIL_API_USER = blade.config().get("app.mail.api_user");
-		Constant.MAIL_API_KEY = blade.config().get("app.mail.api_key");
+		Constant.MAIL_API_USER = blade.config().get("mail.api_user");
+		Constant.MAIL_API_KEY = blade.config().get("mail.api_key");
 		
 		// github授权key
 		Constant.GITHUB_CLIENT_ID = blade.config().get("github.CLIENT_ID");
