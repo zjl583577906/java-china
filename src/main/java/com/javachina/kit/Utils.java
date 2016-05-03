@@ -221,7 +221,9 @@ public class Utils {
 		if(processed.indexOf("[mp3:") != -1){
 			processed = processed.replaceAll("\\[mp3:(\\d+)\\]", "<iframe frameborder='no' border='0' marginwidth='0' marginheight='0' width=330 height=86 src='http://music.163.com/outchain/player?type=2&id=$1&auto=0&height=66'></iframe>");
 		}
-		
+		if(processed.indexOf("https://gist.github.com/") != -1){
+			processed = processed.replaceAll("&lt;script src=\"https://gist.github.com/(\\w+)/(\\w+)\\.js\">&lt;/script>", "<script src=\"https://gist.github.com/$1/$2\\.js\"></script>");
+		}
 		return Funcs.emoji(processed);
 	}
 	
