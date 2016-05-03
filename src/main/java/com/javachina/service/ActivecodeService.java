@@ -10,5 +10,7 @@ public interface ActivecodeService {
 	String save(User user, String type);
 	
 	boolean useCode(String code);
+
+	boolean resend(Long uid);
 	
 }

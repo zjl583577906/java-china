@@ -45,6 +45,20 @@ $('.user-table .activeAccount').on('click', function(){
 	});
 });
 
+// 重新发送激活邮件
+$('.user-table .resendMail').on('click', function(){
+	var uid = $(this).attr("uid");
+	$.post(BASE + '/admin/status', {uid:uid, type:'resend'}, function(response){
+		if(response){
+			if(response.status == 200){
+				alertOk('邮件已发送');
+			} else{
+				alertError(response.msg);
+			}
+		}
+	});
+});
+
 //禁用用户
 $('.user-table .disable').on('click', function(){
 	var uid = $(this).attr("uid");

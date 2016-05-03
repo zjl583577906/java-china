@@ -21,6 +21,7 @@ import com.javachina.Types;
 import com.javachina.controller.BaseController;
 import com.javachina.model.Node;
 import com.javachina.model.User;
+import com.javachina.service.ActivecodeService;
 import com.javachina.service.NodeService;
 import com.javachina.service.SettingsService;
 import com.javachina.service.TopicService;
@@ -42,6 +43,9 @@ public class IndexController extends BaseController {
 	
 	@Inject
 	private SettingsService settingsService;
+	
+	@Inject
+	private ActivecodeService activecodeService;
 	
 	/**
 	 * 首页
@@ -227,6 +231,11 @@ public class IndexController extends BaseController {
 		
 		if(type.equals(Types.setAdmin.toString())){
 			role_id = 3;
+		}
+		
+		// 重新发送激活邮件
+		if(type.equals(Types.resend.toString())){
+			activecodeService.resend(uid);
 		}
 		
 		if(null != status){

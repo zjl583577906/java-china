@@ -7,6 +7,7 @@ import com.javachina.model.Activecode;
 import com.javachina.model.User;
 import com.javachina.service.ActivecodeService;
 import com.javachina.service.SendMailService;
+import com.javachina.service.UserService;
 import com.javachina.service.UserinfoService;
 
 import blade.kit.DateKit;
@@ -17,6 +18,9 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 	
 	@Inject
 	private SendMailService sendMailService;
+	
+	@Inject
+	private UserService userService;
 	
 	@Inject
 	private UserinfoService userinfoService;
@@ -79,6 +83,30 @@ public class ActivecodeServiceImpl implements ActivecodeService {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return false;
+	}
+
+	@Override
+	public boolean resend(Long uid) {
+		if(null != uid){
+			User user = userService.getUser(uid);
+			if(null == user){
+				return false;
+			}
+			
+			int time = DateKit.getCurrentUnixTime();
+			int expires_time = time + 3600;
+			String code = StringKit.getRandomChar(32);
+			try {
+				
+				AR.update("insert into t_activecode(uid, code, type, expires_time, create_time) values(?, ?, ?, ?, ?)",
+						user.getUid(), code, "signup", expires_time, time).executeUpdate();
+				sendMailService.signup(user.getLogin_name(), user.getEmail(), code);
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		return false;
 	}

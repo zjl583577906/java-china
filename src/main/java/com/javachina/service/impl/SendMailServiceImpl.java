@@ -46,7 +46,8 @@ public class SendMailServiceImpl implements SendMailService {
 				"fromName", "Java中国",
 				"xsmtpapi", x_smtpapi.toString(),
 				"subject", "Java中国账户激活").body();
-		System.out.println(body);
+		
+		LOGGER.info(body);
 		
 		userlogService.save(0L, Actions.SEND_MAIL, email + ":" + code + ":" + "signup");
 		
@@ -75,7 +76,8 @@ public class SendMailServiceImpl implements SendMailService {
 				"fromName", "Java中国",
 				"xsmtpapi", x_smtpapi.toString(),
 				"subject", "Java中国密码找回").body();
-		System.out.println(body);
+		
+		LOGGER.info(body);
 		
 		userlogService.save(0L, Actions.SEND_MAIL, email + ":" + code + ":" + "forgot");
 		

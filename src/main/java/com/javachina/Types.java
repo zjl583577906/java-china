@@ -28,6 +28,7 @@ public enum Types {
 	allow_signup,
 	forgot, 
 	sinks,
-	topic_sinks
+	topic_sinks, 
+	resend
 	
 }

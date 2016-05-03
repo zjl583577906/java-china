@@ -44,6 +44,7 @@
 							<td>
 								#if(user.status == 0)
 									<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm activeAccount">激活账户</a>
+									<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm resendMail">重新发送邮件激活</a>
 								#elseif(user.status == 1)
 									<a href="javascript:;" uid="${user.uid}" class="btn btn-danger btn-outline btn-sm disable">拉黑</a>
 									#if(user.role_id == 3)
