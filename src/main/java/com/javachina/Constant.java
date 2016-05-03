@@ -7,6 +7,8 @@ import jetbrick.template.JetGlobalContext;
 
 public class Constant {
 
+	public static boolean IS_DEV = true;
+	
 	// 登录用户session key
 	public static final String LOGIN_SESSION_KEY = "login_user";
 

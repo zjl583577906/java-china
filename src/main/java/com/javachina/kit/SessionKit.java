@@ -52,7 +52,7 @@ public class SessionKit {
 		if(null != response && StringKit.isNotBlank(cookieName) && null != uid){
 			String val = AES.encrypt(uid+"");
 			boolean isSSL = Constant.SITE_URL.startsWith("https");
-			String path = BladeWebContext.servletContext().getContextPath() + "/";
+			String path = BladeWebContext.servletContext().getContextPath();
 			response.cookie(path, cookieName, val, one_month, isSSL);
 		}
 	}
@@ -62,7 +62,7 @@ public class SessionKit {
 			String val = AES.encrypt(value);
 			boolean isSSL = Constant.SITE_URL.startsWith("https");
 			response.removeCookie(cookieName);
-			String path = BladeWebContext.servletContext().getContextPath() + "/";
+			String path = BladeWebContext.servletContext().getContextPath();
 			response.cookie(path, cookieName, val, 604800, isSSL);
 		}
 	}
