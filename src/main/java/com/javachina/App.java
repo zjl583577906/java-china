@@ -46,6 +46,7 @@ public class App extends Bootstrap {
 		}
 		
 		// 初始化配置
+		Constant.IS_DEV = blade.isDev();
 		Constant.SITE_URL = blade.config().get("app.site_url");
 		Constant.APP_VERSION = blade.config().get("app.version");
 		AES.setKey(blade.config().get("app.aes_salt"));

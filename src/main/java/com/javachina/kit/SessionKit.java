@@ -1,5 +1,9 @@
 package com.javachina.kit;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+
 import com.blade.context.BladeWebContext;
 import com.blade.web.http.Request;
 import com.blade.web.http.Response;
@@ -51,9 +55,9 @@ public class SessionKit {
 	public static void setCookie(Response response, String cookieName, Long uid) {
 		if(null != response && StringKit.isNotBlank(cookieName) && null != uid){
 			String val = AES.encrypt(uid+"");
+			
 			boolean isSSL = Constant.SITE_URL.startsWith("https");
-			String path = BladeWebContext.servletContext().getContextPath();
-			response.cookie(path, cookieName, val, one_month, isSSL);
+			response.cookie("/", cookieName, val, one_month, isSSL);
 		}
 	}
 	
@@ -86,4 +90,27 @@ public class SessionKit {
 		response.removeCookie(Constant.JC_REFERRER_COOKIE);
 	}
 	
+	public static String decode(String source, String enc) {
+		if (source == null || "".equals(source))
+			return "";
+		String ret = "";
+		try {
+			ret = URLDecoder.decode(source, enc);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
+	
+	public static String encode(String source, String enc) {
+		if (source == null || "".equals(source))
+			return "";
+		String ret = "";
+		try {
+			ret = URLEncoder.encode(source, enc);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return ret;
+	}
 }
